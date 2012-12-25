@@ -3,6 +3,12 @@
 " Load pathogen
 call pathogen#infect()
 
+" Load Powerline
+"python from powerline.ext.vim import source_plugin; source_plugin()
+set nocompatible
+
+set guifont=Menlo\ 11
+
 filetype on
 filetype plugin on
 filetype indent on
@@ -119,9 +125,10 @@ let NERDTreeChDirMode=2
 
 " Add support for Chicken Scheme to SingleCompile
 call SingleCompile#SetCompilerTemplate('scheme', 'csi', 'Chicken Scheme', 'csi', '-qb', '')
-call SingleCompile#ChooseCompiler('scheme', 'csi')
 " Show compile results in a dialog
 let g:SingleCompile_usedialog = 1
+" Show run results after running
+let g:SingleCompile_showresultafterrun = 1
 " SingleCompile key bindings
 nmap <F9> :SCCompile<cr>
 nmap <F10> :SCCompileRun<cr>
