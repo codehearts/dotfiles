@@ -4,23 +4,31 @@
 call pathogen#infect()
 
 " Load Powerline
-"python from powerline.ext.vim import source_plugin; source_plugin()
+python from powerline.ext.vim import source_plugin; source_plugin()
+set laststatus=2
 set nocompatible
-
-set guifont=Menlo\ 11
 
 filetype on
 filetype plugin on
 filetype indent on
 
 syntax enable
-colorscheme monokai
+
+if has("macunix")
+	" Mac settings
+	colorscheme monokai
+	set guifont=Menlo\ Regular\ for\ Powerline:h11
+else
+	" Linux settings
+	colorscheme molokai
+	set guifont=Menlo\ for\ Powerline\ 11
+endif
 
 " Set <leader> to ","
 let mapleader = ","
 let g:mapleader = ","
 
-" Write out buffers faster
+" Write out buffers with ,w
 nmap <leader>w :w!<cr>
 
 " Treat long lines as break lines
