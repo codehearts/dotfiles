@@ -44,6 +44,8 @@ map <C-l> <C-W>l
 " Replace selected text in buffer
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 
+noremap <leader>sd :call SearchDirectory()<CR>
+
 " Useful tab mappings
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
@@ -159,6 +161,16 @@ let g:session_autosave = "no"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+function! SearchDirectory()
+	let l:saved_reg = @z
+
+	let @z = input("Search directory for: ")
+	execute "vimgrep /".@z."/gj ./**/*"
+	execute "cw"
+
+	let @z = l:saved_reg
+endfunction
 
 function! ReplaceVarInScope()
     call inputsave()
