@@ -44,7 +44,7 @@ map <C-l> <C-W>l
 " Replace selected text in buffer
 vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 
-" Searches all files in the current directory using the given regex
+" Prompts for a regex and searches the current directory with it
 noremap <leader>sd :call SearchDirectory()<CR>
 
 " Useful tab mappings
@@ -160,7 +160,7 @@ let g:session_autosave = "no"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper Functions
+" Helper Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! SearchDirectory()
