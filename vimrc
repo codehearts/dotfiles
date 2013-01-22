@@ -31,6 +31,9 @@ let g:mapleader = ","
 " Write out buffers with ,w
 nmap <leader>w :w!<cr>
 
+" Save files using sudo with :w!!, for when vim was not opened with sudo
+cmap w!! %!sudo tee > /dev/null %
+
 " Treat long lines as break lines
 map j gj
 map k gk
