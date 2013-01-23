@@ -103,7 +103,7 @@ set guioptions-=m
 set guioptions-=T
 
 " Enable spell checking for txt files by default
-autocmd BufNewFile,BufRead *.{txt} setlocal spell spelllang=en_us
+autocmd BufNewFile,BufRead *.{txt,markdown} setlocal spell spelllang=en_us
 
 " Return to last edit position when opening files
 autocmd BufReadPost *
