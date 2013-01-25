@@ -18,6 +18,9 @@ if has("macunix")
 	" Mac settings
 	colorscheme monokai
 	set guifont=Menlo\ Regular\ for\ Powerline:h11
+
+	" Use open to view LaTeX output on OS X
+	let g:LatexBox_viewer = "open"
 else
 	" Linux settings
 	colorscheme molokai
@@ -160,6 +163,8 @@ let g:syntastic_warning_symbol='⚠'
 let g:session_autoload = "no"
 let g:session_autosave = "no"
 
+" Don't dirty up LaTeX file directories with auxiliary files
+let g:LatexBox_latexmk_options = "-outdir=output"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
