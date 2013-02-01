@@ -105,8 +105,8 @@ set guioptions-=b
 set guioptions-=m
 set guioptions-=T
 
-" Enable spell checking for txt files by default
-autocmd BufNewFile,BufRead *.{txt,markdown} setlocal spell spelllang=en_us
+" Enable spell checking for text, markdown, and latex files by default
+autocmd BufNewFile,BufRead *.{txt,markdown,tex} setlocal spell spelllang=en_us
 
 " Return to last edit position when opening files
 autocmd BufReadPost *
@@ -160,11 +160,8 @@ let g:syntastic_error_symbol='✖'
 let g:syntastic_warning_symbol='⚠'
 
 " Never prompt for saving or loading sessions (vim-session)
-let g:session_autoload = "no"
-let g:session_autosave = "no"
-
-" Don't dirty up LaTeX file directories with auxiliary files
-let g:LatexBox_latexmk_options = "-outdir=output"
+let g:session_autoload = 'no'
+let g:session_autosave = 'no'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -201,13 +198,13 @@ function! VisualSelection(direction) range
     let l:pattern = substitute(l:pattern, "\n$", "", "")
 
     if a:direction == 'b'
-        execute "normal ?" . l:pattern . "^M"
+        execute "normal ?".l:pattern."^M"
     elseif a:direction == 'gv'
-        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+        call CmdLine("vimgrep ".'/'.l:pattern.'/'.' **/*.')
     elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
+        call CmdLine("%s".'/'.l:pattern.'/')
     elseif a:direction == 'f'
-        execute "normal /" . l:pattern . "^M"
+        execute "normal /".l:pattern."^M"
     endif
 
     let @/ = l:pattern
