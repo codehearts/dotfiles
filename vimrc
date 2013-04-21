@@ -1,12 +1,13 @@
 " Ideas taken from various people's configurations and http://amix.dk/vim/vimrc.html
 
 " Load pathogen
+runtime bundle/pathogen/autoload/pathogen.vim
 call pathogen#infect()
 
-" Load Powerline
-python from powerline.ext.vim import source_plugin; source_plugin()
+" Settings for Powerline
 set laststatus=2
 set nocompatible
+set noshowmode " Hide the default mode text
 
 filetype on
 filetype plugin on
@@ -15,6 +16,9 @@ filetype indent on
 syntax enable
 
 if has("macunix")
+	" Load Powerline
+	set rtp+=/Users/Nate/Library/Python/2.7/lib/python/site-packages/powerline/bindings/vim
+
 	" Mac settings
 	colorscheme monokai
 	set guifont=Menlo\ Regular\ for\ Powerline:h11
@@ -22,6 +26,9 @@ if has("macunix")
 	" Use open to view LaTeX output on OS X
 	let g:LatexBox_viewer = "open"
 else
+	" Load powerline
+	set rtp+=/usr/lib/python2.7/site-packages/powerline/bindings/vim
+
 	" Linux settings
 	colorscheme molokai
 	set guifont=Menlo\ for\ Powerline\ 11
@@ -108,6 +115,9 @@ set guioptions-=T
 " Enable spell checking for text, markdown, and latex files by default
 autocmd BufNewFile,BufRead *.{txt,markdown,tex} setlocal spell spelllang=en_us
 
+" Use my Jot theme for markdown and tex files
+autocmd BufNewFile,BufRead *.{markdown,tex} colorscheme jot
+
 " Return to last edit position when opening files
 autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -137,8 +147,14 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 " Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Toggle NERDTree with ,nt
+nmap <leader>nt :NERDTreeToggle<cr>
+
 " cd to the directory of the last opened bookmark
 let NERDTreeChDirMode=2
+
+" Toggle Tagbar with ,tb
+nmap <leader>tb :TagbarToggle<cr>
 
 " Add support for Chicken Scheme to SingleCompile
 call SingleCompile#SetCompilerTemplate('scheme', 'csi', 'Chicken Scheme', 'csi', '-qb', '')
