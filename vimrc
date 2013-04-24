@@ -5,7 +5,7 @@ runtime bundle/pathogen/autoload/pathogen.vim
 call pathogen#infect()
 
 " Settings for Powerline
-set laststatus = 2
+set laststatus=2
 set nocompatible
 set noshowmode " Hide the default mode text
 
@@ -17,26 +17,26 @@ syntax enable
 
 if has("macunix")
 	" Load Powerline
-	set rtp += /Users/Nate/Library/Python/2.7/lib/python/site-packages/powerline/bindings/vim
+	set rtp+=/Users/Nate/Library/Python/2.7/lib/python/site-packages/powerline/bindings/vim
 
 	" Mac settings
 	colorscheme monokai
-	set guifont = Menlo\ Regular\ for\ Powerline:h11
+	set guifont=Menlo\ Regular\ for\ Powerline:h11
 
 	" Use open to view LaTeX output on OS X
-	let g:LatexBox_viewer = "open"
+	let g:LatexBox_viewer="open"
 else
 	" Load Powerline
-	set rtp += /usr/lib/python2.7/site-packages/powerline/bindings/vim
+	set rtp+=/usr/lib/python2.7/site-packages/powerline/bindings/vim
 
 	" Linux settings
 	colorscheme molokai
-	set guifont = Menlo\ for\ Powerline\ 11
+	set guifont=Menlo\ for\ Powerline\ 11
 endif
 
 " Set <leader> to ","
-let mapleader = ","
-let g:mapleader = ","
+let mapleader=","
+let g:mapleader=","
 
 " Write out buffers with ,w
 nmap <leader>w :w!<cr>
@@ -78,8 +78,8 @@ noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Turn on the wild menu
 set wildmenu
-let wildmode = "full"
-set wildignore = *.o,*~,*.pyc,*.class " Ignore compiled files
+let wildmode="full"
+set wildignore=*.o,*~,*.pyc,*.class " Ignore compiled files
 
 set autoread		" Autoread files that were changed externally
 set hid				" Hide buffers when they are abandoned
@@ -88,14 +88,14 @@ set smartcase		" Be smart about search cases
 set hlsearch		" Highlight search results
 set incsearch
 set number			" Show line numbers
-set shiftwidth = 4	" 1 tab ~ 4 spaces
-set tabstop = 4
+set shiftwidth=4	" 1 tab ~ 4 spaces
+set tabstop=4
 set smarttab
 set ai				" Auto indent
 set si				" Smart indent
 set wrap			" Wrap lines
-set encoding = utf8
-set ffs = unix,mac,dos
+set encoding=utf8
+set ffs=unix,mac,dos
 
 " Turn backup off
 set nobackup
@@ -103,17 +103,17 @@ set nowb
 set noswapfile
 
 " Remove scrollbar in MacVim/GVim
-set guioptions -= r
-set guioptions -= l
-set guioptions -= L
-set guioptions -= b
+set guioptions-=r
+set guioptions-=l
+set guioptions-=L
+set guioptions-=b
 
 " Remove toolbars and menu bars in MacVim/GVim
-set guioptions -= m
-set guioptions -= T
+set guioptions-=m
+set guioptions-=T
 
 " Enable spell checking for text, markdown, and latex files by default
-autocmd BufNewFile,BufRead *.{txt,markdown,tex} setlocal spell spelllang = en_us
+autocmd BufNewFile,BufRead *.{txt,markdown,tex} setlocal spell spelllang=en_us
 
 " Use my Jot theme for markdown and tex files
 autocmd BufNewFile,BufRead *.{markdown,tex} colorscheme jot
@@ -125,7 +125,7 @@ autocmd BufReadPost *
      \ endif
 
 " Remember info about open buffers on close
-set viminfo ^= %
+set viminfo^=%
 
 " Locally (local to block) rename a variable with ,rl (doesn't work for some languages, like Python)
 nmap <Leader>rl "zyiw:call ReplaceVarInScope()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
@@ -151,7 +151,7 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 nmap <leader>nt :NERDTreeToggle<cr>
 
 " cd to the directory of the last opened NERDTree bookmark
-let NERDTreeChDirMode = 2
+let NERDTreeChDirMode=2
 
 " Toggle Tagbar with ,tb
 nmap <leader>tb :TagbarToggle<cr>
@@ -159,25 +159,25 @@ nmap <leader>tb :TagbarToggle<cr>
 " Add support for Chicken Scheme to SingleCompile
 call SingleCompile#SetCompilerTemplate('scheme', 'csi', 'Chicken Scheme', 'csi', '-qb', '')
 " Show compile results in a dialog
-let g:SingleCompile_usedialog = 1
+let g:SingleCompile_usedialog=1
 " Show run results after running
-let g:SingleCompile_showresultafterrun = 1
+let g:SingleCompile_showresultafterrun=1
 " SingleCompile key bindings
 nmap <F9> :SCCompile<cr>
 nmap <F10> :SCCompileRun<cr>
 nmap <F11> :SCViewResult<cr>
 
 " Automatically open and close the location list when syntax errors are detected
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list=1
 " Only show 5 lines of syntax error locations
-let g:syntastic_loc_list_height = 5
+let g:syntastic_loc_list_height=5
 " For fun
-let g:syntastic_error_symbol = '✖'
-let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_error_symbol='✖'
+let g:syntastic_warning_symbol='⚠'
 
 " Never prompt for saving or loading sessions (vim-session)
-let g:session_autoload = 'no'
-let g:session_autosave = 'no'
+let g:session_autoload='no'
+let g:session_autosave='no'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -185,18 +185,18 @@ let g:session_autosave = 'no'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! SearchDirectory()
-	let l:saved_reg = @z
+	let l:saved_reg=@z
 
-	let @z = input("Search directory for: ")
+	let @z=input("Search directory for: ")
 	execute "vimgrep /".@z."/gj ./**/*"
 	execute "cw"
 
-	let @z = l:saved_reg
+	let @z=l:saved_reg
 endfunction
 
 function! ReplaceVarInScope()
     call inputsave()
-    let @z = input("Rename ".@z." to: ")
+    let @z=input("Rename ".@z." to: ")
     call inputrestore()
 endfunction
 
@@ -207,11 +207,11 @@ function! CmdLine(str)
 endfunction
 
 function! VisualSelection(direction) range
-    let l:saved_reg = @"
+    let l:saved_reg=@"
     execute "normal! vgvy"
 
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
+    let l:pattern=escape(@", '\\/.*$^~[]')
+    let l:pattern=substitute(l:pattern, "\n$", "", "")
 
     if a:direction == 'b'
         execute "normal ?".l:pattern."^M"
@@ -223,6 +223,6 @@ function! VisualSelection(direction) range
         execute "normal /".l:pattern."^M"
     endif
 
-    let @/ = l:pattern
-    let @" = l:saved_reg
+    let @/=l:pattern
+    let @"=l:saved_reg
 endfunction
