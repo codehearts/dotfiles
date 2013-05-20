@@ -115,6 +115,9 @@ set guioptions-=T
 " Enable spell checking for text, markdown, and latex files by default
 autocmd BufNewFile,BufRead *.{txt,markdown,tex} setlocal spell spelllang=en_us
 
+" Enable spell checking when writing email
+autocmd FileType mail setlocal spell spelllang=en_us
+
 " Use my Jot theme for markdown and tex files
 autocmd BufNewFile,BufRead *.{markdown,tex} colorscheme jot
 
