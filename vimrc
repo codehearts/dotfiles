@@ -152,8 +152,8 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
 " Toggle NERDTree with ,nt
 nmap <leader>nt :NERDTreeToggle<cr>
-" Open a mirror of a NERDTree open in another tab with ,ntm
-nmap <leader>ntm :NERDTreeMirror<cr>
+" Open a mirror of a NERDTree from another tab with ,mt
+nmap <leader>mt :NERDTreeMirror<cr>
 
 " cd to the directory of the last opened NERDTree bookmark
 let NERDTreeChDirMode=2
