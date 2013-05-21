@@ -39,7 +39,7 @@ let mapleader=","
 let g:mapleader=","
 
 " Write out buffers with ,w
-nmap <leader>w :w!<cr>
+nmap <leader>w :w!<CR>
 
 " Save files using sudo with :w!!, for when Vim was not opened with sudo
 cmap w!! %!sudo tee > /dev/null %
@@ -61,19 +61,21 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 noremap <leader>sd :call SearchDirectory()<CR>
 
 " Useful tab mappings
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
+map <leader>tn :tabnew<CR>
+map <leader>to :tabonly<CR>
+map <leader>tc :tabclose<CR>
+" Move tabs left/right with control-shift-left/right
+map <silent><C-S-Left> :execute TabLeft()<CR>
+map <silent><C-S-Right> :execute TabRight()<CR>
 
 " cd to the open buffer's directory with ,cd
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+map <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 " Toggle spell checking with ,ss
-map <leader>ss :setlocal spell!<cr>
+map <leader>ss :setlocal spell!<CR>
 
 " Remove Windows' ^M when encodings gets messed up with ,m
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+noremap <Leader>m mmHmt:%s/<C-V><CR>//ge<CR>'tzt'm
 
 
 " Turn on the wild menu
@@ -131,9 +133,9 @@ autocmd BufReadPost *
 set viminfo^=%
 
 " Locally (local to block) rename a variable with ,rl (doesn't work for some languages, like Python)
-nmap <Leader>rl "zyiw:call ReplaceVarInScope()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
+nmap <Leader>rl "zyiw:call ReplaceVarInScope()<CR>mx:silent! norm gd<CR>[{V%:s/<C-R>//<c-r>z/g<CR>`x
 " Globally rename a variable with ,rg (doesn't work for some languages, like Python)
-nmap <Leader>rg "zyiw:call ReplaceVarInScope()<cr>mx:silent! norm gD<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
+nmap <Leader>rg "zyiw:call ReplaceVarInScope()<CR>mx:silent! norm gD<CR>[{V%:s/<C-R>//<c-r>z/g<CR>`x
 
 " Delete trailing white space on save, useful for Python and CoffeeScript
 func! DeleteTrailingWS()
@@ -151,15 +153,15 @@ autocmd BufWrite *.coffee :call DeleteTrailingWS()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Toggle NERDTree with ,nt
-nmap <leader>nt :NERDTreeToggle<cr>
+nmap <leader>nt :NERDTreeToggle<CR>
 " Open a mirror of a NERDTree from another tab with ,mt
-nmap <leader>mt :NERDTreeMirror<cr>
+nmap <leader>mt :NERDTreeMirror<CR>
 
 " cd to the directory of the last opened NERDTree bookmark
 let NERDTreeChDirMode=2
 
 " Toggle Tagbar with ,tb
-nmap <leader>tb :TagbarToggle<cr>
+nmap <leader>tb :TagbarToggle<CR>
 
 " Add support for Chicken Scheme to SingleCompile
 call SingleCompile#SetCompilerTemplate('scheme', 'csi', 'Chicken Scheme', 'csi', '-qb', '')
@@ -168,9 +170,9 @@ let g:SingleCompile_usedialog=1
 " Show run results after running
 let g:SingleCompile_showresultafterrun=1
 " SingleCompile key bindings
-nmap <F9> :SCCompile<cr>
-nmap <F10> :SCCompileRun<cr>
-nmap <F11> :SCViewResult<cr>
+nmap <F9> :SCCompile<CR>
+nmap <F10> :SCCompileRun<CR>
+nmap <F11> :SCViewResult<CR>
 
 " Automatically open and close the location list when syntax errors are detected
 let g:syntastic_auto_loc_list=1
@@ -197,6 +199,25 @@ function! SearchDirectory()
 	execute "cw"
 
 	let @z=l:saved_reg
+endfunction
+
+function TabLeft()
+	let tab_number=tabpagenr() - 1
+	if tab_number == 0
+		execute "tabm" tabpagenr('$') - 1
+	else
+		execute "tabm" tab_number - 1
+	endif
+endfunction
+
+function TabRight()
+	let tab_number=tabpagenr() - 1
+	let last_tab_number=tabpagenr('$') - 1
+	if tab_number == last_tab_number
+		execute "tabm" 0
+	else
+		execute "tabm" tab_number + 1
+	endif
 endfunction
 
 function! ReplaceVarInScope()
