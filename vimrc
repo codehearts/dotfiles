@@ -92,6 +92,7 @@ set incsearch
 set number			" Show line numbers
 set shiftwidth=4	" 1 tab ~ 4 spaces
 set tabstop=4
+set noexpandtab		" Use tabs instead of spaces
 set smarttab
 set ai				" Auto indent
 set si				" Smart indent
