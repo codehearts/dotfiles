@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Provides a colorized thesaurus entry for the given word
+
+# Args:
+#   $1: The word to look up
+
+define $1 moby-thes

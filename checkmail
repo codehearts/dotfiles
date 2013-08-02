@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Opens a tmux session for checking all of my mail accounts
+
+# Gmail (1)
+if [ -n "$TMUX" ]; then
+	# If we're currently in a tmux session, don't create a new one
+	session_existed=true
+	session_info=""
+	
+	# Just rename the current window
+	tmux rename-window Gmail
+else
+	session_existed=false
+	# Session parameter for tmux commands
+	session_info="-t email"
+
+	# Create a new session called "email"
+	tmux new-session -d -s email -n Gmail
+fi
+tmux send-keys $session_info "checkgmail" C-m
+
+# School (2)
+tmux new-window $session_info -n School
+tmux send-keys $session_info "checkschool" C-m
+
+# Nejt (3)
+tmux new-window $session_info -n Nejt
+tmux send-keys $session_info "checknejt" C-m
+
+# Portfolio (4)
+tmux new-window $session_info -n Portfolio
+tmux send-keys $session_info "checkportfolio" C-m
+
+# Mood & Figure (5)
+tmux new-window $session_info -n "M&F"
+tmux send-keys $session_info "checkmaf" C-m
+
+# Set the window history order (the last line is the current window)
+tmux select-window -t "M&F"
+tmux select-window -t Portfolio
+tmux select-window -t Nejt
+tmux select-window -t Gmail
+tmux select-window -t School
+
+# If we created a new session, attach it
+if ! $session_existed; then
+	tmux attach-session $session_info
+fi

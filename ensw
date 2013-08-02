@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Provides the English for the given Swedish
+
+# Args:
+#   $1: The word to translate
+
+define $1 swe-eng

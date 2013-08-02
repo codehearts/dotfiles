@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Starts mpd, opens ncmpcpp, and kills mpd when finished
+
+mpd
+ncmpcpp
+mpd --kill

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Silly script for displaying ponies and outputting unsettling text-to-speech.
+# Requires ponysay (like cowsay but for MLP) and espeak.
+# Sure to be the "life" of "parties."
+
+# Args:
+#   $1: The text to say.
+#   $2: The espeak voice to use. (Optional)
+
+# Use an optional second parameter as the espeak voice
+if [[ -z "$2" ]]; then
+	lang=english
+else
+	lang=$2
+fi
+
+clear
+ponysay "$1" -bround
+espeak "$1" -p 75 -a 200 -v $lang > /dev/null 2>&1
