@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Use the menu key as the compose key
+setxkbmap -option compose:menu
+
+# ----- For using gnome-keyring
+
+# Start a dbus session
+source /etc/X11/xinit/xinitrc.d/30-dbus
+
+# Start GNOME Keyring
+eval $(/usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh)
+
+# Export the dbus session address on startup so it can be used by cron
+touch $HOME/.Xdbus
+chmod 600 $HOME/.Xdbus
+env | grep DBUS_SESSION_BUS_ADDRESS > $HOME/.Xdbus
+echo 'export DBUS_SESSION_BUS_ADDRESS' >> $HOME/.Xdbus
+
+# Export XAUTHORITY value on startup so it can be used by cron
+env | grep XAUTHORITY >> $HOME/.Xdbus
+echo 'export XAUTHORITY' >> $HOME/.Xdbus
+
+# -----
+
+# Get notifications for Google Calendar
+python2 $HOME/python/gcalert/gcalert.py &
+
+# Start XFCE
+startxfce4
