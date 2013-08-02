@@ -1,6 +1,7 @@
 # Sample .msmtprc for sending mail from Gmail and other email accounts.
 # This config assumes the passwords are stored in GNOME Keyring.
-# It's not that hard to do, see my Wiki article on using msmtp-gnome-tool.py to store them. TODO Wiki article and link
+# It's not that hard to do, see my Wiki article on using msmtp-gnome-tool.py to store them:
+# https://github.com/nejsan/dotfiles/wiki/Sending-mail-with-msmtp-and-GNOME-Keyring#setting-msmtp-passwords-in-gnome-keyring
 
 # Replace <gmail_address> with a Gmail address
 # Replace <school_address> with a school address managed through Gmail
