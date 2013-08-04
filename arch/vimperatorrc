@@ -1,2 +1,5 @@
 :set toolbars=tabs
 :colorscheme bubblegum
+
+# Use ctrl-a to select all in insert mode instead of moving to the beginning of the line
+:inoremap <C-a> <Ins><C-a><Ins>
