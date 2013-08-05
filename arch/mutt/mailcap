@@ -1,0 +1,15 @@
+# Images
+image/jpg;		feh %s
+image/jpeg;		feh %s
+image/pjpeg;	feh %s
+image/png;		feh %s
+image/gif;		feh %s
+
+# PDFs
+application/pdf; zathura %s
+
+# HTML
+text/html; lynx %s
+
+# Plain Text
+text/plain; vim %s 
