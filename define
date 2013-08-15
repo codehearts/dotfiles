@@ -8,7 +8,7 @@
 
 # Use an optional second parameter as the dictionary name
 if [[ -z "$2" ]]; then
-	database=wn
+	database=gcide
 else
 	database=$2
 fi
