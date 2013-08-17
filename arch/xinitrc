@@ -26,5 +26,11 @@ echo 'export XAUTHORITY' >> $HOME/.Xdbus
 # Get notifications for Google Calendar
 python2 $HOME/python/gcalert/gcalert.py &
 
+# Compositor
+compton &
+
+# Window manager
+xmonad &
+
 # Start XFCE
 startxfce4
