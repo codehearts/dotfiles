@@ -1,0 +1,138 @@
+# Nate Hart's conkyrc
+#
+# If you decide to use this for yourself, you'll want to replace KROC with
+# an airport near you to get weather for your area.
+# You may also want to change the maildir in ~/.conky/get_unread_mail_count.py
+#
+# You can change the background color by changing own_window_colour below.
+
+alignment tr
+background yes
+border_width 0
+border_inner_margin 0
+border_outer_margin 0
+cpu_avg_samples 1
+default_color ffffff
+default_outline_color black
+default_shade_color black
+double_buffer yes
+draw_borders no
+draw_graph_borders no
+draw_outline no
+draw_shades no
+use_xft yes
+xftfont Avenir Next:size=10
+gap_x 30
+gap_y 30
+minimum_size 720 450
+maximum_width 720
+
+no_buffers yes
+out_to_console no
+out_to_stderr no
+extra_newline no
+own_window yes
+own_window_class Conky
+own_window_type normal
+own_window_colour ff7bac
+own_window_transparent no
+own_window_argb_visual yes
+own_window_argb_value 255
+stippled_borders 0
+update_interval 1.0
+use_spacer none
+
+color1 ffffff
+color2 333333
+
+color5 33eeff # Blue
+color6 ff3333 # Red
+color7 fcbb1a # Orange
+color8 ffff33 # Yellow
+color9 99ff00 # Green
+
+
+
+TEXT
+${color1}\
+${font Avenir Next:regular:size=96}\
+${goto  15}${time %H:%M}\
+${font Avenir Next:thin:size=72}\
+${goto 420}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ KROC temperature}°C\
+
+${font Avenir Next:regular:size=18}\
+${voffset -96}\
+${goto  15}${time %A %d, %Y}\
+${goto 420}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ KROC weather}\
+${font :size=0}
+
+# Background image
+${image ~/.conky/images/background.png -p 0,0 -s 720x225 -n}
+
+# Display a different wifi icon depending on the connection's strength
+${if_match ${wireless_link_qual_perc wlan0} ==   0} ${image ~/.conky/images/wifi-0.png -p 22,240 -s 75x75 -n} ${else}
+${if_match ${wireless_link_qual_perc wlan0} <=  25} ${image ~/.conky/images/wifi-1.png -p 22,240 -s 75x75 -n} ${else}
+${if_match ${wireless_link_qual_perc wlan0} <=  50} ${image ~/.conky/images/wifi-2.png -p 22,240 -s 75x75 -n} ${else}
+${if_match ${wireless_link_qual_perc wlan0} <=  75} ${image ~/.conky/images/wifi-3.png -p 22,240 -s 75x75 -n} ${else}
+                                                    ${image ~/.conky/images/wifi-4.png -p 22,240 -s 75x75 -n}
+${endif} ${endif} ${endif} ${endif}
+
+# Display a different volume icon depending on the channel's volume
+${if_match ${exec ~/.conky/amixer-volume.sh} ==  0} ${image ~/.conky/images/volume-0.png -p 172,240 -s 75x75 -n} ${else}
+${if_match ${exec ~/.conky/amixer-volume.sh} <= 25} ${image ~/.conky/images/volume-1.png -p 172,240 -s 75x75 -n} ${else}
+${if_match ${exec ~/.conky/amixer-volume.sh} <= 50} ${image ~/.conky/images/volume-2.png -p 172,240 -s 75x75 -n} ${else}
+${if_match ${exec ~/.conky/amixer-volume.sh} <= 75} ${image ~/.conky/images/volume-3.png -p 172,240 -s 75x75 -n} ${else}
+                                                    ${image ~/.conky/images/volume-4.png -p 172,240 -s 75x75 -n}
+${endif} ${endif} ${endif} ${endif}
+
+# Display a different mail icon if there is unread mail
+${if_match ${exec ~/.conky/get_unread_mail_count.py} == 0} ${image ~/.conky/images/no-mail.png -p 322,240 -s 75x75 -n} ${else}
+                                                           ${image ~/.conky/images/unread-mail.png -p 322,240 -s 75x75 -n}
+${endif}
+
+# Color the battery bar based on the percent left
+${if_match ${battery_percent} <=  25} ${color6} ${else}
+${if_match ${battery_percent} <=  50} ${color7} ${else}
+${if_match ${battery_percent} <=  75} ${color8} ${else}
+                                      ${color9}
+${endif} ${endif} ${endif}
+
+${goto 478}${voffset 72}${battery_bar 30,58}
+${image ~/.conky/images/battery.png -p 472,240 -s 75x75 -n}
+
+# Display a different dropbox icon if it is not running
+${if_running dropbox} ${image ~/.conky/images/dropbox-on.png -p 622,240 -s 75x75 -n} ${else}
+                      ${image ~/.conky/images/dropbox-off.png -p 622,240 -s 75x75 -n}
+${endif}
+
+${font Avenir Next:regular:size=13}${color1}${voffset 30}\
+${goto  15}${wireless_bitrate wlan0}\
+${goto 165}${exec ~/.conky/amixer-volume.sh}%\
+${goto 315}${exec ~/.conky/get_unread_mail_count.py} unread\
+${goto 465}${battery_percent}%\
+${goto 615}${if_running dropbox}connected${else}offline${endif}\
+
+
+${color2}\
+${goto  15}${mem}\
+${goto 165}${cpu}%\
+${goto 315}${upspeed wlan0}\
+${goto 465}${downspeed wlan0}\
+${goto 615}${fs_used}\
+
+${font Avenir Next:bold:size=18}\
+${goto  15}RAM\
+${goto 165}CPU\
+${goto 315}UP\
+${goto 465}DOWN\
+${goto 615}SSD\
+\
+${font :size=0}\
+${voffset 5}\
+${goto  15}${memgraph 20,90 -l}\
+${goto 165}${cpugraph 20,90 -l}\
+${goto 315}${upspeedgraph wlan0 20,90 -l}\
+${goto 465}${downspeedgraph wlan0 20,90 -l}\
+${goto 615}${voffset 17}${fs_bar 3,90}\
+# Remove an extra padding
+${voffset -200}\
