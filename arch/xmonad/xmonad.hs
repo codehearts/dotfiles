@@ -49,7 +49,7 @@ panel = monitor {
 -}
 
 -- Prepend `ModifiedLayout panel` if using the panel monitor
-myLayout = avoidStruts $ layoutHintsWithPlacement (0.5, 0.5) (Tall 1 (3/100) (1/2)) |||layoutHintsWithPlacement (0.5, 0.5) (Tall 2 (3/100) (1/2))  ||| Full
+myLayout = avoidStruts $ layoutHintsWithPlacement (0.5, 0.5) (Tall 1 (3/100) (1/2)) ||| Full
 
 myLogHook :: X()
 myLogHook = fadeInactiveLogHook fadeAmount
