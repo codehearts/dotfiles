@@ -78,12 +78,15 @@ ${if_match ${wireless_link_qual_perc wlan0} <=  75} ${image ~/.conky/images/wifi
 ${endif} ${endif} ${endif} ${endif}
 
 # Display a different volume icon depending on the channel's volume
-${if_match ${exec ~/.conky/amixer-volume.sh} ==  0} ${image ~/.conky/images/volume-0.png -p 172,240 -s 75x75 -n} ${else}
-${if_match ${exec ~/.conky/amixer-volume.sh} <= 25} ${image ~/.conky/images/volume-1.png -p 172,240 -s 75x75 -n} ${else}
-${if_match ${exec ~/.conky/amixer-volume.sh} <= 50} ${image ~/.conky/images/volume-2.png -p 172,240 -s 75x75 -n} ${else}
-${if_match ${exec ~/.conky/amixer-volume.sh} <= 75} ${image ~/.conky/images/volume-3.png -p 172,240 -s 75x75 -n} ${else}
-                                                    ${image ~/.conky/images/volume-4.png -p 172,240 -s 75x75 -n}
-${endif} ${endif} ${endif} ${endif}
+${if_match ${exec ~/.conky/amixer-muted.sh} ==  1}
+	${image ~/.conky/images/volume-0.png -p 172,240 -s 75x75 -n}
+${else}
+	${if_match ${exec ~/.conky/amixer-volume.sh} <= 25} ${image ~/.conky/images/volume-1.png -p 172,240 -s 75x75 -n} ${else}
+	${if_match ${exec ~/.conky/amixer-volume.sh} <= 50} ${image ~/.conky/images/volume-2.png -p 172,240 -s 75x75 -n} ${else}
+	${if_match ${exec ~/.conky/amixer-volume.sh} <= 75} ${image ~/.conky/images/volume-3.png -p 172,240 -s 75x75 -n} ${else}
+														${image ~/.conky/images/volume-4.png -p 172,240 -s 75x75 -n}
+	${endif} ${endif} ${endif}
+${endif}
 
 # Display a different mail icon if there is unread mail
 ${if_match ${exec ~/.conky/get_unread_mail_count.py} == 0} ${image ~/.conky/images/no-mail.png -p 322,240 -s 75x75 -n} ${else}
@@ -109,7 +112,7 @@ ${font Avenir Next:regular:size=13}${color1}${voffset 30}\
 ${goto  15}${wireless_bitrate wlan0}\
 ${goto 165}${exec ~/.conky/amixer-volume.sh}%\
 ${goto 315}${exec ~/.conky/get_unread_mail_count.py} unread\
-${goto 465}${battery_percent}%\
+${goto 465}${battery_time}\
 ${goto 615}${if_running dropbox}connected${else}offline${endif}\
 
 
