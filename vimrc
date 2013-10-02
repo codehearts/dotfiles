@@ -121,9 +121,6 @@ autocmd BufNewFile,BufRead *.{txt,markdown,tex} setlocal spell spelllang=en_us
 " Enable spell checking when writing email
 autocmd FileType mail setlocal spell spelllang=en_us
 
-" Use my Jot theme for markdown and tex files
-autocmd BufNewFile,BufRead *.{markdown,tex} colorscheme jot
-
 " Return to last edit position when opening files
 autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
