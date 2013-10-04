@@ -116,7 +116,10 @@ set guioptions-=m
 set guioptions-=T
 
 " Enable spell checking for text, markdown, and latex files by default
-autocmd BufNewFile,BufRead *.{txt,markdown,tex} setlocal spell spelllang=en_us
+autocmd BufNew,BufNewFile,BufRead *.{txt,markdown,md,tex} setlocal spell spelllang=en_us
+
+" Open .md files as Markdown
+autocmd BufNew,BufNewFile,BufRead *.{md} setlocal ft=markdown
 
 " Enable spell checking when writing email
 autocmd FileType mail setlocal spell spelllang=en_us
