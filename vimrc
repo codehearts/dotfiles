@@ -17,7 +17,7 @@ syntax enable
 
 if has("macunix")
 	" Load Powerline
-	set rtp+=/Users/Nate/Library/Python/2.7/lib/python/site-packages/powerline/bindings/vim
+	set rtp+=~/Library/Python/2.7/lib/python/site-packages/powerline/bindings/vim
 
 	" Mac settings
 	colorscheme monokai
