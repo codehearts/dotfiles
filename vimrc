@@ -7,6 +7,7 @@ call pathogen#infect()
 " Settings for Powerline
 set laststatus=2
 set nocompatible
+set backspace=indent,eol,start " Fixes potential backspace issues
 set noshowmode " Hide the default mode text
 
 filetype on
