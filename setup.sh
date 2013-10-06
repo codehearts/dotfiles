@@ -31,9 +31,16 @@ while test $# -gt 0; do
 	esac
 done
 
+echo "Symlinking git files"
 ln -s $PWD/gitignore ~/.gitignore
+
+echo "Symlinking vim files"
 ln -s $PWD/vimrc ~/.vimrc
 ln -s $PWD/vim/bundle ~/.vim/bundle
 ln -s $PWD/vim/color ~/.vim/color
+
+echo "Setting up vim plugins"
+git submodule init
+git submodule update
 
 # TODO Arch system symlinks
