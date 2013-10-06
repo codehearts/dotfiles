@@ -37,7 +37,7 @@ ln -s $PWD/gitignore ~/.gitignore
 echo "Symlinking vim files"
 ln -s $PWD/vimrc ~/.vimrc
 ln -s $PWD/vim/bundle ~/.vim/bundle
-ln -s $PWD/vim/color ~/.vim/color
+ln -s $PWD/vim/color ~/.vim/colors
 
 echo "Setting up vim plugins"
 git submodule init
