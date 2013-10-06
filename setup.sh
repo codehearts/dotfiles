@@ -35,3 +35,5 @@ ln -s $PWD/gitignore ~/.gitignore
 ln -s $PWD/vimrc ~/.vimrc
 ln -s $PWD/vim/bundle ~/vim/bundle
 ln -s $PWD/vim/color ~/vim/color
+
+# TODO Arch system symlinks
