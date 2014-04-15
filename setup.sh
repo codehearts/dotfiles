@@ -36,6 +36,7 @@ ln -s $PWD/gitignore ~/.gitignore
 
 echo "Symlinking vim files"
 ln -s $PWD/vimrc ~/.vimrc
+# TODO Create ~/.vim/ if it does not exist
 ln -s $PWD/vim/bundle ~/.vim/bundle
 ln -s $PWD/vim/color ~/.vim/colors
 
