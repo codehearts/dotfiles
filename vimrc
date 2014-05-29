@@ -29,7 +29,7 @@ if has("macunix")
 else
 	" Load Powerline
 	set rtp+=/usr/lib/python2.7/site-packages/powerline/bindings/vim
-
+	
 	" Linux settings
 	colorscheme molokai
 	set guifont=Menlo\ for\ Powerline\ 11
