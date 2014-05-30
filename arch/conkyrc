@@ -100,7 +100,7 @@ ${if_match ${battery_percent} <=  75} ${color8} ${else}
                                       ${color9}
 ${endif} ${endif} ${endif}
 
-${goto 478}${voffset 72}${battery_bar 30,58}
+${goto 478}${voffset 66}${battery_bar 30,58}
 ${image ~/.conky/images/battery.png -p 472,240 -s 75x75 -n}
 
 # Display a different dropbox icon if it is not running
