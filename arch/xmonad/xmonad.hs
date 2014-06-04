@@ -6,6 +6,7 @@ import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.LayoutHints
+import XMonad.Layout.Spacing
 -- Used for xmonad monitors
 --import XMonad.Layout.LayoutModifier
 --import XMonad.Layout.Monitor
@@ -49,7 +50,7 @@ panel = monitor {
 -}
 
 -- Prepend `ModifiedLayout panel` if using the panel monitor
-myLayout = avoidStruts $ layoutHintsWithPlacement (0.5, 0.5) (Tall 1 (3/100) (1/2)) ||| Full
+myLayout = spacing 5 $ avoidStruts $ layoutHintsWithPlacement (0.5, 0.5) (Tall 1 (3/100) (1/2)) ||| Full
 
 myLogHook :: X()
 myLogHook = fadeInactiveLogHook fadeAmount
