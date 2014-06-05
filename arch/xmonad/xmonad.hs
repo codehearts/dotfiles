@@ -50,11 +50,11 @@ panel = monitor {
 -}
 
 -- Prepend `ModifiedLayout panel` if using the panel monitor
-myLayout = spacing 5 $ avoidStruts $ layoutHintsWithPlacement (0.5, 0.5) (Tall 1 (3/100) (1/2)) ||| Full
+myLayout = spacing 10 $ avoidStruts $ layoutHintsWithPlacement (0.5, 0.5) (Tall 1 (3/100) (1/2)) ||| Full
 
 myLogHook :: X()
 myLogHook = fadeInactiveLogHook fadeAmount
-	where fadeAmount = 0.8
+	where fadeAmount = 0.7
 
 myManageHook = composeAll
 	[ className =? "Xfce4-notifyd" --> doIgnore
