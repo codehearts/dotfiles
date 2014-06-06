@@ -93,13 +93,14 @@ infobox () {
 }
 
 cmd=(dialog --separate-output --checklist "Dotfiles to link into place:" 22 76 16)
-# TODO Add ncmpcpp, mutt, msmtp, offlineimap
-GIT=10;VIM=20;TMUX=30;MPD=40;URLVIEW=80;VIMPERATOR=90
+# TODO Add mutt, msmtp, offlineimap
+GIT=10;VIM=20;TMUX=30;MPD=40;NCMPCPP=50;URLVIEW=80;VIMPERATOR=90
 options=(
 	$GIT        "Git"        on
 	$VIM        "Vim"        on
 	$TMUX       "tmux"       off
 	$MPD        "mpd"        off
+	$NCMPCPP    "ncmpcpp"    off
 	$URLVIEW    "urlview"    off
 	$VIMPERATOR "Vimperator" off
 )
@@ -150,6 +151,16 @@ for choice in $choices; do
 		declare -A mpd_files
 		mpd_files['mpd.conf']='.mpd/mpd.conf'
 		set_home_files_from_array mpd_files
+		;;
+	$NCMPCPP)
+		infobox "Linking ncmpcpp files"
+
+		ensure_dir_exists ~/.ncmpcpp
+
+		declare -A ncmpcpp_files
+		ncmpcpp_files['ncmpcpp/config']='.ncmpcpp/config'
+		ncmpcpp_files['ncmpcpp/keys']='.ncmpcpp/keys'
+		set_home_files_from_array ncmpcpp_files
 		;;
 	$URLVIEW)
 		infobox "Linking urlview files"
