@@ -31,6 +31,14 @@ while test $# -gt 0; do
 	esac
 done
 
+# Ensures that the given directory exists
+# $1: The path to the directory
+ensure_dir_exists () {
+	if [[ ! -d "$1" ]]; then
+		mkdir -p "$1"
+	fi
+}
+
 # Moves a collection of iles onto the system in the user's home directory using symlinks.
 # $1: An associative array in the form array[$source] = $dest
 set_home_files_from_array () {
@@ -85,12 +93,13 @@ infobox () {
 }
 
 cmd=(dialog --separate-output --checklist "Dotfiles to link into place:" 22 76 16)
-# TODO Add mpd, ncmpcpp, mutt, msmtp, offlineimap
-GIT=10;VIM=20;TMUX=30;URLVIEW=80;VIMPERATOR=90
+# TODO Add ncmpcpp, mutt, msmtp, offlineimap
+GIT=10;VIM=20;TMUX=30;MPD=40;URLVIEW=80;VIMPERATOR=90
 options=(
 	$GIT        "Git"        on
 	$VIM        "Vim"        on
 	$TMUX       "tmux"       off
+	$MPD        "mpd"        off
 	$URLVIEW    "urlview"    off
 	$VIMPERATOR "Vimperator" off
 )
@@ -116,10 +125,7 @@ for choice in $choices; do
 	$VIM)
 		infobox "Linking Vim files"
 
-		# Ensure ~/.vim exists
-		if [[ ! -d ~/.vim ]]; then
-			mkdir ~/.vim
-		fi
+		ensure_dir_exists ~/.vim
 
 		declare -A vim_files
 		vim_files['vimrc']='.vimrc'
@@ -134,6 +140,17 @@ for choice in $choices; do
 		tmux_files['tmux.conf']='.tmux.conf'
 		set_home_files_from_array tmux_files
 		;;
+	$MPD)
+		infobox "Linking mpd files"
+
+		ensure_dir_exists ~/.mpd/playlists
+		ensure_dir_exists ~/.mpd/tmp
+		touch ~/.mpd/{database,log,pid,state}
+
+		declare -A mpd_files
+		mpd_files['mpdconf']='.mpd/mpd.conf'
+		set_home_files_from_array mpd_files
+		;;
 	$URLVIEW)
 		infobox "Linking urlview files"
 
@@ -144,10 +161,7 @@ for choice in $choices; do
 	$VIMPERATOR)
 		infobox "Linking Vimperator files"
 
-		# Ensure ~/.vimperator exists
-		if [[ ! -d ~/.vimperator ]]; then
-			mkdir ~/.vimperator
-		fi
+		ensure_dir_exists ~/.vimperator
 
 		declare -A vimperator_files
 		vimperator_files['vimperatorrc']='.vimperatorrc'
