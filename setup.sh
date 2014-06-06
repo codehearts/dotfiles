@@ -72,7 +72,9 @@ set_file () {
 	fi
 
 	if [ $dontmove -eq 0 ]; then
-		ln -s "$src" "$dest"
+		# Using -f because the file is already known to not exist,
+		# even if a symlink exists in that location to a nonexistent file
+		ln -sf "$src" "$dest"
 	fi
 }
 
@@ -83,31 +85,35 @@ infobox () {
 }
 
 cmd=(dialog --separate-output --checklist "Dotfiles to link into place:" 22 76 16)
+# TODO Add mpd, ncmpcpp, mutt, msmtp, offlineimap
+GIT=10;VIM=20;TMUX=30;URLVIEW=80;VIMPERATOR=90
 options=(
-	1 "Git" on
-	2 "Vim" on
+	$GIT        "Git"        on
+	$VIM        "Vim"        on
+	$TMUX       "tmux"       off
+	$URLVIEW    "urlview"    off
+	$VIMPERATOR "Vimperator" off
 )
+# TODO Linux-specific settings with compton, tint2, netctl, conky, xinitrc, xmonad
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-clear
 
 # If the user cancelled, exit
 if [[ -z "$choices" ]]; then
+	clear
 	exit 0
 fi
 
 # Process user choices
 for choice in $choices; do
 	case $choice in
-	1) # Git
+	$GIT)
 		infobox "Linking Git files"
 
 		declare -A git_files
 		git_files['gitignore']='.gitignore'
 		set_home_files_from_array git_files
-
-		clear
 		;;
-	2) # Vim
+	$VIM)
 		infobox "Linking Vim files"
 
 		# Ensure ~/.vim exists
@@ -120,8 +126,33 @@ for choice in $choices; do
 		vim_files['vim/bundle']='.vim/bundle'
 		vim_files['vim/colors']='.vim/colors'
 		set_home_files_from_array vim_files
+		;;
+	$TMUX)
+		infobox "Linking tmux files"
 
-		clear
+		declare -A tmux_files
+		tmux_files['tmux.conf']='.tmux.conf'
+		set_home_files_from_array tmux_files
+		;;
+	$URLVIEW)
+		infobox "Linking urlview files"
+
+		declare -A urlview_files
+		urlview_files['urlview']='.urlview'
+		set_home_files_from_array urlview_files
+		;;
+	$VIMPERATOR)
+		infobox "Linking Vimperator files"
+
+		# Ensure ~/.vimperator exists
+		if [[ ! -d ~/.vimperator ]]; then
+			mkdir ~/.vimperator
+		fi
+
+		declare -A vimperator_files
+		vimperator_files['vimperatorrc']='.vimperatorrc'
+		vimperator_files['vimperator/colors']='.vimperator/colors'
+		set_home_files_from_array vimperator_files
 		;;
 	esac
 done
