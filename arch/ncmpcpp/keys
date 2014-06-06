@@ -24,13 +24,13 @@
 #
 #key_down_artist = '}'
 #
-# Allow scrolling up with ctrl+b
 #key_page_up = 339
-key_page_up = 339 2
+# Allow scrolling up with ctrl+u
+key_page_up = 339 21
 #
 #key_page_down = 338
-# Allow scrolling down with ctrl+f
-key_page_down = 338 6
+# Allow scrolling down with ctrl+d
+key_page_down = 338 4
 #
 #key_home = 262
 #

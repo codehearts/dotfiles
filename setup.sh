@@ -148,7 +148,7 @@ for choice in $choices; do
 		touch ~/.mpd/{database,log,pid,state}
 
 		declare -A mpd_files
-		mpd_files['mpdconf']='.mpd/mpd.conf'
+		mpd_files['mpd.conf']='.mpd/mpd.conf'
 		set_home_files_from_array mpd_files
 		;;
 	$URLVIEW)
