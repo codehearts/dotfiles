@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SYSTEM="none"
+read DIALOG <<< "$(which whiptail dialog 2> /dev/null)"
 
 while test $# -gt 0; do
 	case "$1" in
@@ -69,7 +70,7 @@ set_file () {
 	
 	# If the destination file already exists
 	if [ -e "$dest" ]; then
-		dialog --yesno "$dest already exists on this system. Overwrite it?" 8 76
+		$DIALOG --yesno "$dest already exists on this system. Overwrite it?" 8 76
 		choice=$?
 
 		if [ $choice -eq 0 ]; then
@@ -89,10 +90,10 @@ set_file () {
 # Displays an infobox with $1 as the contents.
 # $1: The contents of the infobox
 infobox () {
-	dialog --infobox "$1" 22 76
+	$DIALOG --infobox "$1" 22 76
 }
 
-cmd=(dialog --separate-output --checklist "Dotfiles to link into place:" 22 76 16)
+cmd=($DIALOG --separate-output --checklist "Dotfiles to link into place:" 22 76 16)
 # TODO Add mutt, msmtp, offlineimap
 GIT=10;VIM=20;TMUX=30;MPD=40;NCMPCPP=50;URLVIEW=80;VIMPERATOR=90
 options=(
