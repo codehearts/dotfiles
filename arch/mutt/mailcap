@@ -9,7 +9,7 @@ image/gif;		feh %s
 application/pdf; zathura %s
 
 # HTML
-text/html; lynx %s
+text/html; firefox %s
 
 # Plain Text
 text/plain; vim %s 
