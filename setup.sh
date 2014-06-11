@@ -106,10 +106,11 @@ infobox () {
 
 cmd=($DIALOG --separate-output --checklist "Dotfiles to link into place:" 22 76 16)
 # TODO Add msmtp, offlineimap
-GIT=10;VIM=20;TMUX=30;MPD=40;NCMPCPP=50;MUTT_THEME=60;MUTT_SAMPLE=65;URLVIEW=80;VIMPERATOR=90
+GIT=10;VIM=20;SCREEN=30;TMUX=40;MPD=50;NCMPCPP=60;MUTT_THEME=70;MUTT_SAMPLE=80;URLVIEW=100;VIMPERATOR=110
 options=(
 	$GIT         "Git"                 on
 	$VIM         "Vim"                 on
+	$SCREEN      "screen"              off
 	$TMUX        "tmux"                off
 	$MPD         "mpd"                 off
 	$NCMPCPP     "ncmpcpp"             off
@@ -154,6 +155,13 @@ for choice in $choices; do
 		declare -A tmux_files
 		tmux_files['tmux.conf']='.tmux.conf'
 		set_home_files_from_array tmux_files
+		;;
+	$SCREEN)
+		infobox "Linking screen files"
+
+		declare -A screen_files
+		screen_files['screenrc']='.screenrc'
+		set_home_files_from_array screen_files
 		;;
 	$MPD)
 		infobox "Linking mpd files"
