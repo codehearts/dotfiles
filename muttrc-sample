@@ -131,4 +131,4 @@ set mail_check		= 0 # Minimum time between scans
 set sendmail_wait	= 0 # Wait for msmtp to finish
 
 # Colors ----------------------------
-source ~/.mutt/solarized-dark
+source ~/.mutt/loveless-theme
