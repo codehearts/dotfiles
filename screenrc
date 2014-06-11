@@ -1,0 +1,13 @@
+startup_message off
+nethack on
+
+# Enable 256 color support
+term screen-256color-bce
+# Enable bold
+attrcolor b ".I"
+# Erase background with current bg color
+defbce "on"
+
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%w"
