@@ -34,6 +34,7 @@ main = do xmonad $ ewmh xfceConfig
 		-- Replace `xfce4-panel` with `tint2` if using tint2
 		,(( mod4Mask, xK_x), spawn "sh -c 'if pgrep xfce4-panel; then pkill xfce4-panel; else xfce4-panel --disable-wm-check; fi'")
 		,(( mod4Mask, xK_s), spawn "sh -c 'if pgrep conky; then pkill conky; else conky; fi'")
+		,(( mod4Mask, xK_g), spawn "gvbam")
 		-- Refreshes monitors, useful if using the panel monitor
 		--,(( mod4Mask, xK_u), broadcastMessage ToggleMonitor >> refresh)
 		]
@@ -58,6 +59,7 @@ myLogHook = fadeInactiveLogHook fadeAmount
 
 myManageHook = composeAll
 	[ className =? "Xfce4-notifyd" --> doIgnore
+	, className =? "Gvbam" --> doFloat
 	, className =? "Conky" --> doIgnore
 	, className =? "Tint2" --> doHideIgnore
 	, className =? "Xfdesktop" --> doIgnore
