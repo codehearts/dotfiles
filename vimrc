@@ -2,19 +2,16 @@
 
 " Load pathogen
 runtime bundle/pathogen/autoload/pathogen.vim
-call pathogen#infect()
+execute pathogen#infect()
+
+filetype plugin indent on
+syntax enable
 
 " Settings for Powerline
 set laststatus=2
 set nocompatible
 set backspace=indent,eol,start " Fixes potential backspace issues
 set noshowmode " Hide the default mode text
-
-filetype on
-filetype plugin on
-filetype indent on
-
-syntax enable
 
 if has("macunix")
 	" Load Powerline

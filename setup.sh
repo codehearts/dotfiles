@@ -147,6 +147,7 @@ for choice in $choices; do
 		vim_files['vimrc']='.vimrc'
 		vim_files['vim/bundle']='.vim/bundle'
 		vim_files['vim/colors']='.vim/colors'
+		vim_files['vim/after']='.vim/after'
 		set_home_files_from_array vim_files
 		;;
 	$TMUX)
