@@ -230,6 +230,7 @@ done
 infobox "Initializing Git submodules"
 git submodule init
 git submodule update
+git submodule foreach git pull origin master
 clear
 
 exit 0
