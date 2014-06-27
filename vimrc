@@ -25,7 +25,11 @@ if has("macunix")
 	let g:LatexBox_viewer="open"
 else
 	" Load Powerline
-	set rtp+=/usr/lib/python2.7/site-packages/powerline/bindings/vim
+	if filereadable("/usr/lib/python2.7/site-packages/powerline")
+		set rtp+=/usr/lib/python2.7/site-packages/powerline/bindings/vim
+	else
+		set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+	endif
 	
 	" Linux settings
 	colorscheme molokai
