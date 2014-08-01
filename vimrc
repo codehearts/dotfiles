@@ -189,6 +189,9 @@ let g:syntastic_warning_symbol='⚠'
 let g:session_autoload='no'
 let g:session_autosave='no'
 
+" Compile LaTeX documents asyncronously
+let g:LatexBox_latexmk_async=1
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Helper Functions
