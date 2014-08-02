@@ -1,0 +1,67 @@
+#!/bin/bash
+
+INITIALIZE=0
+DATE=`date "+%Y-%m-%d_%H:%M:%S"`
+EXCLUDE=(--exclude={/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found,/var/lib/pacman/sync/*,/home/*/.cache/*,/home/*/Mail/,/home/*/Music/,/home/*/Dropbox/})
+
+# Parse parameters
+while test $# -gt 0; do
+	case "$1" in
+	  --init)
+		  INITIALIZE=1
+		  shift
+		  ;;
+	  *)
+		  break
+		  ;;
+	esac
+done
+
+print_usage() {
+    echo -e "Usage: $0 [--init] destination\n" >&2
+	echo -e "Backs up the entire filesystem (minus a few directories) to the destination directory.\n" >&2
+	echo -e "Options:"
+	echo -e "--init\t\tShould be specified on the first run to create the initial backup. All other backups will be snapshots based on the initial backup." >&2
+}
+
+if [ $# -lt 1 ]; then 
+	print_usage
+    exit 1
+elif [ $# -gt 1 ]; then
+    echo -e "Too many arguments.\n" >&2
+	print_usage
+    exit 1
+elif [ ! -d "$1" ]; then
+   echo "Invalid path: $1" >&2
+   exit 1
+elif [ ! -w "$1" ]; then
+   echo "Directory not writable: $1" >&2
+   exit 1
+fi
+
+case "$1" in
+  "/mnt") ;;
+  "/mnt/"*) ;;
+  "/media") ;;
+  "/media/"*) ;;
+  "/run/media") ;;
+  "/run/media/"*) ;;
+  *) echo "Destination not allowed." >&2 
+     exit 1 
+     ;;
+esac
+
+if [[ $INITIALIZE ]]; then
+	echo "Creating initial backup..."
+	START=$(date +%s)
+	mkdir -p $1/current
+	rsync -aAXvP /* $1/current "${EXCLUDE[@]}"
+	FINISH=$(date +%s)
+	echo "Total time: $(( ($FINISH-$START) / 60 )) minutes, $(( ($FINISH-$START) % 60 )) seconds"
+fi
+
+echo "Backing up the latest changes..."
+START=$(date +%s)
+rsync -aPq --link-dest=$1/current /* "$1/$DATE" "${EXCLUDE[@]}"
+FINISH=$(date +%s)
+echo "Total time: $(( ($FINISH-$START) / 60 )) minutes, $(( ($FINISH-$START) % 60 )) seconds"
