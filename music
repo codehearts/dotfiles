@@ -3,5 +3,7 @@
 # Starts mpd, opens ncmpcpp, and kills mpd when finished
 
 mpd
+mpdnotify start
 ncmpcpp
+mpdnotify stop
 mpd --kill
