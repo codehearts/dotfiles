@@ -119,7 +119,7 @@ options=(
 	$URLVIEW     "urlview"             off
 	$VIMPERATOR  "Vimperator"          off
 )
-# TODO Linux-specific settings with compton, tint2, netctl, conky, xinitrc, xmonad, bash-completion on Arch
+# TODO Linux-specific settings with compton, tint2, netctl, conky, xinitrc, xmonad, mpdnotify, bash-completion on Arch
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
 # If the user cancelled, exit
