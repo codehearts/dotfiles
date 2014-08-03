@@ -33,8 +33,7 @@ main = do xmonad $ ewmh xfceConfig
 		,(( mod4Mask, xK_d), spawn "xfce4-terminal --drop-down")
 		-- Replace `xfce4-panel` with `tint2` if using tint2
 		,(( mod4Mask, xK_x), spawn "sh -c 'if pgrep xfce4-panel; then pkill xfce4-panel; else xfce4-panel --disable-wm-check; fi'")
-		,(( mod4Mask, xK_s), spawn "sh -c 'if pgrep conky; then pkill conky; else conky; fi'")
-		,(( mod4Mask, xK_g), spawn "gvbam")
+		,(( mod4Mask, xK_s), spawn "sh -c 'if pgrep conky; then pkill conky; else ~/.conky/conkystart.sh; fi'")
 		-- Refreshes monitors, useful if using the panel monitor
 		--,(( mod4Mask, xK_u), broadcastMessage ToggleMonitor >> refresh)
 		]
