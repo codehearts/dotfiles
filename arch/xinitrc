@@ -24,7 +24,7 @@ echo 'export XAUTHORITY' >> $HOME/.Xdbus
 # -----
 
 # Get notifications for Google Calendar
-python2 $HOME/python/gcalert/gcalert.py &
+gcalert --icon=calendar --quiet &
 
 # Compositor
 compton &
