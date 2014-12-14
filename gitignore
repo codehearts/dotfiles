@@ -1,4 +1,5 @@
 *.py[cod]
+*.o
 .sass-cache
 .DS_Store
 .tm_properties
