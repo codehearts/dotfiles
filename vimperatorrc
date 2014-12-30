@@ -1,5 +1,5 @@
 :set toolbars=tabs
-:colorscheme bubblegum
+:colorscheme sweets-nejsan
 
 " Use ctrl-a to select all in insert mode instead of moving to the beginning of the line
 :inoremap <C-a> <Ins><C-a><Ins>

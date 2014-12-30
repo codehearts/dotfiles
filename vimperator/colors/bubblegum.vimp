@@ -1,6 +1,0 @@
-" ==Vimperator_Color_Scheme==
-" name: bubblegum
-hi Hint			font-size: 16px; font-weight: bold; color:#fff; background-color:rgba(255,124,214,0.625); text-shadow: 0 0 3px rgba(0,0,0,0.25); border-radius:100px; width: 2em; height: 2em; line-height: 2em; text-align: center; vertical-align: middle; margin-top: -0.5em; margin-left: -1.5em;
-hi HintActive	background-color: rgba(255,124,214,0.625); color: #fff;
-hi HintElem		background-color: rgba(255,124,214,0.625); color: #fff;
-hi Title		background-color: rgb(255,124,214); color: #fff; font-weight: bold;
