@@ -107,9 +107,9 @@ handle_event() {
 			mogrify -resize 128x128! $tmpCover
 			#mogrify -resize 65x65! $tmpCover
 			#convert $baseCover "$tmpCover" -geometry +4+3 -composite $topCover -geometry +0+0 -composite "$tmpCover"
-			mpdAlbum=$(echo "$mpdAlbum" | sed -e 's/&/&amp;/')
-			mpdTitle=$(echo "$mpdTitle" | sed -e 's/&/&amp;/')
-			mpdArtist=$(echo "$mpdArtist" | sed -e 's/&/&amp;/')
+			#mpdAlbum=$(echo "$mpdAlbum" | sed -e 's/&/&amp;/')
+			#mpdTitle=$(echo "$mpdTitle" | sed -e 's/&/&amp;/')
+			#mpdArtist=$(echo "$mpdArtist" | sed -e 's/&/&amp;/')
 			[[ "${#mpdArtist}" -gt "25" ]] && mpdArtist=$(echo "${mpdArtist:0:25}...")
 			[[ "${#mpdTitle}" -gt "25" ]] && mpdTitle=$(echo "${mpdTitle:0:25}...")
 			[[ "${#mpdAlbum}" -gt "25" ]] && mpdAlbum=$(echo "${mpdAlbum:0:25}...")

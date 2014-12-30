@@ -31,9 +31,10 @@ main = do xmonad $ ewmh xfceConfig
 		,(( mod4Mask, xK_c), spawn "xfce4-terminal -e irc")
 		,(( mod4Mask, xK_z), spawn "zathura --fork")
 		,(( mod4Mask, xK_d), spawn "xfce4-terminal --drop-down")
+		,(( mod4Mask, xK_p), spawn "xfce4-popup-whiskermenu")
 		-- Replace `xfce4-panel` with `tint2` if using tint2
 		,(( mod4Mask, xK_x), spawn "sh -c 'if pgrep xfce4-panel; then pkill xfce4-panel; else xfce4-panel --disable-wm-check; fi'")
-		,(( mod4Mask, xK_s), spawn "sh -c 'if pgrep conky; then pkill conky; else ~/.conky/conkystart.sh; fi'")
+		--,(( mod4Mask, xK_s), spawn "sh -c 'if pgrep conky; then pkill conky; else ~/.conky/conkystart.sh; fi'")
 		-- Refreshes monitors, useful if using the panel monitor
 		--,(( mod4Mask, xK_u), broadcastMessage ToggleMonitor >> refresh)
 		]
@@ -59,7 +60,9 @@ myLogHook = fadeInactiveLogHook fadeAmount
 myManageHook = composeAll
 	[ className =? "Xfce4-notifyd" --> doIgnore
 	, className =? "Gvbam" --> doFloat
+	, className =? "Skype" --> doFloat
 	, className =? "Conky" --> doIgnore
 	, className =? "Tint2" --> doHideIgnore
 	, className =? "Xfdesktop" --> doIgnore
+	, className =? "Wrapper" --> doFloat
 	]

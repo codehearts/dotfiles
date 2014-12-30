@@ -324,7 +324,7 @@ statusbar_visibility = "yes"
 #
 #header_text_scrolling = "yes"
 #
-fancy_scrolling = "yes"
+#fancy_scrolling = "yes"
 #
 #cyclic_scrolling = "no"
 #
@@ -350,7 +350,7 @@ fancy_scrolling = "yes"
 #
 #show_hidden_files_in_local_browser = "no"
 #
-display_screens_numbers_on_start = "yes"
+#display_screens_numbers_on_start = "yes"
 #
 ##
 ## How shall key_screen_switcher work?
