@@ -1,4 +1,0 @@
-# Replace <USER> with your Arch user
-
-ExecUpPost="su -c 'DISPLAY=:0 /usr/bin/dropboxd &' <USER> || true"
-ExecDownPre="killall dropbox || true"
