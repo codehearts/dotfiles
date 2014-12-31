@@ -8,10 +8,10 @@ hi CmdLine     color: White; background: #333; font-weight: normal; font-size: 1
 
 hi CompItem>*           font-family: monospace; font-size: 14pt; font-weight: normal;
 hi CompItem[selected]>* color: White; background: DeepPink;
-hi CompTitle            color: DeepPink; background: #222; font-size: 14pt; font-weight: bold;
-hi CompTitle>*          color: DeepPink; background: Black; font-weight: bold; padding: 1px 0.5ex;
 hi CompResult           color: DeepSkyBlue; background: #222;
 hi CompDesc             color: Azure; background: #222;
+hi CompTitle            color: DeepPink; background: #222; font-size: 14pt; font-weight: bold;
+hi CompTitle>*          color: DeepPink; background: Black; font-weight: bold; padding: 1px 0.5ex;
 
 hi Normal 		color: LightYellow;	background: #333; font-size: 12pt;
 hi InfoMsg		color: LightYellow;	background: #333; font-size: 12pt;
