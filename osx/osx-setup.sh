@@ -75,7 +75,7 @@ sudo scutil --set hostname "Kopparberg"
 defaults write NSGlobalDomain AppleHighlightColor -string "1.000000 0.749020 0.823529"
 
 # Jump to the spot that's clicked on the scroll bar
-defaults write NSGlobalDomain AppleScrollerPagingBehavior -bool false
+defaults write NSGlobalDomain AppleScrollerPagingBehavior -int 1
 
 # Never start the screensaver
 defaults write com.apple.screensaver idleTime 0
@@ -84,11 +84,12 @@ defaults write com.apple.screensaver idleTime 0
 defaults write NSGlobalDomain AppleICUForce24HourTime -bool true
 
 # Download and set my wallpaper
-WALLPAPER=dieter-rams-vitsoe-606.jpg
-mkdir -p ~/Pictures/Wallpapers
-curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/Pictures/Wallpapers/$WALLPAPER -O ~/Pictures/Wallpapers/$WALLPAPER
+WALLPAPER="dieter-rams-vitsoe-606.jpg"
+WALLPAPER_DIR="${HOME}/Pictures/Wallpapers"
+mkdir -p $WALLPAPER_DIR
+curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/pictures/wallpapers/$WALLPAPER -o $WALLPAPER_DIR/$WALLPAPER
 rm -rf ~/Library/Application Support/Dock/desktoppicture.db
-sudo ln -sf ~/Pictures/Wallpapers/$WALLPAPER /System/Library/CoreServices/DefaultDesktop.jpg
+sudo ln -sf $WALLPAPER_DIR/$WALLPAPER /System/Library/CoreServices/DefaultDesktop.jpg
 
 # Enable Japanese language input (Kotoeri)
 # TODO Confirm that this works as expected
@@ -157,7 +158,7 @@ defaults write com.apple.terminal StringEncodings -array 4
 # Use my own custom theme
 TERM_PROFILE='inuBASHiri Dark Plain';
 CURRENT_PROFILE="$(defaults read com.apple.terminal 'Default Window Settings')";
-TMP_DIR='~/osx-setup-tmp';
+TMP_DIR='${HOME}/osx-setup-tmp';
 if [ "${CURRENT_PROFILE}" != "${TERM_PROFILE}" ]; then
 	mkdir -p $TMP_DIR
 	curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Dark%20Plain.terminal -o "${TMP_DIR}/${TERM_PROFILE}.terminal"
@@ -210,6 +211,4 @@ open -a "Software Update"
 
 echo "Done"
 echo "\nEnjoy the system!"
-echo "\nA reboot will occur in 5 seconds to apply these changes"
-sleep 5
-sudo reboot
+echo "\nYou should reboot to apply these changes"
