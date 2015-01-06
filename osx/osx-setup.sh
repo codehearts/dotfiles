@@ -45,18 +45,20 @@ sudo brew cask install \
   espresso \
   firefox \
   google-chrome \
-  gopanda \
   macvim \
   omnigraffle \
   opera \
   paparazzi \
-  sequel-pro \
   skype \
   steam \
   supercollider \
   textmate \
   vlc \
   xmarks-safari
+
+# Things I'lol consider installing later
+# gopanda
+# sequel-pro
 
 
 
