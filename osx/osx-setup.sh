@@ -205,3 +205,6 @@ open -a "Software Update"
 
 echo "Done
 echo "\nEnjoy the system!"
+echo "\nA reboot will occur in 5 seconds to apply these changes"
+sleep 5
+sudo reboot
