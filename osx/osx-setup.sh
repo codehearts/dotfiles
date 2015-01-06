@@ -39,7 +39,7 @@ brew install \
   dialog \
   git
 
-brew cask install \
+sudo brew cask install \
   anki \
   dropbox \
   espresso \
@@ -65,6 +65,9 @@ echo "Done"
 # System Preferences
 ########################################
 echo "Configuring system preferences..."
+
+# Set the computer's name and hostname
+sudo scutil --set hostname "Kopparberg"
 
 # Set highlight color to pink
 defaults write NSGlobalDomain AppleHighlightColor -string "1.000000 0.749020 0.823529"
@@ -203,7 +206,7 @@ echo "Opening OS X Software Update..."
 # Open the App Store's software update page to check for new updates
 open -a "Software Update"
 
-echo "Done
+echo "Done"
 echo "\nEnjoy the system!"
 echo "\nA reboot will occur in 5 seconds to apply these changes"
 sleep 5
