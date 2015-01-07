@@ -21,11 +21,10 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 ########################################
 # Homebrew & Cask
 ########################################
-echo "Installing Homebrew and Cask..."
+echo "Installing Homebrew..."
 
-# Install Homebrew for package management and Cask to install apps through Homebrew
+# Install Homebrew for package management
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew install caskroom/cask/brew-cask
 
 
 
@@ -39,27 +38,6 @@ brew install \
   dialog \
   git
 
-sudo brew cask install \
-  anki \
-  dropbox \
-  espresso \
-  firefox \
-  google-chrome \
-  macvim \
-  omnigraffle \
-  opera \
-  paparazzi \
-  skype \
-  steam \
-  supercollider \
-  textmate \
-  vlc \
-  xmarks-safari
-
-# Things I'lol consider installing later
-# gopanda
-# sequel-pro
-
 
 
 echo "Done"
@@ -69,7 +47,10 @@ echo "Done"
 echo "Configuring system preferences..."
 
 # Set the computer's name and hostname
-sudo scutil --set hostname "Kopparberg"
+NEW_HOSTNAME="Kopparberg"
+sudo scutil --set ComputerName $NEW_HOSTNAME
+sudo scutil --set LocalHostName $NEW_HOSTNAME
+sudo scutil --set HostName $NEW_HOSTNAME
 
 # Set highlight color to pink
 defaults write NSGlobalDomain AppleHighlightColor -string "1.000000 0.749020 0.823529"
@@ -82,19 +63,6 @@ defaults write com.apple.screensaver idleTime 0
 
 # Use a 24 hour clock
 defaults write NSGlobalDomain AppleICUForce24HourTime -bool true
-
-# Download and set my wallpaper
-WALLPAPER="dieter-rams-vitsoe-606.jpg"
-WALLPAPER_DIR="${HOME}/Pictures/Wallpapers"
-mkdir -p $WALLPAPER_DIR
-curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/pictures/wallpapers/$WALLPAPER -o $WALLPAPER_DIR/$WALLPAPER
-rm -rf ~/Library/Application Support/Dock/desktoppicture.db
-sudo ln -sf $WALLPAPER_DIR/$WALLPAPER /System/Library/CoreServices/DefaultDesktop.jpg
-
-# Enable Japanese language input (Kotoeri)
-# TODO Confirm that this works as expected
-defaults write NSGlobalDomain AppleLanguages -array "en" "ja"
-defaults write com.apple.inputmethod.Kotoeri JIMPrefVersionKey 1
 
 # Put the display to sleep after 8 minutes on battery
 sudo pmset -b displaysleep 8
@@ -138,9 +106,6 @@ echo "Done"
 ########################################
 echo "Configuring Safari..."
 
-# Set Safari’s home page to `about:blank` for faster loading
-defaults write com.apple.Safari HomePage -string "about:blank"
-
 # Enable the Develop menu and the Web Inspector in Safari
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 
@@ -161,13 +126,17 @@ CURRENT_PROFILE="$(defaults read com.apple.terminal 'Default Window Settings')";
 TMP_DIR='${HOME}/osx-setup-tmp';
 if [ "${CURRENT_PROFILE}" != "${TERM_PROFILE}" ]; then
 	mkdir -p $TMP_DIR
+
 	curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Dark%20Plain.terminal -o "${TMP_DIR}/${TERM_PROFILE}.terminal"
-	curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Plain.terminal -o "${TMP_DIR}/inuBASHiri Plain.terminal"
 	open "~/osx-setup-tmp/${TERM_PROFILE}.terminal";
 	sleep 1; # Wait a bit to make sure the theme is loaded
+
+	curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Plain.terminal -o "${TMP_DIR}/inuBASHiri Plain.terminal"
 	open "~/osx-setup-tmp/inuBASHiri Plain.terminal";
 	sleep 1; # Wait a bit to make sure the theme is loaded
+
 	rm -rf ~/osx-setup-tmp
+
 	defaults write com.apple.terminal 'Default Window Settings' -string "${TERM_PROFILE}";
 	defaults write com.apple.terminal 'Startup Window Settings' -string "${TERM_PROFILE}";
 fi;
