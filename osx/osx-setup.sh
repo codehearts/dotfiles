@@ -179,5 +179,5 @@ echo "Opening OS X Software Update..."
 open -a "Software Update"
 
 echo "Done"
-echo "\nEnjoy the system!"
-echo "\nYou should reboot to apply these changes"
+echo "Enjoy the system!"
+echo "You should reboot to apply these changes"
