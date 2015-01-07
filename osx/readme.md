@@ -21,4 +21,4 @@ This is just a handy list of non-App Store apps that I use. This process could b
 - [SuperCollider](http://supercollider.sourceforge.net/downloads/)
 - [TextMate](http://macromates.com/download)
 - [VLC](http://www.videolan.org/vlc/download-macosx.html)
-- [Xmarks for Safari](download.xmarks.com/download/macosx_10_6)
+- [Xmarks for Safari](http://download.xmarks.com/download/macosx_10_6)
