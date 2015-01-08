@@ -145,14 +145,14 @@ TMP_DIR="${HOME}/osx-setup-tmp";
 if [ "${CURRENT_PROFILE}" != "${TERM_PROFILE}" ]; then
 	mkdir -p $TMP_DIR
 
-	curl https://github.com/powerline/fonts/raw/master/Meslo/Meslo%20LG%20S%20Regular%20for%20Powerline.otf -o $TMP_DIR/$FONT
-	open $TMP_DIR/$FONT
+	# Install the necessary font
+	curl -L https://github.com/powerline/fonts/raw/master/Meslo/Meslo%20LG%20S%20Regular%20for%20Powerline.otf -o "${HOME}/Library/Fonts/${FONT}" &> /dev/null
 
-	curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Dark%20Plain.terminal -o "${TMP_DIR}/${TERM_PROFILE}.terminal"
+	curl -L https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Dark%20Plain.terminal -o "${TMP_DIR}/${TERM_PROFILE}.terminal" &> /dev/null
 	open "${TMP_DIR}/${TERM_PROFILE}.terminal";
 	sleep 1; # Wait a bit to make sure the theme is loaded
 
-	curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Plain.terminal -o "${TMP_DIR}/inuBASHiri Plain.terminal"
+	curl -L https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Plain.terminal -o "${TMP_DIR}/inuBASHiri Plain.terminal" &> /dev/null
 	open "${TMP_DIR}/inuBASHiri Plain.terminal";
 	sleep 1; # Wait a bit to make sure the theme is loaded
 
