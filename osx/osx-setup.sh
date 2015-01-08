@@ -35,8 +35,13 @@ echo "Done"
 echo "Installating software..."
 
 brew install \
+  bash \
   dialog \
   git
+
+# Set Homebrew's bash as the default shell
+echo /usr/local/bin/bash | sudo tee -a /etc/shells &> /dev/null
+sudo chsh -s /usr/local/bin/bash &> /dev/null
 
 
 
@@ -135,9 +140,13 @@ defaults write com.apple.terminal StringEncodings -array 4
 # Use my own custom theme
 TERM_PROFILE='inuBASHiri Dark Plain';
 CURRENT_PROFILE="$(defaults read com.apple.terminal 'Default Window Settings')";
+FONT='Meslo LG S Regular for Powerline.otf';
 TMP_DIR="${HOME}/osx-setup-tmp";
 if [ "${CURRENT_PROFILE}" != "${TERM_PROFILE}" ]; then
 	mkdir -p $TMP_DIR
+
+	curl https://github.com/powerline/fonts/raw/master/Meslo/Meslo%20LG%20S%20Regular%20for%20Powerline.otf -o $TMP_DIR/$FONT
+	open $TMP_DIR/$FONT
 
 	curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Dark%20Plain.terminal -o "${TMP_DIR}/${TERM_PROFILE}.terminal"
 	open "${TMP_DIR}/${TERM_PROFILE}.terminal";

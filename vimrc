@@ -19,7 +19,7 @@ if has("macunix")
 
 	" Mac settings
 	colorscheme monokai
-	set guifont=Menlo\ Regular\ for\ Powerline:h11
+	set guifont=Meslo\ LG\ S\ Regular\ for\ Powerline:h11
 
 	" Use open to view LaTeX output on OS X
 	let g:LatexBox_viewer="open"
