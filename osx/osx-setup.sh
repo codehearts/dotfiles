@@ -36,6 +36,7 @@ echo "Installating software..."
 
 brew install \
   bash \
+  bash-completion \
   dialog \
   git
 
@@ -187,6 +188,17 @@ echo "Configuring Messages..."
 
 # Disable automatic emoji substitution (i.e. use plain text smileys)
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticEmojiSubstitutionEnablediMessage" -bool false
+
+
+
+echo "Done"
+########################################
+# Powerline
+########################################
+echo "Installing Powerline..."
+
+sudo easy_install pip
+pip install --user powerline-status
 
 
 
