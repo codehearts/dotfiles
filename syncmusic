@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Syncs music from a remote machine running iTunes to ~/Music
+# Music which has already been copied over will not be updated.
+# $1: The name of the user on the remote machine
+# $2: The location of the remote machine
+
+rsync -auzhP --ignore-existing --exclude-from="$HOME/.music-excludes" "$1@$2":'Music/iTunes/iTunes\ Music/' "$HOME/Music/"
