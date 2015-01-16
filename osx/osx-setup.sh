@@ -37,8 +37,13 @@ echo "Installating software..."
 brew install \
   bash \
   bash-completion \
+  caskroom/cask/brew-cask \
   dialog \
   git
+
+brew cask install \
+  vagrant \
+  virtualbox
 
 # Set Homebrew's bash as the default shell
 echo /usr/local/bin/bash | sudo tee -a /etc/shells &> /dev/null
