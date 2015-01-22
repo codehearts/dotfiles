@@ -35,8 +35,19 @@ echo "Done"
 echo "Installating software..."
 
 brew install \
+  bash \
+  bash-completion \
+  caskroom/cask/brew-cask \
   dialog \
   git
+
+brew cask install \
+  vagrant \
+  virtualbox
+
+# Set Homebrew's bash as the default shell
+echo /usr/local/bin/bash | sudo tee -a /etc/shells &> /dev/null
+sudo chsh -s /usr/local/bin/bash &> /dev/null
 
 
 
@@ -76,10 +87,22 @@ defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
 # Save to disk (not to iCloud) by default
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
+# Play a feedback sound when adjusting volume
+defaults write NSGlobalDomain com.apple.sound.beep.feedback -int 1
+
 # Trackpad: enable tap to click for this user and for the login screen
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+
+# Trackpad: use four finger horizontal swipe to move between fullscreen apps
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerHorizSwipeGesture -int 0
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerHorizSwipeGesture -int 2
+
+# Trackpad: use four finger vertical swipe for mission control
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerVertSwipeGesture -int 0
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerVertSwipeGesture -int 2
+
 
 # Use scroll gesture with the Ctrl (^) modifier key to zoom
 defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
@@ -123,19 +146,23 @@ defaults write com.apple.terminal StringEncodings -array 4
 # Use my own custom theme
 TERM_PROFILE='inuBASHiri Dark Plain';
 CURRENT_PROFILE="$(defaults read com.apple.terminal 'Default Window Settings')";
-TMP_DIR='${HOME}/osx-setup-tmp';
+FONT='Meslo LG S Regular for Powerline.otf';
+TMP_DIR="${HOME}/osx-setup-tmp";
 if [ "${CURRENT_PROFILE}" != "${TERM_PROFILE}" ]; then
 	mkdir -p $TMP_DIR
 
-	curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Dark%20Plain.terminal -o "${TMP_DIR}/${TERM_PROFILE}.terminal"
-	open "~/osx-setup-tmp/${TERM_PROFILE}.terminal";
+	# Install the necessary font
+	curl -L https://github.com/powerline/fonts/raw/master/Meslo/Meslo%20LG%20S%20Regular%20for%20Powerline.otf -o "${HOME}/Library/Fonts/${FONT}" &> /dev/null
+
+	curl -L https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Dark%20Plain.terminal -o "${TMP_DIR}/${TERM_PROFILE}.terminal" &> /dev/null
+	open "${TMP_DIR}/${TERM_PROFILE}.terminal";
 	sleep 1; # Wait a bit to make sure the theme is loaded
 
-	curl https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Plain.terminal -o "${TMP_DIR}/inuBASHiri Plain.terminal"
-	open "~/osx-setup-tmp/inuBASHiri Plain.terminal";
+	curl -L https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Plain.terminal -o "${TMP_DIR}/inuBASHiri Plain.terminal" &> /dev/null
+	open "${TMP_DIR}/inuBASHiri Plain.terminal";
 	sleep 1; # Wait a bit to make sure the theme is loaded
 
-	rm -rf ~/osx-setup-tmp
+	rm -rf $TMP_DIR
 
 	defaults write com.apple.terminal 'Default Window Settings' -string "${TERM_PROFILE}";
 	defaults write com.apple.terminal 'Startup Window Settings' -string "${TERM_PROFILE}";
@@ -171,6 +198,17 @@ defaults write com.apple.messageshelper.MessageController SOInputLineSettings -d
 
 echo "Done"
 ########################################
+# Powerline
+########################################
+echo "Installing Powerline..."
+
+sudo easy_install pip
+pip install --user powerline-status
+
+
+
+echo "Done"
+########################################
 # OS X Software Update
 ########################################
 echo "Opening OS X Software Update..."
@@ -179,5 +217,5 @@ echo "Opening OS X Software Update..."
 open -a "Software Update"
 
 echo "Done"
-echo "\nEnjoy the system!"
-echo "\nYou should reboot to apply these changes"
+echo "Enjoy the system!"
+echo "You should reboot to apply these changes"

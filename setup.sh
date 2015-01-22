@@ -137,6 +137,7 @@ for choice in $choices; do
 		declare -A git_files
 		git_files['gitignore']='.gitignore'
 		set_home_files_from_array git_files
+		git config --global core.excludesfile ~/.gitignore
 		;;
 	$VIM)
 		infobox "Linking Vim files"
