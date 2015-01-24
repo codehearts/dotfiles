@@ -15,7 +15,7 @@ main = do xmonad $ ewmh xfceConfig
 		, focusedBorderColor = "#f956a2"
 		, borderWidth = 0
 		, manageHook =  manageDocks <+> myManageHook
-		, layoutHook = avoidStruts $ myLayout
+		, layoutHook = myLayout
 		, logHook = myLogHook
 		, handleEventHook = handleEventHook xfceConfig <+> fullscreenEventHook
 		}`additionalKeys`
@@ -31,10 +31,11 @@ main = do xmonad $ ewmh xfceConfig
 		,(( mod4Mask, xK_x), spawn "sh -c 'if pgrep xfce4-panel; then pkill xfce4-panel; else xfce4-panel --disable-wm-check; fi'")
 		]
 
-myLayout = spacey ||| full
+myLayout = spacey ||| full ||| fullscreen
 	where
-		spacey = spacing 10 $ layoutHintsWithPlacement (0.5, 0.5) (Tall 1 (3/100) (1/2))
-		full   = Full
+		spacey     = avoidStruts $ spacing 10 $ layoutHintsWithPlacement (0.5, 0.5) (Tall 1 (3/100) (1/2))
+		full       = avoidStruts $ Full
+		fullscreen = Full
 
 myLogHook :: X()
 myLogHook = fadeInactiveLogHook fadeAmount

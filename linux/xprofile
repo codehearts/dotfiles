@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# For using 32-bit GTK themes with Skype
-export GTK2_RC_FILES="/etc/gtk-2.0/gtkrc:$HOME/.gtkrc-2.0"
-
 # Use the menu key as the compose key
 setxkbmap -option compose:menu
 
