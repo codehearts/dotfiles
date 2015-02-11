@@ -23,8 +23,6 @@ main = do xmonad $ ewmh xfceConfig
 		,(( mod4Mask, xK_w), spawn "firefox")
 		,(( mod4Mask .|. shiftMask, xK_w), spawn "firefox -private-window")
 		,(( mod4Mask, xK_a), spawn "xfce4-terminal -e music")
-		,(( mod4Mask, xK_e), spawn "xfce4-terminal -e email")
-		,(( mod4Mask, xK_c), spawn "xfce4-terminal -e irc")
 		,(( mod4Mask, xK_z), spawn "zathura --fork")
 		,(( mod4Mask, xK_d), spawn "xfce4-terminal --drop-down")
 		,(( mod4Mask, xK_p), spawn "xfce4-popup-whiskermenu")
