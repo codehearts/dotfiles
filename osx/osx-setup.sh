@@ -37,6 +37,7 @@ echo "Installating software..."
 brew install \
   bash \
   bash-completion \
+  ctags \
   caskroom/cask/brew-cask \
   dialog \
   git
