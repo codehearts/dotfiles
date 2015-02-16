@@ -15,6 +15,7 @@ endif
 
 " Declare theme name
 let g:colors_name = "hemisu"
+set background=light
 
 "}}}
 " The Colors -----------------------------------------------{{{
