@@ -1,6 +1,7 @@
 *.o
 *.py[cod]
 *.o
+.vagrant
 .sass-cache
 .DS_Store
 .tm_properties
