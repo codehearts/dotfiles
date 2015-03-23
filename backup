@@ -2,7 +2,22 @@
 
 INITIALIZE=0
 DATE=`date "+%Y-%m-%d_%H:%M:%S"`
-EXCLUDE=(--exclude={/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found,/var/lib/pacman/sync/*,/home/*/.cache/*,/home/*/Mail/,/home/*/Music/,/home/*/Dropbox/})
+EXCLUDE=(--exclude={/dev/{*,},/proc/{*,},/sys/{*,},/tmp/{*,},/run/{*,},/mnt/{*,},/media/{*,},/lost+found,/var/lib/pacman/sync/*,/home/*/.cache/*,/home/*/Mail/,/home/*/Music/,/home/*/Dropbox/})
+
+read DIALOG <<< "$(which whiptail dialog 2> /dev/null)"
+
+# awk program for parsing rsync progress
+AWK_PROG=$(cat <<EOF
+{
+	if (index(\$0, "%") > 0)
+	{
+		split(\$0, pieces, "%")
+		print \$3
+	}
+	fflush();
+}
+EOF
+)
 
 # Parse parameters
 while test $# -gt 0; do
@@ -18,7 +33,7 @@ while test $# -gt 0; do
 done
 
 print_usage() {
-    echo -e "Usage: $0 [--init] destination\n" >&2
+	echo -e "Usage: $0 [--init] destination\n" >&2
 	echo -e "Backs up the entire filesystem (minus a few directories) to the destination directory.\n" >&2
 	echo -e "Options:"
 	echo -e "--init\t\tShould be specified on the first run to create the initial backup. All other backups will be snapshots based on the initial backup." >&2
@@ -51,17 +66,27 @@ case "$1" in
      ;;
 esac
 
-if [[ $INITIALIZE ]]; then
+if [[ $INITIALIZE == 1 ]]; then
 	echo "Creating initial backup..."
-	START=$(date +%s)
 	mkdir -p $1/current
-	rsync -aAXvP /* $1/current "${EXCLUDE[@]}"
+	START=$(date +%s)
+
+	rsync -aAXvp --progress --info=progress2 /* $1/current "${EXCLUDE[@]}" \
+	 | awk "$AWK_PROG" \
+	 | sed --unbuffered 's/\%//g' \
+	 | $DIALOG --title "Backing up to $1" --gauge "Backing up the latest changes..." 10 70
+
 	FINISH=$(date +%s)
 	echo "Total time: $(( ($FINISH-$START) / 60 )) minutes, $(( ($FINISH-$START) % 60 )) seconds"
 fi
 
 echo "Backing up the latest changes..."
 START=$(date +%s)
-rsync -aPq --link-dest=$1/current /* "$1/$DATE" "${EXCLUDE[@]}"
+
+rsync -avp --progress --info=progress2 --link-dest=$1/current /* "$1/$DATE" "${EXCLUDE[@]}" \
+ | awk "$AWK_PROG" \
+ | sed --unbuffered 's/\%//g' \
+ | $DIALOG --title "Backing up to $1" --gauge "Backing up the latest changes..." 10 70
+
 FINISH=$(date +%s)
 echo "Total time: $(( ($FINISH-$START) / 60 )) minutes, $(( ($FINISH-$START) % 60 )) seconds"
