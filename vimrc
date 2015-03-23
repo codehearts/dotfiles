@@ -135,11 +135,6 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
-" Locally (local to block) rename a variable with ,rl (doesn't work for some languages, like Python)
-nmap <Leader>rl "zyiw:call ReplaceVarInScope()<CR>mx:silent! norm gd<CR>[{V%:s/<C-R>//<c-r>z/g<CR>`x
-" Globally rename a variable with ,rg (doesn't work for some languages, like Python)
-nmap <Leader>rg "zyiw:call ReplaceVarInScope()<CR>mx:silent! norm gD<CR>[{V%:s/<C-R>//<c-r>z/g<CR>`x
-
 " Delete trailing white space on save, useful for Python and CoffeeScript
 func! DeleteTrailingWS()
   exe "normal mz"
@@ -224,12 +219,6 @@ function TabRight()
 	else
 		execute "tabm" tab_number + 1
 	endif
-endfunction
-
-function! ReplaceVarInScope()
-    call inputsave()
-    let @z=input("Rename ".@z." to: ")
-    call inputrestore()
 endfunction
 
 function! CmdLine(str)
