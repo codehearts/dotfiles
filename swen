@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# Provides the Swedish for the given English
-
-# Args:
-#   $1: The word to translate
-
-define $1 eng-swe
