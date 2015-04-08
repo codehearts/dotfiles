@@ -64,7 +64,6 @@ noremap <leader>sd :call SearchDirectory()<CR>
 
 " Useful tab mappings
 map <leader>tn :tabnew<CR>
-map <leader>to :tabonly<CR>
 map <leader>tc :tabclose<CR>
 " Move tabs left/right with control-shift-left/right
 map <silent><C-S-Left> :execute TabLeft()<CR>
@@ -75,10 +74,6 @@ map <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 " Toggle spell checking with ,ss
 map <leader>ss :setlocal spell!<CR>
-
-" Remove Windows' ^M when encodings gets messed up with ,m
-noremap <Leader>m mmHmt:%s/<C-V><CR>//ge<CR>'tzt'm
-
 
 " Turn on the wild menu
 set wildmenu
@@ -135,22 +130,6 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
-" Locally (local to block) rename a variable with ,rl (doesn't work for some languages, like Python)
-nmap <Leader>rl "zyiw:call ReplaceVarInScope()<CR>mx:silent! norm gd<CR>[{V%:s/<C-R>//<c-r>z/g<CR>`x
-" Globally rename a variable with ,rg (doesn't work for some languages, like Python)
-nmap <Leader>rg "zyiw:call ReplaceVarInScope()<CR>mx:silent! norm gD<CR>[{V%:s/<C-R>//<c-r>z/g<CR>`x
-
-" Delete trailing white space on save, useful for Python and CoffeeScript
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
-
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -165,17 +144,6 @@ let NERDTreeChDirMode=2
 
 " Toggle Tagbar with ,tb
 nmap <leader>tb :TagbarToggle<CR>
-
-" Add support for Chicken Scheme to SingleCompile
-call SingleCompile#SetCompilerTemplate('scheme', 'csi', 'Chicken Scheme', 'csi', '-qb', '')
-" Show compile results in a dialog
-let g:SingleCompile_usedialog=1
-" Show run results after running
-let g:SingleCompile_showresultafterrun=1
-" SingleCompile key bindings
-nmap <F9> :SCCompile<CR>
-nmap <F10> :SCCompileRun<CR>
-nmap <F11> :SCViewResult<CR>
 
 " Automatically open and close the location list when syntax errors are detected
 let g:syntastic_auto_loc_list=1
@@ -224,12 +192,6 @@ function TabRight()
 	else
 		execute "tabm" tab_number + 1
 	endif
-endfunction
-
-function! ReplaceVarInScope()
-    call inputsave()
-    let @z=input("Rename ".@z." to: ")
-    call inputrestore()
 endfunction
 
 function! CmdLine(str)
