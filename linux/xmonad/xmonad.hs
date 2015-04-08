@@ -27,6 +27,7 @@ main = do xmonad $ ewmh xfceConfig
 		,(( mod4Mask, xK_d), spawn "xfce4-terminal --drop-down")
 		,(( mod4Mask, xK_p), spawn "xfce4-popup-whiskermenu")
 		,(( mod4Mask, xK_x), spawn "sh -c 'if pgrep xfce4-panel; then pkill xfce4-panel; else xfce4-panel --disable-wm-check; fi'")
+		,(( mod4Mask, xK_s), spawn "sh -c 'if pgrep mpg123; then pkill mpg123; else mpg123 ~/Downloads/X-Files.mp3; fi'")
 		]
 
 myLayout = spacey ||| full ||| fullscreen
@@ -44,9 +45,10 @@ myManageHook = composeAll
 	, className =? "Conky"         --> doIgnore
 	, className =? "Xfdesktop"     --> doIgnore
 
-	, className =? "Gvbam"   --> doFloat
-	, className =? "Skype"   --> doFloat
-	, className =? "Wrapper" --> doFloat
+	, className =? "Wrapper-1.0" --> doFloat
+	, className =? "Gvbam"       --> doFloat
+	, className =? "Skype"       --> doFloat
+	, className =? "Wrapper"     --> doFloat
 
 	, className =? "Tint2" --> doHideIgnore
 	]

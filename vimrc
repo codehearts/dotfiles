@@ -160,7 +160,6 @@ let g:session_autosave='no'
 " Compile LaTeX documents asyncronously
 let g:LatexBox_latexmk_async=1
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Helper Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
