@@ -126,6 +126,17 @@ defaults write com.apple.dock autohide -bool true
 
 echo "Done"
 ########################################
+# Git
+########################################
+echo "Configuring Git..."
+
+# Fixes an issue with tracking files with unicode in their name
+git config --global core.precomposeunicode true
+
+
+
+echo "Done"
+########################################
 # Safari
 ########################################
 echo "Configuring Safari..."
