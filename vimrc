@@ -13,26 +13,21 @@ set nocompatible
 set backspace=indent,eol,start " Fixes potential backspace issues
 set noshowmode " Hide the default mode text
 
-if has("macunix")
-	" Load Powerline
-	set rtp+=~/Library/Python/2.7/lib/python/site-packages/powerline/bindings/vim
+colorscheme molokai
 
+" Load Powerline
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
+
+if has("macunix")
 	" Mac settings
-	colorscheme monokai
 	set guifont=Meslo\ LG\ S\ Regular\ for\ Powerline:h11
 
 	" Use open to view LaTeX output on OS X
 	let g:LatexBox_viewer="open"
 else
-	" Load Powerline
-	if filereadable("/usr/lib/python2.7/site-packages/powerline")
-		set rtp+=/usr/lib/python2.7/site-packages/powerline/bindings/vim
-	else
-		set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
-	endif
-	
 	" Linux settings
-	colorscheme molokai
 	set guifont=Menlo\ for\ Powerline\ 11
 endif
 
