@@ -8,10 +8,8 @@ filetype plugin indent on
 syntax enable
 
 " Settings for Powerline
-set laststatus=2
-set nocompatible
+set nocompatible noshowmode laststatus=2
 set backspace=indent,eol,start " Fixes potential backspace issues
-set noshowmode " Hide the default mode text
 
 colorscheme molokai
 
@@ -70,42 +68,21 @@ map <leader>cd :cd %:p:h<CR>:pwd<CR>
 " Toggle spell checking with ,ss
 map <leader>ss :setlocal spell!<CR>
 
-" Turn on the wild menu
-set wildmenu
+" Turn on the wild menu, and ignore compiled files
+set wildmenu wildignore=*.o,*~,*.pyc,*.class
 let wildmode="full"
-set wildignore=*.o,*~,*.pyc,*.class " Ignore compiled files
 
-set autoread		" Autoread files that were changed externally
-set hid				" Hide buffers when they are abandoned
-set ignorecase		" Ignore case when searching
-set smartcase		" Be smart about search cases
-set hlsearch		" Highlight search results
-set incsearch
-set number			" Show line numbers
-set shiftwidth=4	" 1 tab ~ 4 spaces
-set tabstop=4
-set noexpandtab		" Use tabs instead of spaces
-set smarttab
-set ai				" Auto indent
-set si				" Smart indent
-set wrap			" Wrap lines
-set encoding=utf8
-set ffs=unix,mac,dos
+" Autoread files that were changed externally, hide buffers when they are abandoned
+set autoread hid				" 
 
-" Turn backup off
-set nobackup
-set nowb
-set noswapfile
-
-" Remove scrollbar in MacVim/GVim
-set guioptions-=r
-set guioptions-=l
-set guioptions-=L
-set guioptions-=b
-
-" Remove toolbars and menu bars in MacVim/GVim
-set guioptions-=m
-set guioptions-=T
+set ignorecase smartcase hlsearch incsearch " Ignore search case, highlight results
+set number wrap " Show line numbers, wrap text
+set noexpandtab tabstop=4 shiftwidth=4 " Use tabs, 1 tab ~ 4 spaces
+set smarttab ai si " Auto-indent, smart-indent
+set encoding=utf8 ffs=unix,mac,dos
+set nobackup nowb noswapfile " Turn backups off
+set guioptions-=r guioptions-=l guioptions-=L guioptions-=b " Remove scrollbar in MacVim/GVim
+set guioptions-=m guioptions-=T " Remove toolbars and menu bars in MacVim/GVim
 
 " Enable spell checking for text, markdown, and latex files by default
 autocmd BufNew,BufNewFile,BufRead *.{txt,markdown,md,tex} setlocal spell spelllang=en_us
