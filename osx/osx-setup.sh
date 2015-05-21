@@ -210,12 +210,22 @@ defaults write com.apple.messageshelper.MessageController SOInputLineSettings -d
 
 echo "Done"
 ########################################
-# Powerline
+# Python packages (Powerline)
 ########################################
 echo "Installing Powerline..."
 
 sudo easy_install pip
 pip install --user powerline-status
+
+
+
+echo "Done"
+########################################
+# Ruby gems (Compass)
+########################################
+echo "Installing Ruby Gems..."
+
+sudo gem install compass
 
 
 
