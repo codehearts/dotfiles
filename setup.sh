@@ -117,7 +117,6 @@ options=(
 	$MUTT_THEME  "mutt themes"         off
 	$MUTT_SAMPLE "mutt sample configs" off
 	$URLVIEW     "urlview"             off
-	$VIMPERATOR  "Vimperator"          off
 )
 # TODO Linux-specific settings with compton, tint2, netctl, conky, xinitrc, xmonad, mpdnotify, bash-completion on Arch
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -214,16 +213,6 @@ for choice in $choices; do
 		declare -A urlview_files
 		urlview_files['urlview']='.urlview'
 		set_home_files_from_array urlview_files
-		;;
-	$VIMPERATOR)
-		infobox "Linking Vimperator files"
-
-		ensure_dir_exists ~/.vimperator
-
-		declare -A vimperator_files
-		vimperator_files['vimperatorrc']='.vimperatorrc'
-		vimperator_files['vimperator/colors']='.vimperator/colors'
-		set_home_files_from_array vimperator_files
 		;;
 	esac
 done
