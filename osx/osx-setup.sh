@@ -4,65 +4,103 @@
 # This is entirely my own taste, but may be useful for
 # other people who are interested in automating their own setup.
 
-echo "Configuring system settings!"
-
 ########################################
-# Initial Setup Setup
+# Initial Setup
 ########################################
 
 # Ask for the administrator password upfront
 sudo -v
 
-# Keep-alive: update existing `sudo` time stamp until `.osx` has finished
+# Keep-alive: update existing `sudo` time stamp until this script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
-
 
 ########################################
 # Homebrew & Cask
 ########################################
+
 echo "Installing Homebrew..."
 
 # Install Homebrew for package management
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
+echo "Done"
 
+########################################
+# Base software Installation
+########################################
+
+echo "Installing dialog..."
+
+brew install dialog
 
 echo "Done"
-########################################
-# Software Installation
-########################################
-echo "Installating software..."
+
+# Determine which dialog software to use
+read DIALOG <<< "$(which whiptail dialog 2> /dev/null)"
+
+# Displays an infobox with $1 as the contents.
+# $1: The contents of the infobox
+infobox () {
+	$DIALOG --infobox "$1" 12 50
+}
+
+# Displays an input field with $1 as the label
+# $1: The label for the input field
+# Sets $user_input to the user’s input
+get_input () {
+	$DIALOG --inputbox "$1" 12 50 2> /tmp/userinput
+	user_input=`cat /tmp/userinput`
+}
+
+# Displays a yes/no question with $1 as the prompt
+# $1: The question prompt
+# Returns 0 for "yes" and 1 for "no"
+yes_no () {
+	$DIALOG --yesno "$1" 12 50
+}
+
+infobox "Installing base software..."
 
 brew install \
   bash \
   bash-completion \
   ctags \
   caskroom/cask/brew-cask \
-  dialog \
-  git
+  git \
+  &> /dev/null # Silence the output
 
 brew cask install \
   vagrant \
-  virtualbox
+  virtualbox \
+  &> /dev/null # Silence the output
+
+
+# Give an option to install Xbox 360 controller drivers if they aren't already installed
+xbox_driver_search=$(brew cask list | grep "d235j-xbox360-controller-driver")
+if [[ "$xbox_driver_search" == "" ]]; then
+	yes_no "Install Xbox 360 controller drivers?"
+	if [ $? -eq 0 ]; then
+		brew cask install d235j-xbox360-controller-driver &> /dev/null # Silence the output
+	fi
+fi
 
 # Set Homebrew's bash as the default shell
-echo /usr/local/bin/bash | sudo tee -a /etc/shells &> /dev/null
+echo "/usr/local/bin/bash" | sudo tee -a /etc/shells &> /dev/null
 sudo chsh -s /usr/local/bin/bash &> /dev/null
 
-
-
-echo "Done"
 ########################################
 # System Preferences
 ########################################
-echo "Configuring system preferences..."
 
 # Set the computer's name and hostname
-NEW_HOSTNAME="Kopparberg"
+get_input "Choose a hostname for this computer\nDon't forget that it can't have spaces!"
+
+NEW_HOSTNAME="$user_input"
 sudo scutil --set ComputerName $NEW_HOSTNAME
 sudo scutil --set LocalHostName $NEW_HOSTNAME
 sudo scutil --set HostName $NEW_HOSTNAME
+
+infobox "Configuring system preferences..."
 
 # Set highlight color to pink
 defaults write NSGlobalDomain AppleHighlightColor -string "1.000000 0.749020 0.823529"
@@ -104,7 +142,6 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFi
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerVertSwipeGesture -int 0
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadFourFingerVertSwipeGesture -int 2
 
-
 # Use scroll gesture with the Ctrl (^) modifier key to zoom
 defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
 defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
@@ -122,35 +159,29 @@ defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
 # Automatically hide and show the Dock
 defaults write com.apple.dock autohide -bool true
 
-
-
-echo "Done"
 ########################################
 # Git
 ########################################
-echo "Configuring Git..."
+
+infobox "Configuring Git..."
 
 # Fixes an issue with tracking files with unicode in their name
 git config --global core.precomposeunicode true
 
-
-
-echo "Done"
 ########################################
 # Safari
 ########################################
-echo "Configuring Safari..."
+
+infobox "Configuring Safari..."
 
 # Enable the Develop menu and the Web Inspector in Safari
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 
-
-
-echo "Done"
 ########################################
 # Terminal.app
 ########################################
-echo "Configuring Terminal..."
+
+infobox "Configuring Terminal..."
 
 # Use UTF-8
 defaults write com.apple.terminal StringEncodings -array 4
@@ -180,13 +211,11 @@ if [ "${CURRENT_PROFILE}" != "${TERM_PROFILE}" ]; then
 	defaults write com.apple.terminal 'Startup Window Settings' -string "${TERM_PROFILE}";
 fi;
 
-
-
-echo "Done"
 ########################################
 # TextEdit
 ########################################
-echo "Configuring TextEdit..."
+
+infobox "Configuring TextEdit..."
 
 # Use plain text mode for new TextEdit documents
 defaults write com.apple.TextEdit RichText -int 0
@@ -195,49 +224,41 @@ defaults write com.apple.TextEdit RichText -int 0
 defaults write com.apple.TextEdit PlainTextEncoding -int 4
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 
-
-
-echo "Done"
 ########################################
 # Messages
 ########################################
-echo "Configuring Messages..."
+
+infobox "Configuring Messages..."
 
 # Disable automatic emoji substitution (i.e. use plain text smileys)
 defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticEmojiSubstitutionEnablediMessage" -bool false
 
-
-
-echo "Done"
 ########################################
 # Python packages (Powerline)
 ########################################
-echo "Installing Powerline..."
 
-sudo easy_install pip
-pip install --user powerline-status
+infobox "Installing Python packages..."
 
+sudo easy_install pip &> /dev/null # Silence the output
+pip install --user powerline-status &> /dev/null # Silence the output
 
-
-echo "Done"
 ########################################
 # Ruby gems (Compass)
 ########################################
-echo "Installing Ruby Gems..."
 
-sudo gem install compass
+infobox "Installing Ruby gems..."
 
+sudo gem install compass &> /dev/null # Silence the output
 
-
-echo "Done"
 ########################################
 # OS X Software Update
 ########################################
-echo "Opening OS X Software Update..."
+
+infobox "Opening OS X Software Update..."
 
 # Open the App Store's software update page to check for new updates
 open -a "Software Update"
 
-echo "Done"
-echo "Enjoy the system!"
-echo "You should reboot to apply these changes"
+infobox "Done. Enjoy your system!
+
+You should reboot to apply some of these changes."
