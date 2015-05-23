@@ -104,19 +104,19 @@ infobox () {
 	$DIALOG --infobox "$1" 12 50
 }
 
+GIT=10;VIM=20;SCREEN=30;TMUX=40;MPD=50;NCMPCPP=60;MUTT_THEME=70;MUTT_SAMPLE=80;MSMTP=90;OFFLINEIMAP=100;
 cmd=($DIALOG --separate-output --checklist "Choose config files to set up:" 22 50 16)
-# TODO Add offlineimap
-GIT=10;VIM=20;SCREEN=30;TMUX=40;MPD=50;NCMPCPP=60;MUTT_THEME=70;MUTT_SAMPLE=80;MSMTP=90
 options=(
-	$GIT         "git"                 on
-	$VIM         "vim"                 on
-	$SCREEN      "screen"              on
-	$TMUX        "tmux"                off
-	$MPD         "mpd"                 off
-	$NCMPCPP     "ncmpcpp"             off
-	$MUTT_THEME  "mutt theme"          off
-	$MUTT_SAMPLE "mutt sample configs" off
-	$MSMTP       "msmtp sample config" off
+	$GIT         "git"                        on
+	$VIM         "vim"                        on
+	$SCREEN      "screen"                     on
+	$TMUX        "tmux"                       off
+	$MPD         "mpd"                        off
+	$NCMPCPP     "ncmpcpp"                    off
+	$MUTT_THEME  "mutt theme"                 off
+	$MUTT_SAMPLE "mutt sample configs"        off
+	$MSMTP       "msmtp sample config"        off
+	$OFFLINEIMAP "offlineimap sample config"  off
 )
 # TODO Linux-specific settings with compton, tint2, netctl, conky, xinitrc, xmonad, mpdnotify, bash-completion on Arch
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -214,6 +214,17 @@ for choice in $choices; do
 		msmtp_sample_files['msmtprc-sample']='.msmtprc-sample'
 		set_home_files_from_array msmtp_sample_files $ACTION_COPY
 		;;
+	$MSMTP)
+		infobox "Copying offlineimap sample config"
+
+		declare -A offlineimap_sample_files
+		offlineimap_sample_files['offlineimaprc-sample']='offlineimaprc-sample'
+		set_home_files_from_array offlineimap_sample_files $ACTION_COPY
+
+		declare -A offlineimap_files
+		offlineimap_files['offlineimap.py']='.offlineimap.py'
+		set_home_files_from_array offlineimap_files
+		;;
 	esac
 done
 
@@ -223,5 +234,6 @@ git submodule update &> /dev/null # Silence output
 git submodule foreach git pull origin master &> /dev/null # Silence output
 
 infobox "Setup complete!"
+echo
 
 exit 0
