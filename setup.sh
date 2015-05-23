@@ -118,7 +118,6 @@ options=(
 	$MSMTP       "msmtp sample config"        off
 	$OFFLINEIMAP "offlineimap sample config"  off
 )
-# TODO Linux-specific settings with compton, tint2, netctl, conky, xinitrc, xmonad, mpdnotify, bash-completion on Arch
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
 # If the user cancelled, exit
