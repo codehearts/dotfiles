@@ -105,7 +105,7 @@ infobox () {
 }
 
 GIT=10;VIM=20;SCREEN=30;TMUX=40;MPD=50;NCMPCPP=60;MUTT_THEME=70;MUTT_SAMPLE=80;MSMTP=90;OFFLINEIMAP=100;
-cmd=($DIALOG --separate-output --checklist "Choose config files to set up:" 22 50 16)
+cmd=($DIALOG --separate-output --no-tags --checklist "Choose config files to set up:" 22 50 16)
 options=(
 	$GIT         "git"                        on
 	$VIM         "vim"                        on
