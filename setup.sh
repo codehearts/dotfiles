@@ -104,9 +104,9 @@ infobox () {
 	$DIALOG --infobox "$1" 12 50
 }
 
-cmd=($DIALOG --separate-output --checklist "Dotfiles to link into place:" 22 76 16)
-# TODO Add msmtp, offlineimap
-GIT=10;VIM=20;SCREEN=30;TMUX=40;MPD=50;NCMPCPP=60;MUTT_THEME=70;MUTT_SAMPLE=80;URLVIEW=100;VIMPERATOR=110
+cmd=($DIALOG --separate-output --checklist "Choose config files to set up:" 22 50 16)
+# TODO Add offlineimap
+GIT=10;VIM=20;SCREEN=30;TMUX=40;MPD=50;NCMPCPP=60;MUTT_THEME=70;MUTT_SAMPLE=80;MSMTP=90
 options=(
 	$GIT         "git"                 on
 	$VIM         "vim"                 on
@@ -114,8 +114,9 @@ options=(
 	$TMUX        "tmux"                off
 	$MPD         "mpd"                 off
 	$NCMPCPP     "ncmpcpp"             off
-	$MUTT_THEME  "mutt themes"         off
+	$MUTT_THEME  "mutt theme"          off
 	$MUTT_SAMPLE "mutt sample configs" off
+	$MSMTP       "msmtp sample config" off
 )
 # TODO Linux-specific settings with compton, tint2, netctl, conky, xinitrc, xmonad, mpdnotify, bash-completion on Arch
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -130,7 +131,7 @@ fi
 for choice in $choices; do
 	case $choice in
 	$GIT)
-		infobox "Linking Git files"
+		infobox "Linking git files"
 
 		declare -A git_files
 		git_files['gitignore']='.gitignore'
@@ -138,7 +139,7 @@ for choice in $choices; do
 		git config --global core.excludesfile ~/.gitignore
 		;;
 	$VIM)
-		infobox "Linking Vim files"
+		infobox "Linking vim files"
 
 		ensure_dir_exists ~/.vim
 
@@ -149,22 +150,22 @@ for choice in $choices; do
 		vim_files['vim/after']='.vim/after'
 		set_home_files_from_array vim_files
 		;;
-	$TMUX)
-		infobox "Linking tmux files"
-
-		declare -A tmux_files
-		tmux_files['tmux.conf']='.tmux.conf'
-		set_home_files_from_array tmux_files
-		;;
 	$SCREEN)
-		infobox "Linking screen files"
+		infobox "Linking screen config"
 
 		declare -A screen_files
 		screen_files['screenrc']='.screenrc'
 		set_home_files_from_array screen_files
 		;;
+	$TMUX)
+		infobox "Linking tmux config"
+
+		declare -A tmux_files
+		tmux_files['tmux.conf']='.tmux.conf'
+		set_home_files_from_array tmux_files
+		;;
 	$MPD)
-		infobox "Linking mpd files"
+		infobox "Linking mpd config"
 
 		ensure_dir_exists ~/.mpd/playlists
 		ensure_dir_exists ~/.mpd/tmp
@@ -175,7 +176,7 @@ for choice in $choices; do
 		set_home_files_from_array mpd_files
 		;;
 	$NCMPCPP)
-		infobox "Linking ncmpcpp files"
+		infobox "Linking ncmpcpp config"
 
 		ensure_dir_exists ~/.ncmpcpp
 
@@ -185,7 +186,7 @@ for choice in $choices; do
 		set_home_files_from_array ncmpcpp_files
 		;;
 	$MUTT_THEME)
-		infobox "Linking mutt theme files"
+		infobox "Linking mutt theme"
 
 		ensure_dir_exists ~/.mutt
 
@@ -194,7 +195,7 @@ for choice in $choices; do
 		set_home_files_from_array mutt_theme_files
 		;;
 	$MUTT_SAMPLE)
-		infobox "Copying mutt sample files"
+		infobox "Copying mutt sample configs"
 
 		ensure_dir_exists ~/.mutt
 
@@ -206,13 +207,21 @@ for choice in $choices; do
 		mutt_sample_files['mutt/mailcap-sample']='.mutt/mailcap-sample'
 		set_home_files_from_array mutt_sample_files $ACTION_COPY
 		;;
+	$MSMTP)
+		infobox "Copying msmtp sample config"
+
+		declare -A msmtp_sample_files
+		msmtp_sample_files['msmtprc-sample']='.msmtprc-sample'
+		set_home_files_from_array msmtp_sample_files $ACTION_COPY
+		;;
 	esac
 done
 
 infobox "Initializing Git submodules"
-git submodule init
-git submodule update
-git submodule foreach git pull origin master
-clear
+git submodule init &> /dev/null # Silence output
+git submodule update &> /dev/null # Silence output
+git submodule foreach git pull origin master &> /dev/null # Silence output
+
+infobox "Setup complete!"
 
 exit 0
