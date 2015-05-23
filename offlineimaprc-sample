@@ -1,0 +1,142 @@
+# Sample .offlineimaprc for using offlineimap with Gmail and other email accounts.
+# This config assumes that passwords are stored in GNOME Keyring.
+# It's not that hard to do, see my Wiki article on it:
+# https://github.com/nejsan/dotfiles/wiki/Fetching-mail-with-offlineimap-and-GNOME-Keyring#setting-offlineimap-passwords-in-gnome-keyring
+#
+# Replace <user> with the name of your user directory
+# Replace /path/to/.offlineimap.py with the path to .offlineimap.py
+#
+# Replace <gmail_address> with a Gmail address
+# Replace <school_address> with a school address managed through Gmail
+# Replace <custom_address> with a non-Gmail address
+# Replace <custom_host> with the SMTP hostname for the custom address
+# Replace <custom_port> with the SMTP port for the custom address
+
+[general]
+accounts = Gmail,School,Custom
+pythonfile = /path/to/.offlineimap.py
+ui = ttyui
+# Improves performance, but might miss emails on the first sync
+fsync = False
+maxconnections = 1
+maxsyncaccounts = 5
+
+[Account Gmail]
+localrepository = Gmail-local
+remoterepository = Gmail-remote
+status_backend = sqlite
+#autorefresh = 5
+#quick = 4
+
+[Repository Gmail-local]
+type = Maildir
+localfolders = /home/<user>/Mail/Gmail
+nametrans = lambda folder: {'Inbox':	'INBOX',
+							'Drafts':	'[Gmail]/Drafts',
+							'Sent':		'[Gmail]/Sent Mail',
+							'Flagged':	'[Gmail]/Starred',
+							'Trash':	'[Gmail]/Trash',
+							'Mac Archive': 'Archive',
+							'Archive':	'[Gmail]/All Mail',
+							}.get(folder, folder)
+
+[Repository Gmail-remote]
+type = Gmail
+remoteuser = <gmail_address>
+remotepasseval = keyring.get_password("offlineimap", "<gmail_address>")
+realdelete = no
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+nametrans = lambda folder: {'INBOX':				'Inbox',
+							'[Gmail]/Drafts':		'Drafts',
+							'[Gmail]/Sent Mail':	'Sent',
+							'[Gmail]/Starred':		'Flagged',
+							'[Gmail]/Trash':		'Trash',
+							'Archive':				'Mac Archive',
+							'[Gmail]/All Mail':		'Archive',
+							}.get(folder, folder)
+folderfilter = lambda folder: folder not in ['[Gmail]/Trash',
+											 '[Gmail]/Spam',
+											 '[Gmail]/Important',
+											 '[Gmail]/All Mail',
+											 'Misc',
+											 'Follow Up',]
+
+
+
+
+
+
+
+
+
+[Account School]
+localrepository = School-local
+remoterepository = School-remote
+status_backend = sqlite
+#autorefresh = 5
+#quick = 4
+
+[Repository School-local]
+type = Maildir
+localfolders = /home/<user>/Mail/School
+nametrans = lambda folder: {'Inbox':	'INBOX',
+							'Drafts':	'[Gmail]/Drafts',
+							'Sent':		'[Gmail]/Sent Mail',
+							'Flagged':	'[Gmail]/Starred',
+							'Trash':	'[Gmail]/Trash',
+							'Mac Archive': 'Archive',
+							'Archive':	'[Gmail]/All Mail',
+							}.get(folder, folder)
+
+[Repository School-remote]
+type = Gmail
+remoteuser = <school_address>
+remotepasseval = keyring.get_password("offlineimap", "<school_address>")
+realdelete = no
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+nametrans = lambda folder: {'INBOX':				'Inbox',
+							'[Gmail]/Drafts':		'Drafts',
+							'[Gmail]/Sent Mail':	'Sent',
+							'[Gmail]/Starred':		'Flagged',
+							'[Gmail]/Trash':		'Trash',
+							'Archive':				'Mac Archive',
+							'[Gmail]/All Mail':		'Archive',
+							}.get(folder, folder)
+folderfilter = lambda folder: folder not in ['[Gmail]/Trash',
+											 '[Gmail]/Spam',
+											 '[Gmail]/Important',
+											 '[Gmail]/All Mail',
+											 'Misc',
+											 'Follow Up',]
+
+
+
+
+
+
+
+
+
+[Account Custom]
+localrepository = Custom-local
+remoterepository = Custom-remote
+status_backend = sqlite
+#autorefresh = 10
+#quick = 4
+
+[Repository Custom-local]
+type = Maildir
+localfolders = /home/<user>/Mail/Custom
+nametrans = lambda folder: 'INBOX' if folder == 'Inbox' else 'INBOX.'+folder
+
+[Repository Custom-remote]
+type = IMAP
+ssl = True
+remoteport = <custom_port>
+#reference = INBOX
+remotehost = <custom_host>
+remoteuser = <custom_email>
+remotepasseval = keyring.get_password("offlineimap", "<custom_email>")
+realdelete = no
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+nametrans = lambda folder: 'Inbox' if folder == 'INBOX' else re.sub('^INBOX\.', '', folder)

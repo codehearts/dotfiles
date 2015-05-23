@@ -1,0 +1,37 @@
+# Sample .msmtprc for sending mail from Gmail and other email accounts.
+# This config assumes the passwords are stored in GNOME Keyring.
+# It's not that hard to do, see my Wiki article on using msmtp-gnome-tool.py to store them:
+# https://github.com/nejsan/dotfiles/wiki/Sending-mail-with-msmtp-and-GNOME-Keyring#setting-msmtp-passwords-in-gnome-keyring
+
+# Replace <gmail_address> with a Gmail address
+# Replace <school_address> with a school address managed through Gmail
+# Replace <custom_address> with a non-Gmail address
+# Replace <custom_host> with the SMTP hostname for the custom address
+# Replace <custom_port> with the SMTP port for the custom address
+
+defaults
+auth	on
+tls		on
+tls_trust_file	/etc/ssl/certs/ca-certificates.crt
+timeout 20
+
+# Gmail
+account	gmail
+host	smtp.gmail.com
+port	587
+from	<gmail_address>
+user	<gmail_address>
+
+# School
+account school : gmail
+from <school_address>
+user <school_address>
+
+# Custom
+account custom
+host	<custom_host>
+port	<custom_port>
+from	<custom_address>
+user	<custom_address>
+# Fixes issues with smtps
+tls_starttls off
