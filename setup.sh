@@ -116,7 +116,6 @@ options=(
 	$NCMPCPP     "ncmpcpp"             off
 	$MUTT_THEME  "mutt themes"         off
 	$MUTT_SAMPLE "mutt sample configs" off
-	$URLVIEW     "urlview"             off
 )
 # TODO Linux-specific settings with compton, tint2, netctl, conky, xinitrc, xmonad, mpdnotify, bash-completion on Arch
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -206,13 +205,6 @@ for choice in $choices; do
 		mutt_sample_files['mutt/school_config']='.mutt/school_config'
 		mutt_sample_files['mutt/mailcap-sample']='.mutt/mailcap-sample'
 		set_home_files_from_array mutt_sample_files $ACTION_COPY
-		;;
-	$URLVIEW)
-		infobox "Linking urlview files"
-
-		declare -A urlview_files
-		urlview_files['urlview']='.urlview'
-		set_home_files_from_array urlview_files
 		;;
 	esac
 done
