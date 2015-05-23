@@ -101,7 +101,7 @@ set_file () {
 # Displays an infobox with $1 as the contents.
 # $1: The contents of the infobox
 infobox () {
-	$DIALOG --infobox "$1" 22 76
+	$DIALOG --infobox "$1" 12 50
 }
 
 cmd=($DIALOG --separate-output --checklist "Dotfiles to link into place:" 22 76 16)
