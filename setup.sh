@@ -210,9 +210,15 @@ for choice in $choices; do
 	$MSMTP)
 		infobox "Copying msmtp sample config"
 
+		ensure_dir_exists ~/.msmtp
+
 		declare -A msmtp_sample_files
 		msmtp_sample_files['msmtprc-sample']='.msmtprc-sample'
 		set_home_files_from_array msmtp_sample_files $ACTION_COPY
+
+		declare -A msmtp_files
+		msmtp_files['msmtp/msmtp-gnome-tool.py']='.msmtp/msmtp-gnome-tool.py'
+		set_home_files_from_array msmtp_files
 		;;
 	$MSMTP)
 		infobox "Copying offlineimap sample config"
