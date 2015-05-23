@@ -14,6 +14,10 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until this script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+# Create an empty error log
+ERROR_LOG=/tmp/setup_errors.log
+touch $ERROR_LOG; rm $ERROR_LOG; touch $ERROR_LOG
+
 ########################################
 # Homebrew & Cask
 ########################################
@@ -44,6 +48,14 @@ infobox () {
 	$DIALOG --infobox "$1" 12 50
 }
 
+# Displays a programbox with $2 as the text.
+# $1: The command to run in the programbox
+# $2: The text label
+program_box () {
+	infobox "$2"
+	$1 2>> $ERROR_LOG 1> /dev/null
+}
+
 # Displays an input field with $1 as the label
 # $1: The label for the input field
 # Sets $user_input to the user’s input
@@ -54,51 +66,86 @@ get_input () {
 
 # Displays a yes/no question with $1 as the prompt
 # $1: The question prompt
-# Returns 0 for "yes" and 1 for "no"
+# Sets $yes to true if the user answered yes, false otherwise
 yes_no () {
 	$DIALOG --yesno "$1" 12 50
+	result=$?; yes=false; [ $result -eq 0 ] && yes=true
 }
 
-infobox "Installing base software..."
-
-brew install \
-  bash \
-  bash-completion \
-  ctags \
-  caskroom/cask/brew-cask \
-  git \
-  &> /dev/null # Silence the output
-
-brew cask install \
-  vagrant \
-  virtualbox \
-  &> /dev/null # Silence the output
-
-
-# Give an option to install Xbox 360 controller drivers if they aren't already installed
-xbox_driver_search=$(brew cask list | grep "d235j-xbox360-controller-driver")
-if [[ "$xbox_driver_search" == "" ]]; then
-	yes_no "Install Xbox 360 controller drivers?"
-	if [ $? -eq 0 ]; then
-		brew cask install d235j-xbox360-controller-driver &> /dev/null # Silence the output
+# Appends the given string to the given output file
+# If the entire string is already present, it will not be appended
+# $1: The string to append
+# $2: The file to append to
+append_entire_string_without_duplicating () {
+	# If the entire string is already present...
+	if [[ -z $(perl -ne "BEGIN{undef $/;} m|(\Q$1\E)| and print \$1" "$2") ]]; then
+		sudo sh -c "echo -e \"\n$1\n\" >> $2"
 	fi
-fi
+}
 
-# Set Homebrew's bash as the default shell
-echo "/usr/local/bin/bash" | sudo tee -a /etc/shells &> /dev/null
-sudo chsh -s /usr/local/bin/bash &> /dev/null
+options=(); i=0
+packages=(bash bash-completion ctags caskroom/cask/brew-cask git)
+for package in "${packages[@]}"
+    do
+		options+=($i $package "off")
+        i=$[i+1]
+done
+cmd=($DIALOG --separate-output --no-tags --checklist "Choose Homebrew software to install:" 22 50 16)
+choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+
+# Process user choices
+for choice in $choices; do
+	choice=${packages[$choice]} # Get the name of the choice
+
+	program_box "brew install $choice" "Installing ${choice}..."
+
+	case $choice in
+	bash)
+		yes_no "Use Homebrew's bash as the default shell?"
+		if $yes; then
+			append_entire_string_without_duplicating "/usr/local/bin/bash" /etc/shells
+			program_box "sudo chsh -s /usr/local/bin/bash $(whoami)" "Changing default shell..."
+		fi
+		;;
+	caskroom/cask/brew-cask)
+		# Allow the user to install Cask packages
+		cask_options=(); i=0
+		cask_packages=(vagrant virtualbox d235j-xbox360-controller-driver)
+		for package in "${cask_packages[@]}"
+			do
+				cask_options+=($i $package "off")
+				i=$[i+1]
+		done
+		cask_cmd=($DIALOG --separate-output --no-tags --checklist "Choose Homebrew Cask software to install:" 22 50 16)
+		cask_choices=$("${cask_cmd[@]}" "${cask_options[@]}" 2>&1 >/dev/tty)
+
+		# Process user choices
+		for cask_choice in $cask_choices; do
+			cask_choice=${cask_packages[$cask_choice]} # Get the name of the choice
+
+			program_box "brew cask install $cask_choice" "Installing ${cask_choice}..."
+
+			case $cask_choice in
+			esac
+		done
+		;;
+	esac
+done
 
 ########################################
 # System Preferences
 ########################################
 
 # Set the computer's name and hostname
-get_input "Choose a hostname for this computer\nDon't forget that it can't have spaces!"
+yes_no "Set this machine's hostname?"
+if $yes; then
+	get_input "Choose a hostname for this computer\nDon't forget that it can't have spaces!"
 
-NEW_HOSTNAME="$user_input"
-sudo scutil --set ComputerName $NEW_HOSTNAME
-sudo scutil --set LocalHostName $NEW_HOSTNAME
-sudo scutil --set HostName $NEW_HOSTNAME
+	NEW_HOSTNAME="$user_input"
+	sudo scutil --set ComputerName $NEW_HOSTNAME
+	sudo scutil --set LocalHostName $NEW_HOSTNAME
+	sudo scutil --set HostName $NEW_HOSTNAME
+fi
 
 infobox "Configuring system preferences..."
 
