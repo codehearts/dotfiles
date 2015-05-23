@@ -108,8 +108,8 @@ cmd=($DIALOG --separate-output --checklist "Dotfiles to link into place:" 22 76 
 # TODO Add msmtp, offlineimap
 GIT=10;VIM=20;SCREEN=30;TMUX=40;MPD=50;NCMPCPP=60;MUTT_THEME=70;MUTT_SAMPLE=80;URLVIEW=100;VIMPERATOR=110
 options=(
-	$GIT         "Git"                 on
-	$VIM         "Vim"                 on
+	$GIT         "git"                 on
+	$VIM         "vim"                 on
 	$SCREEN      "screen"              on
 	$TMUX        "tmux"                off
 	$MPD         "mpd"                 off
