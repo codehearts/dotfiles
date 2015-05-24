@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+
+# Configures Arch Linux to the way I like it.
+# This is entirely my own taste, but may be useful for
+# other people who are interested in automating their own setup.
+
+########################################
+# Initial Setup
+########################################
+
+# Ask for the administrator password upfront
+sudo -v
+
+# Keep-alive: update existing `sudo` time stamp until this script has finished
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+########################################
+# Base software Installation
+########################################
+
+echo "Installing dialog..."
+
+sudo pacman --noconfirm -S dialog
+
+echo "Done"
+
+# Determine which dialog software to use
+read DIALOG <<< "$(which whiptail dialog 2> /dev/null)"
+
+# Displays an infobox with $1 as the contents.
+# $1: The contents of the infobox
+infobox () {
+	$DIALOG --infobox "$1" 12 50
+}
+
+# Displays a programbox with $2 as the text.
+# $1: The command to run in the programbox
+# $2: The text label
+program_box () {
+	$1 | $DIALOG --programbox "$2" 12 50
+}
+
+# Displays an input field with $1 as the label
+# $1: The label for the input field
+# Sets $user_input to the user’s input
+get_input () {
+	$DIALOG --inputbox "$1" 12 50 2> /tmp/userinput
+	user_input=`cat /tmp/userinput`
+}
+
+# Displays a yes/no question with $1 as the prompt
+# $1: The question prompt
+# Returns 0 for "yes" and 1 for "no"
+yes_no () {
+	$DIALOG --yesno "$1" 12 50
+}
+
+yes_no "Install X server?"
+if $yes; then
+
+	########################################
+	# X Server
+	########################################
+
+	clear
+	sudo pacman --noconfirm -S xorg-server
+
+	options=(); i=0
+	packages=(xfce4-appfinder xfce4-panel xfce4-power-manager xfce4-session xfce4-settings xfce4-terminal xfdesktop xfwm4)
+	for package in "${packages[@]}"; do
+		# Default certain packages I use to "on"
+		case $package in
+		xfce4-panel) ;& # Fall through
+		xfce4-power-manager) ;&
+		xfce4-session) ;&
+		xfce4-settings) ;&
+		xfce4-terminal) ;&
+		xfce4-whiskermenu-plugin)
+			options+=($i $package "on")
+			;;
+		*)
+			options+=($i $package "off")
+			;;
+		esac
+
+		i=$[i+1]
+	done
+	cmd=($DIALOG --separate-output --no-tags --checklist "Choose XFCE components to install:" 22 50 16)
+	choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+
+	# Process user choices
+	for choice in $choices; do
+		choice=${packages[$choice]} # Get the name of the choice
+
+		program_box "sudo pacman --noconfirm -S $choice" "Installing ${choice}..."
+
+		case $choice in
+		# Allow the user to install XFCE Panel goodies
+		xfce4-panel)
+			panel_options=(); i=0
+			panel_packages=(xfce4-mailwatch-plugin xfce4-weather-plugin xfce4-weather-plugin)
+			for package in "${panel_packages[@]}"; do
+				panel_options+=($i $package "on")
+				i=$[i+1]
+			done
+			panel_cmd=($DIALOG --separate-output --no-tags --checklist "Choose XFCE Panel goodies to install:" 22 50 16)
+			panel_choices=$("${cask_cmd[@]}" "${cask_options[@]}" 2>&1 >/dev/tty)
+
+			# Process user choices
+			for panel_choice in $panel_choices; do
+				panel_choice=${panel_packages[$panel_choice]} # Get the name of the choice
+
+				program_box "sudo pacman --noconfirm -S $panel_choice" "Installing ${panel_choice}..."
+
+				case $panel_choice in
+				esac
+			done
+			;;
+		esac
+	done
+
+	########################################
+	# Graphical Software
+	########################################
+fi
+
+infobox "Done. Enjoy your system!
+
+You should reboot to apply some of these changes."
