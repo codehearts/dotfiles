@@ -18,14 +18,17 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Base software Installation
 ########################################
 
-echo "Installing dialog..."
+echo "Installing whiptail"
 
-sudo pacman --noconfirm -S dialog
+sudo pacman --noconfirm -S libnewt
 
 echo "Done"
 
 # Determine which dialog software to use
 read DIALOG <<< "$(which whiptail dialog 2> /dev/null)"
+
+# Set our package manager command
+pkg_mgr=pacman
 
 # Displays an infobox with $1 as the contents.
 # $1: The contents of the infobox
@@ -54,6 +57,27 @@ get_input () {
 yes_no () {
 	$DIALOG --yesno "$1" 12 50
 }
+
+########################################
+# Yaourt
+########################################
+
+yes_no "Install yaourt?"
+if $yes; then
+	curl -O https://aur.archlinux.org/packages/pa/package-query/package-query.tar.gz
+	tar zxvf package-query.tar.gz
+	cd package-query
+	makepkg -si
+	cd ..
+	curl -O https://aur.archlinux.org/packages/ya/yaourt/yaourt.tar.gz
+	tar zxvf yaourt.tar.gz
+	cd yaourt
+	makepkg -si
+	cd ..
+	rm -rf yaourt package-query
+
+	pkg_mgr=yaourt
+fi
 
 yes_no "Install X server?"
 if $yes; then
@@ -92,7 +116,7 @@ if $yes; then
 	for choice in $choices; do
 		choice=${packages[$choice]} # Get the name of the choice
 
-		program_box "sudo pacman --noconfirm -S $choice" "Installing ${choice}..."
+		program_box "sudo $pkg_mgr --noconfirm -S $choice" "Installing ${choice}..."
 
 		case $choice in
 		# Allow the user to install XFCE Panel goodies
@@ -110,7 +134,7 @@ if $yes; then
 			for panel_choice in $panel_choices; do
 				panel_choice=${panel_packages[$panel_choice]} # Get the name of the choice
 
-				program_box "sudo pacman --noconfirm -S $panel_choice" "Installing ${panel_choice}..."
+				program_box "sudo $pkg_mgr --noconfirm -S $panel_choice" "Installing ${panel_choice}..."
 
 				case $panel_choice in
 				esac
@@ -122,8 +146,55 @@ if $yes; then
 	########################################
 	# Graphical Software
 	########################################
+
+	options=(); i=0
+	packages=(chromium google-chrome compton-git dropbox feh firefox gcalert lightdm-gtk-greeter lightdm-webkit-theme-bevel-git slock xmonad-contrib zathura-pdf-mupdf)
+	for package in "${packages[@]}"; do
+		# Don't allow AUR packages if yaourt isn't installed
+		if "$pkg_mgr" != "yaourt"; then
+			case $package in
+				google-chrome) ;&
+				compton-git) ;&
+				dropbox) ;&
+				gcalert) ;&
+				lightdm-webkit-theme-bevel-git)
+					continue
+				;;
+			esac
+		fi
+
+		# Default certain packages I use to "on"
+		case $package in
+		compton-git) ;& # Fall through
+		dropbox) ;&
+		feh) ;&
+		firefox) ;&
+		gcalert) ;&
+		lightdm-webkit-theme-bevel-git) ;&
+		slock) ;&
+		xmonad-contrib) ;&
+		zathura-pdf-mupdf)
+			options+=($i $package "on")
+			;;
+		*)
+			options+=($i $package "off")
+			;;
+		esac
+
+		i=$[i+1]
+	done
+	cmd=($DIALOG --separate-output --no-tags --checklist "Choose XFCE components to install:" 22 50 16)
+	choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+
+	# Process user choices
+	for choice in $choices; do
+		choice=${packages[$choice]} # Get the name of the choice
+
+		program_box "sudo $pkg_mgr --noconfirm -S $choice" "Installing ${choice}..."
+
+		case $choice in
+		esac
+	done
 fi
 
-infobox "Done. Enjoy your system!
-
-You should reboot to apply some of these changes."
+infobox "Done. Enjoy your system!"
