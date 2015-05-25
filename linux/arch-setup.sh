@@ -163,6 +163,8 @@ configs=( compton mpdnotify tint2 xfce4-terminal xmonad xprofile)
 default=( "on"    "on"      "off" "on"           "on"   "on"    )
 source_prefix="linux"
 
+checklist "Choose Linux config files to set up:" $configs $default
+
 # Process user choices
 for choice in $choices; do
 	case $choice in
