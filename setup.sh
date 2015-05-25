@@ -12,11 +12,13 @@ while test $# -gt 0; do
 			echo " "
 			echo "options:"
 			echo "-h, --help                show brief help"
-			echo "--mac                     setup symlinks for a Mac system"
+			echo "--mac                     "
+			echo "--osx                     setup symlinks for a Mac system"
 			echo "--arch                    setup symlinks for an Arch Linux system"
 			exit 0
 			;;
-		--mac)
+		--mac) ;& # Fall through
+		--osx)
 			shift
 			SYSTEM="mac"
 			shift
