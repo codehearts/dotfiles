@@ -19,7 +19,8 @@ infobox () {
 # $1: The command to run in the programbox
 # $2: The text label
 program_box () {
-	$1 | $dialog --programbox "$2" 12 50
+	infobox "$2"
+	$1
 }
 
 # Displays an input field with $1 as the label
@@ -34,7 +35,8 @@ get_input () {
 # $1: The question prompt
 # Returns 0 for "yes" and 1 for "no"
 yes_no () {
-	$dialog --yesno "$1" 12 50
+	$DIALOG --yesno "$1" 12 50
+	result=$?; yes=false; [ $result -eq 0 ] && yes=true
 }
 
 # Displays a checklist with the given options.
@@ -43,10 +45,13 @@ yes_no () {
 # $3: Defaults for the options, as an array of "on"/"off"
 # Sets $choices to a string of the users' choices, one per line
 checklist () {
+	declare -a option_arg=("${!2}")
+	declare -a default_arg=("${!3}")
+
 	i=0
 	options=()
-	for option in "${1[@]}"; do
-		options+=($i $package "${2[$i]}")
+	for option in "${option_arg[@]}"; do
+		options+=($i $package "${default_arg[$i]}")
 		i=$[i+1]
 	done
 
