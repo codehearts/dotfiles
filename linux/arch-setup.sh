@@ -79,6 +79,59 @@ if $yes; then
 	pkg_mgr=yaourt
 fi
 
+########################################
+# CLI Software
+########################################
+
+options=(); i=0
+packages=(bash-completion calc ctags dictd gcalcli gnome-keyring grub2-theme-dharma-mod htop msmtp mutt mutt-sidebar ncmpcpp offlineimap python-pip python2-pip rsync texlive-core texlive-humanities texlive-pictures tmux unzip urlview vagrant virtualbox virtualbox-guest-utils)
+for package in "${packages[@]}"; do
+	# Don't allow AUR packages if yaourt isn't installed
+	if "$pkg_mgr" != "yaourt"; then
+		case $package in
+			gcalcli) ;&
+			grub2-theme-dharma-mod) ;&
+			mutt-sidebar) ;&
+			urlview)
+				continue
+			;;
+		esac
+	fi
+
+	# Default certain packages I don't use to "off"
+	case $package in
+	mutt)
+		options+=($i $package "off")
+		;;
+	*)
+		options+=($i $package "on")
+		;;
+	esac
+
+	i=$[i+1]
+done
+cmd=($DIALOG --separate-output --no-tags --checklist "Choose software to install:" 22 50 16)
+choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+
+# Process user choices
+for choice in $choices; do
+	choice=${packages[$choice]} # Get the name of the choice
+
+	program_box "sudo $pkg_mgr --noconfirm -S $choice" "Installing ${choice}..."
+
+	case $choice in
+	bash)
+		yes_no "Use Homebrew's bash as the default shell?"
+		if $yes; then
+			append_entire_string_without_duplicating "/usr/local/bin/bash" /etc/shells
+			program_box "sudo chsh -s /usr/local/bin/bash $(whoami)" "Changing default shell..."
+		fi
+		;;
+	esac
+done
+
+
+
 yes_no "Install X server?"
 if $yes; then
 
@@ -87,7 +140,7 @@ if $yes; then
 	########################################
 
 	clear
-	sudo pacman --noconfirm -S xorg-server
+	sudo pacman --noconfirm -S xorg-server xf86-input-synaptics
 
 	options=(); i=0
 	packages=(xfce4-appfinder xfce4-panel xfce4-power-manager xfce4-session xfce4-settings xfce4-terminal xfdesktop xfwm4)
@@ -148,16 +201,20 @@ if $yes; then
 	########################################
 
 	options=(); i=0
-	packages=(chromium google-chrome compton-git dropbox feh firefox gcalert lightdm-gtk-greeter lightdm-webkit-theme-bevel-git slock xmonad-contrib zathura-pdf-mupdf)
+	packages=(accountsservice adobe-source-sans-pro-fonts chromium google-chrome compton dropbox faba-mono-icons-git feh firefox gcalert gtk-theme-iris-dark-git gvim lightdm-gtk-greeter lightdm-webkit-theme-bevel-git mpdnotify-git rdesktop scrot slock tightvnc xmonad-contrib zathura-pdf-mupdf)
 	for package in "${packages[@]}"; do
 		# Don't allow AUR packages if yaourt isn't installed
 		if "$pkg_mgr" != "yaourt"; then
 			case $package in
 				google-chrome) ;&
-				compton-git) ;&
+				compton) ;&
 				dropbox) ;&
+				faba-mono-icons-git) ;&
 				gcalert) ;&
-				lightdm-webkit-theme-bevel-git)
+				gtk-theme-iris-dark-git) ;&
+				lightdm-webkit-theme-bevel-git) ;&
+				mpdnotify-git) ;&
+				tightvnc)
 					continue
 				;;
 			esac
@@ -165,13 +222,21 @@ if $yes; then
 
 		# Default certain packages I use to "on"
 		case $package in
-		compton-git) ;& # Fall through
+		accountsservice) ;& # Fall through
+		adobe-source-sans-pro-fonts) ;&
+		compton) ;&
 		dropbox) ;&
+		faba-mono-icons-git) ;&
 		feh) ;&
 		firefox) ;&
 		gcalert) ;&
+		gtk-theme-iris-dark-git) ;&
+		gvim) ;&
 		lightdm-webkit-theme-bevel-git) ;&
+		rdesktop) ;&
+		scrot) ;&
 		slock) ;&
+		tightvnc) ;&
 		xmonad-contrib) ;&
 		zathura-pdf-mupdf)
 			options+=($i $package "on")
