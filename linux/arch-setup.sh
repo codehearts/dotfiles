@@ -161,6 +161,65 @@ fi
 
 configs=( compton mpdnotify tint2 xfce4-terminal xmonad xprofile)
 default=( "on"    "on"      "off" "on"           "on"   "on"    )
+source_prefix="linux"
+
+# Process user choices
+for choice in $choices; do
+	case $choice in
+	compton)
+		infobox "Linking compton files"
+
+		declare -A compton_files
+		compton_files['compton.conf']='.compton.conf'
+		set_home_files_from_array compton_files
+		;;
+	mdpnotify)
+		infobox "Linking mpdnotify files"
+
+		ensure_dir_exists ~/.config/mpdnotify
+
+		declare -A mpdnotify_files
+		mpdnotify_files['config/mpdnotify/config']='.config/mpdnotify/config'
+		mpdnotify_files['config/mpdnotify/nocover.png']='.config/mpdnotify/nocover.png'
+		set_home_files_from_array mpdnotify_files
+		;;
+	tint2)
+		infobox "Linking tint2 config"
+
+		ensure_dir_exists ~/.config/tint2
+
+		declare -A tint2_files
+		tint2_files['config/tint2/default.tint2rc']='.config/tint2/tint2rc'
+		set_home_files_from_array tint2_files
+		;;
+	xfce4-terminal)
+		infobox "Linking XFCE Terminal config"
+
+		ensure_dir_exists ~/.config/xfce4/terminal
+
+		declare -A xfce_terminal_files
+		xfce_terminal_files['config/xfce4/terminal/accels.scm']='.config/xfce4/terminal/accels.scm'
+		xfce_terminal_files['config/xfce4/terminal/terminalrc']='.config/xfce4/terminal/terminalrc'
+		set_home_files_from_array xfce_terminal_files
+		;;
+	xmonad)
+		infobox "Linking Xmonad config"
+
+		ensure_dir_exists ~/.xmonad
+
+		declare -A xmonad_files
+		xmonad_files['xmonad/xmonad.hs']='.xmonad/xmonad.hs'
+		set_home_files_from_array xmonad_files
+		;;
+	xprofile)
+		infobox "Linking xprofile config"
+
+		declare -A xprofile_files
+		xprofile_files['xprofile']='.xprofile'
+		set_home_files_from_array xprofile_files
+		;;
+	esac
+done
 
 
 
