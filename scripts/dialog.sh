@@ -35,7 +35,7 @@ get_input () {
 # $1: The question prompt
 # Returns 0 for "yes" and 1 for "no"
 yes_no () {
-	$DIALOG --yesno "$1" 12 50
+	$dialog --yesno "$1" 12 50
 	result=$?; yes=false; [ $result -eq 0 ] && yes=true
 }
 
@@ -45,18 +45,19 @@ yes_no () {
 # $3: Defaults for the options, as an array of "on"/"off"
 # Sets $choices to a string of the users' choices, one per line
 checklist () {
+	text='"'"$1"'"'
 	declare -a option_arg=("${!2}")
 	declare -a default_arg=("${!3}")
 
 	i=0
 	options=()
 	for option in "${option_arg[@]}"; do
-		options+=($i $package "${default_arg[$i]}")
+		options+=($i "$option" "${default_arg[$i]}")
 		i=$[i+1]
 	done
 
-	checklist=($dialog --separate-output --no-tags --checklist "$1" 22 50 $i)
-	choices=$("${checklist[@]}" "${options[@]}" 2>&1 >/dev/tty)
+	list_cmd=($dialog --separate-output --checklist "$text" 22 50 16)
+	choices=$("${list_cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 }
 
 
