@@ -8,95 +8,60 @@
 # Initial Setup
 ########################################
 
+# Determine which directory this script is in
+osx_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
 # Ask for the administrator password upfront
 sudo -v
 
 # Keep-alive: update existing `sudo` time stamp until this script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-# Create an empty error log
-ERROR_LOG=/tmp/setup_errors.log
-touch $ERROR_LOG; rm $ERROR_LOG; touch $ERROR_LOG
+# Include the utility script
+. "$osx_dir/../scripts/utility.sh"
 
 ########################################
 # Homebrew & Cask
 ########################################
 
-echo "Installing Homebrew..."
+is_command_installed brew
+if ! $installed; then
+	echo "Installing Homebrew..."
 
-# Install Homebrew for package management
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	# Install Homebrew for package management
+	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-echo "Done"
+	echo "Done"
+fi
 
 ########################################
 # Base software Installation
 ########################################
 
-echo "Installing dialog..."
+is_command_installed dialog
+if ! $installed; then
+	echo "Installing dialog..."
 
-brew install dialog
+	brew install dialog
 
-echo "Done"
+	echo "Done"
+fi
 
-# Determine which dialog software to use
-read DIALOG <<< "$(which whiptail dialog 2> /dev/null)"
+# Include the dialog script
+. "$osx_dir/../scripts/dialog.sh"
 
-# Displays an infobox with $1 as the contents.
-# $1: The contents of the infobox
-infobox () {
-	$DIALOG --infobox "$1" 12 50
-}
+########################################
+# Brew software Installation
+########################################
 
-# Displays a programbox with $2 as the text.
-# $1: The command to run in the programbox
-# $2: The text label
-program_box () {
-	infobox "$2"
-	$1 2>> $ERROR_LOG 1> /dev/null
-}
+packages=( bash bash-completion ctags caskroom/cask/brew-cask git )
+defaults=( "on" "on"            "on"  "on"                    "on")
 
-# Displays an input field with $1 as the label
-# $1: The label for the input field
-# Sets $user_input to the user’s input
-get_input () {
-	$DIALOG --inputbox "$1" 12 50 2> /tmp/userinput
-	user_input=`cat /tmp/userinput`
-}
-
-# Displays a yes/no question with $1 as the prompt
-# $1: The question prompt
-# Sets $yes to true if the user answered yes, false otherwise
-yes_no () {
-	$DIALOG --yesno "$1" 12 50
-	result=$?; yes=false; [ $result -eq 0 ] && yes=true
-}
-
-# Appends the given string to the given output file
-# If the entire string is already present, it will not be appended
-# $1: The string to append
-# $2: The file to append to
-append_entire_string_without_duplicating () {
-	# If the entire string is already present...
-	if [[ -z $(perl -ne "BEGIN{undef $/;} m|(\Q$1\E)| and print \$1" "$2") ]]; then
-		sudo sh -c "echo -e \"\n$1\n\" >> $2"
-	fi
-}
-
-options=(); i=0
-packages=(bash bash-completion ctags caskroom/cask/brew-cask git)
-for package in "${packages[@]}"
-    do
-		options+=($i $package "off")
-        i=$[i+1]
-done
-cmd=($DIALOG --separate-output --no-tags --checklist "Choose Homebrew software to install:" 22 50 16)
-choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+checklist "Choose Homebrew software to install:" packages[@] defaults[@]
 
 # Process user choices
 for choice in $choices; do
 	choice=${packages[$choice]} # Get the name of the choice
-
 	program_box "brew install $choice" "Installing ${choice}..."
 
 	case $choice in
@@ -109,24 +74,15 @@ for choice in $choices; do
 		;;
 	caskroom/cask/brew-cask)
 		# Allow the user to install Cask packages
-		cask_options=(); i=0
-		cask_packages=(vagrant virtualbox d235j-xbox360-controller-driver)
-		for package in "${cask_packages[@]}"
-			do
-				cask_options+=($i $package "off")
-				i=$[i+1]
-		done
-		cask_cmd=($DIALOG --separate-output --no-tags --checklist "Choose Homebrew Cask software to install:" 22 50 16)
-		cask_choices=$("${cask_cmd[@]}" "${cask_options[@]}" 2>&1 >/dev/tty)
+		packages=( vagrant virtualbox d235j-xbox360-controller-driver)
+		defaults=( "on"    "on"       "on"                           )
+
+		checklist "Choose Homebrew Cask software to install:" packages[@] defaults[@]
 
 		# Process user choices
-		for cask_choice in $cask_choices; do
-			cask_choice=${cask_packages[$cask_choice]} # Get the name of the choice
-
-			program_box "brew cask install $cask_choice" "Installing ${cask_choice}..."
-
-			case $cask_choice in
-			esac
+		for choice in $choices; do
+			choice=${packages[$choice]} # Get the name of the choice
+			program_box "brew cask install $choice" "Installing ${choice}..."
 		done
 		;;
 	esac
@@ -141,10 +97,9 @@ yes_no "Set this machine's hostname?"
 if $yes; then
 	get_input "Choose a hostname for this computer\nDon't forget that it can't have spaces!"
 
-	NEW_HOSTNAME="$user_input"
-	sudo scutil --set ComputerName $NEW_HOSTNAME
-	sudo scutil --set LocalHostName $NEW_HOSTNAME
-	sudo scutil --set HostName $NEW_HOSTNAME
+	sudo scutil --set ComputerName "$user_input"
+	sudo scutil --set LocalHostName "$user_input"
+	sudo scutil --set HostName "$user_input"
 fi
 
 infobox "Configuring system preferences..."
@@ -233,29 +188,33 @@ infobox "Configuring Terminal..."
 # Use UTF-8
 defaults write com.apple.terminal StringEncodings -array 4
 
-# Use my own custom theme
-TERM_PROFILE='inuBASHiri Dark Plain';
-CURRENT_PROFILE="$(defaults read com.apple.terminal 'Default Window Settings')";
-FONT='Meslo LG S Regular for Powerline.otf';
-TMP_DIR="${HOME}/osx-setup-tmp";
-if [ "${CURRENT_PROFILE}" != "${TERM_PROFILE}" ]; then
-	mkdir -p $TMP_DIR
+# Use my own themes
+tmp_dir="${HOME}/osx-setup-tmp";
+term_profile='inuBASHiri Dark Plain';
+current_profile="$(defaults read com.apple.terminal 'Default Window Settings')";
+profile_dir_url='https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes'
+font_url='https://github.com/powerline/fonts/raw/master/Meslo/Meslo%20LG%20S%20Regular%20for%20Powerline.otf'
+font='Meslo LG S Regular for Powerline.otf';
+if [ "${current_profile}" != "${term_profile}" ]; then
+	mkdir -p $tmp_dir
 
-	# Install the necessary font
-	curl -L https://github.com/powerline/fonts/raw/master/Meslo/Meslo%20LG%20S%20Regular%20for%20Powerline.otf -o "${HOME}/Library/Fonts/${FONT}" &> /dev/null
+	# Install the necessary font if it is not already present
+	if [ ! -f "${HOME}/Library/Fonts/${font}" ]; then
+		curl -Ls "${font_url}" -s -o "${HOME}/Library/Fonts/${font}"
+	fi
 
-	curl -L https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Dark%20Plain.terminal -o "${TMP_DIR}/${TERM_PROFILE}.terminal" &> /dev/null
-	open "${TMP_DIR}/${TERM_PROFILE}.terminal";
+	curl -L "${profile_dir_url}/inuBASHiri%20Dark%20Plain.terminal" -s -o "${tmp_dir}/${term_profile}.terminal"
+	open "${tmp_dir}/${term_profile}.terminal";
 	sleep 1; # Wait a bit to make sure the theme is loaded
 
-	curl -L https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes/inuBASHiri%20Plain.terminal -o "${TMP_DIR}/inuBASHiri Plain.terminal" &> /dev/null
-	open "${TMP_DIR}/inuBASHiri Plain.terminal";
+	curl -L "${profile_dir_url}/inuBASHiri%20Plain.terminal" -s -o "${tmp_dir}/inuBASHiri Plain.terminal"
+	open "${tmp_dir}/inuBASHiri Plain.terminal";
 	sleep 1; # Wait a bit to make sure the theme is loaded
 
-	rm -rf $TMP_DIR
+	rm -rf $tmp_dir
 
-	defaults write com.apple.terminal 'Default Window Settings' -string "${TERM_PROFILE}";
-	defaults write com.apple.terminal 'Startup Window Settings' -string "${TERM_PROFILE}";
+	defaults write com.apple.terminal 'Default Window Settings' -string "${term_profile}";
+	defaults write com.apple.terminal 'Startup Window Settings' -string "${term_profile}";
 fi;
 
 ########################################
@@ -286,8 +245,8 @@ defaults write com.apple.messageshelper.MessageController SOInputLineSettings -d
 
 infobox "Installing Python packages..."
 
-sudo easy_install pip &> /dev/null # Silence the output
-pip install --user powerline-status &> /dev/null # Silence the output
+sudo easy_install pip
+pip install --user powerline-status
 
 ########################################
 # Ruby gems (Compass)
@@ -295,7 +254,7 @@ pip install --user powerline-status &> /dev/null # Silence the output
 
 infobox "Installing Ruby gems..."
 
-sudo gem install compass &> /dev/null # Silence the output
+sudo gem install compass
 
 ########################################
 # OS X Software Update
