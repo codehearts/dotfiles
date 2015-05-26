@@ -191,31 +191,31 @@ defaults write com.apple.terminal StringEncodings -array 4
 # Use my own themes
 tmp_dir="${HOME}/osx-setup-tmp";
 term_profile='inuBASHiri Dark Plain';
-current_profile="$(defaults read com.apple.terminal 'Default Window Settings')";
+terminal_themes=('inuBASHiri Dark Plain' 'inuBASHiri Plain')
 profile_dir_url='https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes'
 font_url='https://github.com/powerline/fonts/raw/master/Meslo/Meslo%20LG%20S%20Regular%20for%20Powerline.otf'
 font='Meslo LG S Regular for Powerline.otf';
-if [ "${current_profile}" != "${term_profile}" ]; then
-	mkdir -p $tmp_dir
+mkdir -p $tmp_dir
 
-	# Install the necessary font if it is not already present
-	if [ ! -f "${HOME}/Library/Fonts/${font}" ]; then
-		curl -Ls "${font_url}" -s -o "${HOME}/Library/Fonts/${font}"
+# Install the necessary font if it is not already present
+if [ ! -f "${HOME}/Library/Fonts/${font}" ]; then
+	curl -Ls "${font_url}" -s -o "${HOME}/Library/Fonts/${font}"
+fi
+
+# Install each theme if it is not already installed
+for theme in "${terminal_themes[@]}"; do
+	if [ -z "$(defaults read ~/Library/Preferences/com.apple.Terminal.plist "NSWindow Frame TTWindow $theme") 2>/dev/null)" ]; then
+
+		curl -L "${profile_dir_url}/${theme}.terminal" -s -o "${tmp_dir}/${theme}.terminal"
+		open "${tmp_dir}/${theme}.terminal";
+		sleep 1; # Wait a bit to make sure the theme is loaded
 	fi
+done
 
-	curl -L "${profile_dir_url}/inuBASHiri%20Dark%20Plain.terminal" -s -o "${tmp_dir}/${term_profile}.terminal"
-	open "${tmp_dir}/${term_profile}.terminal";
-	sleep 1; # Wait a bit to make sure the theme is loaded
+rm -rf $tmp_dir
 
-	curl -L "${profile_dir_url}/inuBASHiri%20Plain.terminal" -s -o "${tmp_dir}/inuBASHiri Plain.terminal"
-	open "${tmp_dir}/inuBASHiri Plain.terminal";
-	sleep 1; # Wait a bit to make sure the theme is loaded
-
-	rm -rf $tmp_dir
-
-	defaults write com.apple.terminal 'Default Window Settings' -string "${term_profile}";
-	defaults write com.apple.terminal 'Startup Window Settings' -string "${term_profile}";
-fi;
+defaults write com.apple.terminal 'Default Window Settings' -string "${term_profile}";
+defaults write com.apple.terminal 'Startup Window Settings' -string "${term_profile}";
 
 ########################################
 # TextEdit
