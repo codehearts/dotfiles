@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-system="none"
+# TODO This script will fail initially on a Mac because /bin/bash will be used, which is too old for declare -A
+# The fix for this is to simply move the general setup functionality to general/general-setup.sh and include that
 
 # Determine which directory this script is in
 setup_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -25,12 +26,12 @@ while test $# -gt 0; do
 			;;
 		--mac|--osx)
 			shift
-			system="mac"
+			. "$setup_dir/osx/osx-setup.sh"
 			shift
 			;;
 		--arch)
 			shift
-			system="arch"
+			. "$setup_dir/linux/arch-setup.sh"
 			shift
 			;;
 		*)
@@ -42,18 +43,22 @@ done
 # Include the dialog and file tools script
 . "$setup_dir/scripts/dialog.sh"
 . "$setup_dir/scripts/file_tools.sh"
+source_prefix="general"
 
+########################################
+# General Software Configs
+########################################
 
 configs=( git  vim  screen tmux  mpd   ncmpcpp "mutt theme" "mutt sample configs")
 default=( "on" "on" "on"   "off" "off" "off"   "off"        "off"                )
 configs+=("msmtp sample config" "offlineimap sample config"                      )
 default+=("off"                 "off"                                            )
-source_prefix="general"
 
-checklist "Choose config files to set up:" $configs $default
+checklist "Choose config files to set up:" configs[@] default[@]
 
 # Process user choices
 for choice in $choices; do
+	choice=${configs[$choice]} # Get the name of the choice
 	case $choice in
 	git)
 		infobox "Linking git files"
@@ -159,10 +164,16 @@ for choice in $choices; do
 	esac
 done
 
+########################################
+# Git Submodules
+########################################
 
-program_box "git submodule init" "Initializing Git submodules"
-program_box "git submodule update" "Updating Git submodules"
-program_box "git submodule foreach git pull origin master" "Pulling Git submodules"
+yes_no "Update Git submodules (Vim bundles, etc.)?"
+if $yes; then
+	program_box "git submodule init" "Initializing Git submodules"
+	program_box "git submodule update" "Updating Git submodules"
+	program_box "git submodule foreach git pull origin master" "Pulling Git submodules"
+fi
 
 infobox "Setup complete!"
 echo
