@@ -5,9 +5,12 @@ file_tools_included=${file_tools_included:-false}
 if ! $file_tools_included; then
 
 
+# Determine which directory this script is in, and then go up a level
+base_dir=$(dirname $(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd))
 
 action_copy=1
 action_symlink=2
+
 
 # Ensures that the given directory exists
 # $1: The path to the directory
@@ -25,18 +28,7 @@ set_home_files_from_array () {
 	# Get the associative array definition and evaluate it into $files
 	tmp="$( declare -p ${1} )"; eval "declare -A files=${tmp#*=}"
 	for i in "${!files[@]}"; do
-		set_file "$PWD/$source_prefix/$i" "$HOME/${files[$i]}" "$2"
-	done
-}
-
-# Moves a collection of dotfiles onto the system using symlinks.
-# $1: An associative array in the form array[$source] = $dest
-# $2: An optional code for whether to copy or symlink (default is symlink)
-set_files_from_array () {
-	# Get the associative array definition and evaluate it into $files
-	tmp="$( declare -p ${1} )"; eval "declare -A files=${tmp#*=}"
-	for i in "${!files[@]}"; do
-		set_file "$i" "${files[$i]}" "$2"
+		set_file "$base_dir/$source_prefix/$i" "$HOME/${files[$i]}" "$2"
 	done
 }
 
@@ -52,10 +44,8 @@ set_file () {
 	
 	# If the destination file already exists
 	if [ -e "$dest" ]; then
-		$dialog --yesno "$dest already exists on this system. Overwrite it?" 8 76
-		choice=$?
-
-		if [ $choice -eq 0 ]; then
+		yes_no "$dest already exists on this system. Overwrite it?"
+		if $yes; then
 			rm "$dest"
 		else
 			dontmove=1
