@@ -190,8 +190,8 @@ defaults write com.apple.terminal StringEncodings -array 4
 
 # Use my own themes
 tmp_dir="${HOME}/osx-setup-tmp";
-term_profile='inuBASHiri Dark Plain';
-terminal_themes=('inuBASHiri Dark Plain' 'inuBASHiri Plain')
+term_profile='NejThayer';
+terminal_themes=('NejThayer' 'inuBASHiri Dark Plain' 'inuBASHiri Plain')
 profile_dir_url='https://raw.githubusercontent.com/nejsan/dotfiles/master/osx/terminal-themes'
 font_url='https://github.com/powerline/fonts/raw/master/Meslo/Meslo%20LG%20S%20Regular%20for%20Powerline.otf'
 font='Meslo LG S Regular for Powerline.otf';
