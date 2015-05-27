@@ -176,6 +176,5 @@ if $yes; then
 fi
 
 infobox "Setup complete!"
-echo
 
 exit 0
