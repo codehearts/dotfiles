@@ -8,11 +8,19 @@
 # Initial Setup
 ########################################
 
-# Set our package manager command
-pkg_mgr="sudo pacman"
-
 # Determine which directory this script is in
 linux_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+# Include the utility script
+. "$linux_dir/../scripts/utility.sh"
+
+# Set our package manager command
+pkg_mgr="sudo pacman"
+is_command_installed yaourt
+if $installed; then pkg_mgr=yaourt; fi
+
+# List of packages to install
+to_install=()
 
 # Ask for the administrator password upfront
 sudo -v
@@ -20,65 +28,104 @@ sudo -v
 # Keep-alive: update existing `sudo` time stamp until this script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+# Determines if the given package is installed
+# $1: The name of the package to check for
+# Sets $installed to true if it is
+is_package_installed () {
+	installed=true
+	if [ -z "$($pkg_mgr -Qi $1 2>/dev/null)" ]; then
+		installed=false
+	fi
+}
+
+# Marks a given package for installation
+# If the package is already installed, it will not be marked.
+# $1: The name of the package
+mark_for_installation () {
+	to_install+=("$1")
+}
+
+########################################
+# System Updates
+########################################
+
+echo "Performing system upgrade"
+
+$pkg_mgr -Syu
+
 ########################################
 # Dialog Software Install
 ########################################
 
-echo "Installing whiptail"
+is_command_installed whiptail
+if ! $installed; then
+	echo "Installing whiptail"
 
-$pkg_mgr --noconfirm -S libnewt
-
-echo "Done"
+	$pkg_mgr -S libnewt
+fi
 
 # Include the dialog script
 . "$linux_dir/../scripts/dialog.sh"
+. "$linux_dir/../scripts/file_tools.sh"
+source_prefix="linux"
 
 ########################################
 # Yaourt
 ########################################
 
-yes_no "Install yaourt?"
-if $yes; then
-	curl -O https://aur.archlinux.org/packages/pa/package-query/package-query.tar.gz
-	tar zxvf package-query.tar.gz
-	cd package-query
-	makepkg -si
-	cd ..
-	curl -O https://aur.archlinux.org/packages/ya/yaourt/yaourt.tar.gz
-	tar zxvf yaourt.tar.gz
-	cd yaourt
-	makepkg -si
-	cd ..
-	rm -rf yaourt package-query
+is_command_installed yaourt
+if ! $installed; then
+	yes_no "Install yaourt?"
+	if $yes; then
+		$pkg_mgr --noconfirm -S base-devel
+		curl -O https://aur.archlinux.org/packages/pa/package-query/package-query.tar.gz
+		tar zxvf package-query.tar.gz
+		cd package-query
+		makepkg -si
+		cd ..
+		curl -O https://aur.archlinux.org/packages/ya/yaourt/yaourt.tar.gz
+		tar zxvf yaourt.tar.gz
+		cd yaourt
+		makepkg -si
+		cd ..
+		rm -rf yaourt package-query
 
-	pkg_mgr=yaourt
+		pkg_mgr=yaourt
+	fi
 fi
 
 ########################################
 # CLI Software
 ########################################
 
-packages=( bash-completion calc ctags dictd  gnome-keyring  htop )
-defaults=( "on"            "on" "on"  "on"   "on"           "on" )
-packages+=(msmtp mutt  ncmpcpp offlineimap python-pip python2-pip)
-defaults+=("on"  "off" "on"    "on"        "on"       "on"       )
-packages+=(rsync texlive-core texlive-humanities texlive-pictures)
-defaults+=("on"  "on"         "on"               "on"            )
-packages+=(tmux unzip vagrant virtualbox virtualbox-guest-utils  )
-defaults+=("on" "on"  "on"    "on"       "on"                    )
+packages=( bash-completion calc ctags dictd  gnome-keyring  htop      )
+defaults=( "on"            "on" "on"  "on"   "on"           "on"      )
+packages+=(mpd  msmtp mutt  ncmpcpp offlineimap python-pip python2-pip)
+defaults+=("on" "on"  "off" "on"    "on"        "on"       "on"       )
+packages+=(rsync texlive-core texlive-humanities texlive-pictures     )
+defaults+=("on"  "on"         "on"               "on"                 )
+packages+=(tmux unzip vagrant virtualbox                              )
+defaults+=("on" "on"  "on"    "on"                                    )
 
 # Add yaourt packages if yaourt was installed
-if "$pkg_mgr" == "yaourt"; then
+if [ "$pkg_mgr" == "yaourt" ]; then
 	packages+=(gcalcli grub2-theme-dharma-mod mutt-sidebar urlview)
 	defaults+=("on"    "on"                   "on"         "on"   )
 fi
 
-checklist "Choose software to install:" $packages $defaults
+checklist "Choose software to install:" packages[@] defaults[@]
 
 # Process user choices
 for choice in $choices; do
 	choice=${packages[$choice]} # Get the name of the choice
-	program_box "$pkg_mgr --noconfirm -S $choice" "Installing ${choice}..."
+	mark_for_installation $choice
+
+	case $choice in
+	virtualbox)
+		# Install a related necessary package
+		mark_for_installation virtualbox-guest-utils
+	;;
+	esac
 done
 
 ########################################
@@ -93,39 +140,44 @@ if $yes; then
 	########################################
 
 	clear
-	sudo $pkg_mgr --noconfirm -S xorg-server xf86-input-synaptics
+	mark_for_installation xorg-server
+	mark_for_installation xf86-input-synaptics
 
 	packages=( xfce4-panel xfce4-power-manager xfce4-session xfce4-settings)
 	defaults=( "on"        "on"                "on"          "on"          )
 	packages+=(xfce4-terminal xfdesktop xfwm4                              )
 	defaults+=("on"           "off"     "off"                              )
 
-	checklist "Choose XFCE components to install:" $packages $defaults
+	checklist "Choose XFCE components to install:" packages[@] defaults[@]
 
 	# Process user choices
+	panel_installed=false
 	for choice in $choices; do
 		choice=${packages[$choice]} # Get the name of the choice
-
-		program_box "$pkg_mgr --noconfirm -S $choice" "Installing ${choice}..."
+		mark_for_installation $choice
 
 		case $choice in
-		# Allow the user to install XFCE Panel goodies
 		xfce4-panel)
-			packages=( xfce4-mailwatch-plugin xfce4-weather-plugin xfce4-weather-plugin)
-			defaults=( "on"                   "on"                 "on"                )
-			packages+=(xfce4-whiskermenu-plugin                                        )
-			defaults+=("on"                                                            )
-
-			checklist "Choose XFCE panel goodies to install:" $packages $defaults
-
-			# Process user choices
-			for choice in $choices; do
-				choice=${packages[$choice]} # Get the name of the choice
-				program_box "$pkg_mgr --noconfirm -S $choice" "Installing ${choice}..."
-			done
+			panel_installed=true
 			;;
 		esac
 	done
+
+	# Allow the user to install XFCE Panel goodies
+	if $panel_installed; then
+		packages=( xfce4-mailwatch-plugin xfce4-weather-plugin xfce4-weather-plugin)
+		defaults=( "on"                   "on"                 "on"                )
+		packages+=(xfce4-whiskermenu-plugin                                        )
+		defaults+=("on"                                                            )
+
+		checklist "Choose XFCE panel goodies to install:" packages[@] defaults[@]
+
+		# Process user choices
+		for choice in $choices; do
+			choice=${packages[$choice]} # Get the name of the choice
+			mark_for_installation $choice
+		done
+	fi
 
 	########################################
 	# Graphical Software
@@ -139,20 +191,114 @@ if $yes; then
 	defaults+=("on"           "on"                                              )
 
 	# Add yaourt packages if yaourt was installed
-	if "$pkg_mgr" == "yaourt"; then
-		packages+=(compton dropbox faba-mono-icons-git  gcalert google-chrome          )
-		defaults+=("on"    "on"    "on"                 "on"    "on"                   )
-		packages+=(gtk-theme-iris-dark-git lightdm-webkit-theme-bevel-git mpdnotify-git)
-		defaults+=("on"                    "on"                           "on"         )
+	if [ "$pkg_mgr" == "yaourt" ]; then
+		packages+=(compton dropbox faba-mono-icons-git  gcalert google-chrome      )
+		defaults+=("on"    "on"    "on"                 "on"    "off"              )
+		packages+=(gtk-theme-iris-dark-git lightdm-webkit-theme-bevel-git mpdnotify)
+		defaults+=("on"                    "on"                           "on"     )
 	fi
 
-	checklist "Choose graphical software to install:" $packages $defaults
+	checklist "Choose graphical software to install:" packages[@] defaults[@]
 
 	# Process user choices
 	for choice in $choices; do
 		choice=${packages[$choice]} # Get the name of the choice
-		program_box "$pkg_mgr --noconfirm -S $choice" "Installing ${choice}..."
+		mark_for_installation $choice
+
+		case $choice in
+		faba-mono-icons-git)
+			# The Moka set will fill in a lot of gaps in icon coverage
+			mark_for_installation moka-icon-theme-git
+		;;
+		esac
 	done
+fi
+
+########################################
+# Package Installation
+########################################
+
+echo "Preparing to install..."
+program_box "$($pkg_mgr --needed -S ${to_install[@]} >/dev/tty)" "Installing packages..."
+
+# Post-installation
+lightdm_service=false
+for installed_package in "${to_install[@]}"; do
+	package=${to_install[$installed_package]} # Get the name of the package
+
+	case $installed_package in
+	adobe-source-sans-pro-fonts)
+		# Set this as the system font
+		xfconf=`which xfconf-query`
+		sudo xinit $xfconf --create --type=string -c xsettings -p /Gtk/FontName -s "Source Sans Pro 12"
+	;;
+	compton)
+		# Set Compton to autostart
+		ensure_dir_exists ~/.config/autostart
+		declare -A compton_autostart
+		compton_autostart['config/autostart/Compton.desktop']='.config/autostart/Compton.desktop'
+		set_home_files_from_array compton_autostart
+	;;
+	dropbox)
+		# Set Dropbox to autostart
+		ensure_dir_exists ~/.config/autostart
+		declare -A dropbox_autostart
+		dropbox_autostart['config/autostart/dropbox.desktop']='.config/autostart/dropbox.desktop'
+		set_home_files_from_array dropbox_autostart
+	;;
+	faba-mono-icons-git)
+		# Set this as the default icon theme
+		xfconf=`which xfconf-query`
+		sudo xinit $xfconf --create --type=string -c xsettings -p /Net/IconThemeName -s "Faba-Mono"
+	;;
+	gcalert)
+		# Set gcalert to autostart
+		ensure_dir_exists ~/.config/autostart
+		declare -A gcalert_autostart
+		gcalert_autostart['config/autostart/Gcalert.desktop']='.config/autostart/Gcalert.desktop'
+		set_home_files_from_array gcalert_autostart
+	;;
+	gtk-theme-iris-dark-git)
+		# Set Iris Dark as the system theme
+		xfconf=`which xfconf-query`
+		sudo xinit $xfconf --create --type=string -c xsettings -p /Net/ThemeName -s "iris-dark"
+	;;
+	lightdm-gtk-greeter)
+		lightdm_service=true
+	;;
+	lightdm-webkit-theme-bevel-git)
+		# Set up the bevel theme
+		uncomment_line_in_file "greeter-session=example-gtk-gnome" /etc/lightdm/lightdm.conf '#'
+		replace_term_in_file 'example-gtk-gnome' 'lightdm-webkit-greeter' /etc/lightdm/lightdm.conf
+		replace_term_in_file '#user-session=default' 'user-session=xfce' /etc/lightdm/lightdm.conf
+		replace_term_in_file 'webkit-theme=webkit' 'webkit-theme=bevel' /etc/lightdm/lightdm-webkit*.conf
+		lightdm_service=true
+	;;
+	xmonad-contrib)
+		# Set Xmonad to autostart
+		ensure_dir_exists ~/.config/autostart
+		declare -A xmonad_autostart
+		xmonad_autostart['config/autostart/Xmonad.desktop']='.config/autostart/Xmonad.desktop'
+		set_home_files_from_array xmonad_autostart
+	;;
+	esac
+done
+
+if $lightdm_service; then
+	sudo systemctl start lightdm.service
+
+	if [ "$(sudo systemctl is-enabled lightdm.service)" != "enabled" ]; then
+		sudo systemctl enable lightdm.service
+	fi
+fi
+
+########################################
+# Package Cleanup
+########################################
+
+# Only do this if there are orphans to remove
+if [ -n "$($pkg_mgr -Qqtd)" ]; then
+	program_box "$pkg_mgr -Rns $($pkg_mgr -Qqtd)" "Cleaning orphaned packages..."
 fi
 
 ########################################
@@ -161,12 +307,12 @@ fi
 
 configs=( compton mpdnotify tint2 xfce4-terminal xmonad xprofile)
 default=( "on"    "on"      "off" "on"           "on"   "on"    )
-source_prefix="linux"
 
-checklist "Choose Linux config files to set up:" $configs $default
+checklist "Choose Linux config files to set up:" configs[@] default[@]
 
 # Process user choices
 for choice in $choices; do
+	choice=${configs[$choice]} # Get the name of the choice
 	case $choice in
 	compton)
 		infobox "Linking compton files"
@@ -195,6 +341,9 @@ for choice in $choices; do
 		set_home_files_from_array tint2_files
 		;;
 	xfce4-terminal)
+		# Download the font I use for my terminal config
+		program_box "$pkg_mgr --needed -S otf-meslo-powerline-git" "Installing terminal font..."
+
 		infobox "Linking XFCE Terminal config"
 
 		ensure_dir_exists ~/.config/xfce4/terminal
