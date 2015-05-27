@@ -154,7 +154,7 @@ for choice in $choices; do
 		infobox "Copying offlineimap sample config"
 
 		declare -A offlineimap_sample_files
-		offlineimap_sample_files['offlineimaprc-sample']='offlineimaprc-sample'
+		offlineimap_sample_files['offlineimaprc-sample']='.offlineimaprc-sample'
 		set_home_files_from_array offlineimap_sample_files $ACTION_COPY
 
 		declare -A offlineimap_files
