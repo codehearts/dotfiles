@@ -109,8 +109,8 @@ defaults+=("on" "on"  "on"    "on"                                    )
 
 # Add yaourt packages if yaourt was installed
 if [ "$pkg_mgr" == "yaourt" ]; then
-	packages+=(gcalcli grub2-theme-dharma-mod mutt-sidebar urlview)
-	defaults+=("on"    "on"                   "on"         "on"   )
+	packages+=(gcalcli mutt-sidebar urlview)
+	defaults+=("on"    "on"         "on"   )
 fi
 
 checklist "Choose software to install:" packages[@] defaults[@]
