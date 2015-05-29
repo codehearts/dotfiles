@@ -19,14 +19,12 @@ python powerline_setup()
 python del powerline_setup
 
 if has("macunix")
-	" Mac settings
 	set guifont=Meslo\ LG\ S\ Regular\ for\ Powerline:h11
 
 	" Use open to view LaTeX output on OS X
 	let g:LatexBox_viewer="open"
 else
-	" Linux settings
-	set guifont=Menlo\ for\ Powerline\ 11
+	set guifont=Meslo\ LG\ S\ for\ Powerline\ 11
 endif
 
 " Set <leader> to ","
