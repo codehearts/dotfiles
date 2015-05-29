@@ -10,3 +10,5 @@ source /etc/X11/xinit/xinitrc.d/30-dbus.sh
 
 # Start GNOME Keyring
 /usr/bin/gnome-keyring-daemon --start --components=gpg,pkcs11,secrets,ssh
+
+~/.fehbg ~/Pictures/wallpaper 5m fill &
