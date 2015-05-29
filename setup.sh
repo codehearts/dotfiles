@@ -175,6 +175,12 @@ if $yes; then
 	program_box "git submodule foreach git pull origin master" "Pulling Git submodules"
 fi
 
-infobox "Setup complete!"
+# Check if a post_setup function was declared
+is_bash_function post_setup
+if $is_function; then
+	post_setup
+else
+	infobox "Setup complete!"
+fi
 
 exit 0
