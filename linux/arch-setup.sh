@@ -98,14 +98,14 @@ fi
 # CLI Software
 ########################################
 
-packages=( bash-completion calc ctags dictd  gnome-keyring  htop        )
-defaults=( "on"            "on" "on"  "on"   "on"           "on"        )
-packages+=(mpd  msmtp mutt  ncmpcpp offlineimap python-pip python2-pip  )
-defaults+=("on" "on"  "off" "on"    "on"        "on"       "on"         )
-packages+=(rfkill rsync texlive-core texlive-humanities                 )
-defaults+=("on"   "on"  "on"         "on"                               )
-packages+=(texlive-pictures tmux unzip vagrant virtualbox wpa_supplicant)
-defaults+=("on"             "on" "on"  "on"    "on"       "on"          )
+packages=( bash-completion calc ctags dictd  gnome-keyring  htop      )
+defaults=( "on"            "on" "on"  "on"   "on"           "on"      )
+packages+=(mpd  msmtp mutt  ncmpcpp offlineimap python-pip python2-pip)
+defaults+=("on" "on"  "off" "on"    "on"        "on"       "on"       )
+packages+=(rfkill rsync texlive-core texlive-humanities               )
+defaults+=("on"   "on"  "on"         "on"                             )
+packages+=(texlive-pictures tmux unzip vagrant virtualbox wpa_actiond )
+defaults+=("on"             "on" "on"  "on"    "on"       "on"        )
 
 # Add yaourt packages if yaourt was installed
 if [ "$pkg_mgr" == "yaourt" ]; then
