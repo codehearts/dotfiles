@@ -88,7 +88,7 @@ if ! $installed; then
 		cd yaourt
 		makepkg -si
 		cd ..
-		rm -rf yaourt package-query
+		rm -rf yaourt* package-query*
 
 		pkg_mgr=yaourt
 	fi
