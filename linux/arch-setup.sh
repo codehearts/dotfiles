@@ -64,6 +64,16 @@ if ! $installed; then
 	$pkg_mgr -S libnewt
 fi
 
+is_command_installed ntpd
+if ! $installed; then
+	echo "Installing ntp"
+
+	$pkg_mgr -S ntp
+	sudo ntpdate -s time.nist.gov
+	sudo systemctl start ntpd
+	sudo systemctl enable ntpd
+fi
+
 # Include the dialog script
 . "$linux_dir/../scripts/dialog.sh"
 . "$linux_dir/../scripts/file_tools.sh"
