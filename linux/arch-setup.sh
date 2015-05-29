@@ -237,11 +237,6 @@ for installed_package in "${to_install[@]}"; do
 	package=${to_install[$installed_package]} # Get the name of the package
 
 	case $installed_package in
-	adobe-source-sans-pro-fonts)
-		# Set this as the system font
-		xfconf=`which xfconf-query`
-		sudo xinit $xfconf --create --type=string -c xsettings -p /Gtk/FontName -s "Source Sans Pro 12"
-	;;
 	compton)
 		# Set Compton to autostart
 		ensure_dir_exists ~/.config/autostart
@@ -256,22 +251,12 @@ for installed_package in "${to_install[@]}"; do
 		dropbox_autostart['config/autostart/dropbox.desktop']='.config/autostart/dropbox.desktop'
 		set_home_files_from_array dropbox_autostart
 	;;
-	faba-mono-icons-git)
-		# Set this as the default icon theme
-		xfconf=`which xfconf-query`
-		sudo xinit $xfconf --create --type=string -c xsettings -p /Net/IconThemeName -s "Faba-Mono"
-	;;
 	gcalert)
 		# Set gcalert to autostart
 		ensure_dir_exists ~/.config/autostart
 		declare -A gcalert_autostart
 		gcalert_autostart['config/autostart/Gcalert.desktop']='.config/autostart/Gcalert.desktop'
 		set_home_files_from_array gcalert_autostart
-	;;
-	gtk-theme-iris-dark-git)
-		# Set Iris Dark as the system theme
-		xfconf=`which xfconf-query`
-		sudo xinit $xfconf --create --type=string -c xsettings -p /Net/ThemeName -s "iris-dark"
 	;;
 	lightdm-gtk-greeter)
 		lightdm_service=true
