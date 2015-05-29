@@ -282,14 +282,6 @@ for installed_package in "${to_install[@]}"; do
 	esac
 done
 
-if $lightdm_service; then
-	sudo systemctl start lightdm.service
-
-	if [ "$(sudo systemctl is-enabled lightdm.service)" != "enabled" ]; then
-		sudo systemctl enable lightdm.service
-	fi
-fi
-
 ########################################
 # Package Cleanup
 ########################################
@@ -369,6 +361,20 @@ for choice in $choices; do
 		;;
 	esac
 done
+
+########################################
+# Post-setup Operations
+########################################
+
+post_setup () {
+	if $lightdm_service; then
+		if [ "$(sudo systemctl is-enabled lightdm.service)" != "enabled" ]; then
+			sudo systemctl enable lightdm.service
+		fi
+
+		sudo systemctl start lightdm.service
+	fi
+}
 
 
 
