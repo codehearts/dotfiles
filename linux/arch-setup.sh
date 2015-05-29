@@ -104,8 +104,8 @@ packages+=(mpd  msmtp mutt  ncmpcpp offlineimap python-pip python2-pip)
 defaults+=("on" "on"  "off" "on"    "on"        "on"       "on"       )
 packages+=(rfkill rsync texlive-core texlive-humanities               )
 defaults+=("on"   "on"  "on"         "on"                             )
-packages+=(texlive-pictures tmux unzip vagrant virtualbox wpa_actiond )
-defaults+=("on"             "on" "on"  "on"    "on"       "on"        )
+packages+=(texlive-pictures tmux unzip wpa_actiond                    )
+defaults+=("on"             "on" "on"  "on"                           )
 
 # Add yaourt packages if yaourt was installed
 if [ "$pkg_mgr" == "yaourt" ]; then
@@ -187,8 +187,8 @@ if $yes; then
 	defaults=( "on"            "on"                        "off"    "on" "on"   )
 	packages+=(gvim lightdm-gtk-greeter rdesktop scrot slock tigervnc           )
 	defaults+=("on" "off"               "on"     "on"  "on"  "on"               )
-	packages+=(xmonad-contrib zathura-pdf-mupdf                                 )
-	defaults+=("on"           "on"                                              )
+	packages+=(vagrant virtualbox xmonad-contrib zathura-pdf-mupdf              )
+	defaults+=("on"    "on"       "on"           "on"                           )
 
 	# Add yaourt packages if yaourt was installed
 	if [ "$pkg_mgr" == "yaourt" ]; then
