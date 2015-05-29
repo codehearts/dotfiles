@@ -102,10 +102,10 @@ packages=( bash-completion calc ctags dictd  gnome-keyring  htop      )
 defaults=( "on"            "on" "on"  "on"   "on"           "on"      )
 packages+=(mpd  msmtp mutt  ncmpcpp offlineimap python-pip python2-pip)
 defaults+=("on" "on"  "off" "on"    "on"        "on"       "on"       )
-packages+=(rsync texlive-core texlive-humanities texlive-pictures     )
-defaults+=("on"  "on"         "on"               "on"                 )
-packages+=(tmux unzip vagrant virtualbox                              )
-defaults+=("on" "on"  "on"    "on"                                    )
+packages+=(rfkill rsync texlive-core texlive-humanities               )
+defaults+=("on"   "on"  "on"         "on"                             )
+packages+=(texlive-pictures tmux unzip vagrant virtualbox             )
+defaults+=("on"             "on" "on"  "on"    "on"                   )
 
 # Add yaourt packages if yaourt was installed
 if [ "$pkg_mgr" == "yaourt" ]; then
