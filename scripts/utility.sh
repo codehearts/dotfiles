@@ -16,6 +16,16 @@ is_command_installed () {
 	fi
 }
 
+# Determines if the given name is a bash function
+# $1: The name to check
+# Sets $is_function to true if it is
+is_bash_function () {
+	is_function=true
+	if [ -z "$(type -t $1)" ] && [ "$(type -t $1)" = function ]; then
+		is_function=false
+	fi
+}
+
 # Appends the given string to the given output file
 # If the entire string is already present, it will not be appended
 # $1: The string to append
