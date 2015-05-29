@@ -270,7 +270,7 @@ for installed_package in "${to_install[@]}"; do
 		lightdm_service=true
 	;;
 	python-pip)
-		program_box "pip install --user powerline-status" "Installing Powerline"
+		program_box "pip2 install --user powerline-status" "Installing Powerline"
 	;;
 	xmonad-contrib)
 		# Set Xmonad to autostart
