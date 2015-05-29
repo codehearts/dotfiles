@@ -175,10 +175,10 @@ if $yes; then
 
 	# Allow the user to install XFCE Panel goodies
 	if $panel_installed; then
-		packages=( xfce4-mailwatch-plugin xfce4-weather-plugin xfce4-weather-plugin)
-		defaults=( "on"                   "on"                 "on"                )
-		packages+=(xfce4-whiskermenu-plugin                                        )
-		defaults+=("on"                                                            )
+		packages=( xfce4-datetime-plugin xfce4-mailwatch-plugin xfce4-weather-plugin)
+		defaults=( "on"                  "on"                   "on"                )
+		packages+=(xfce4-whiskermenu-plugin                                         )
+		defaults+=("on"                                                             )
 
 		checklist "Choose XFCE panel goodies to install:" packages[@] defaults[@]
 
@@ -295,8 +295,8 @@ fi
 # Linux Software Configs
 ########################################
 
-configs=( compton mpdnotify tint2 xfce4-terminal xmonad xprofile)
-default=( "on"    "on"      "off" "on"           "on"   "on"    )
+configs=( compton mpdnotify tint2 xfce4-terminal xfce4-weather-plugin xmonad xprofile)
+default=( "on"    "on"      "off" "on"           "on"                 "on"   "on"    )
 
 checklist "Choose Linux config files to set up:" configs[@] default[@]
 
@@ -343,6 +343,13 @@ for choice in $choices; do
 		xfce_terminal_files['config/xfce4/terminal/terminalrc']='.config/xfce4/terminal/terminalrc'
 		set_home_files_from_array xfce_terminal_files
 		;;
+	xfce4-weather-plugin)
+		# Set my weather icons
+		ensure_dir_exists ~/.config/xfce4/
+		declare -A weather_config
+		weather_config['config/xfce4/weather']='.config/xfce4/weather'
+		set_home_files_from_array weather_config
+	;;
 	xmonad)
 		infobox "Linking Xmonad config"
 
