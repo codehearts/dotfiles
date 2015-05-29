@@ -110,10 +110,10 @@ fi
 
 packages=( bash-completion calc ctags dictd  gnome-keyring  htop      )
 defaults=( "on"            "on" "on"  "on"   "on"           "on"      )
-packages+=(mpd  msmtp mutt  ncmpcpp offlineimap python-pip python2-pip)
-defaults+=("on" "on"  "off" "on"    "on"        "on"       "on"       )
-packages+=(rfkill rsync texlive-core texlive-humanities               )
-defaults+=("on"   "on"  "on"         "on"                             )
+packages+=(mpd  msmtp mutt  ncmpcpp offlineimap openssh python-pip    )
+defaults+=("on" "on"  "off" "on"    "on"        "on"    "on"          )
+packages+=(python2-pip rfkill rsync texlive-core texlive-humanities   )
+defaults+=("on"        "on"   "on"  "on"         "on"                 )
 packages+=(texlive-pictures tmux unzip wpa_actiond                    )
 defaults+=("on"             "on" "on"  "on"                           )
 
