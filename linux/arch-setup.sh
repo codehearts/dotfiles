@@ -284,6 +284,9 @@ for installed_package in "${to_install[@]}"; do
 		replace_term_in_file 'webkit-theme=webkit' 'webkit-theme=bevel' /etc/lightdm/lightdm-webkit*.conf
 		lightdm_service=true
 	;;
+	python-pip)
+		program_box "pip install --user powerline-status" "Installing Powerline"
+	;;
 	xmonad-contrib)
 		# Set Xmonad to autostart
 		ensure_dir_exists ~/.config/autostart
