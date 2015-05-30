@@ -135,7 +135,7 @@ for choice in $choices; do
 		mutt_sample_files['mutt/gmail_config']='.mutt/gmail_config'
 		mutt_sample_files['mutt/school_config']='.mutt/school_config'
 		mutt_sample_files['mutt/mailcap-sample']='.mutt/mailcap-sample'
-		set_home_files_from_array mutt_sample_files $ACTION_COPY
+		set_home_files_from_array mutt_sample_files $action_copy
 		;;
 	"msmtp sample config")
 		infobox "Copying msmtp sample config"
@@ -144,7 +144,7 @@ for choice in $choices; do
 
 		declare -A msmtp_sample_files
 		msmtp_sample_files['msmtprc-sample']='.msmtprc-sample'
-		set_home_files_from_array msmtp_sample_files $ACTION_COPY
+		set_home_files_from_array msmtp_sample_files $action_copy
 
 		declare -A msmtp_files
 		msmtp_files['msmtp/msmtp-gnome-tool.py']='.msmtp/msmtp-gnome-tool.py'
@@ -155,7 +155,7 @@ for choice in $choices; do
 
 		declare -A offlineimap_sample_files
 		offlineimap_sample_files['offlineimaprc-sample']='.offlineimaprc-sample'
-		set_home_files_from_array offlineimap_sample_files $ACTION_COPY
+		set_home_files_from_array offlineimap_sample_files $action_copy
 
 		declare -A offlineimap_files
 		offlineimap_files['offlineimap.py']='.offlineimap.py'
