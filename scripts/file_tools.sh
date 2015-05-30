@@ -20,6 +20,13 @@ ensure_dir_exists () {
 	fi
 }
 
+# Ensures that the given file exists
+# $1: The path to the file
+ensure_file_exists () {
+	ensure_dir_exists $(dirname $1)
+	touch $1
+}
+
 # Moves a collection of iles onto the system in the user's home directory using symlinks.
 # $source_prefix can be set to define a subdir where the source files reside.
 # $1: An associative array in the form array[$source] = $dest
