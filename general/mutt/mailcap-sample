@@ -11,5 +11,8 @@ application/pdf; zathura %s
 # HTML
 text/html; firefox %s
 
+application/octet-stream; vim %s 
+application/x-sh; vim %s 
+
 # Plain Text
 text/plain; vim %s 
