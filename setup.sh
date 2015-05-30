@@ -128,6 +128,7 @@ for choice in $choices; do
 		infobox "Copying mutt sample configs"
 
 		ensure_dir_exists ~/.mutt
+		ensure_dir_exists ~/.mutt/temp
 		ensure_file_exists ~/.mutt/aliases
 
 		declare -A mutt_sample_files
