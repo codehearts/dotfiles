@@ -128,6 +128,7 @@ for choice in $choices; do
 		infobox "Copying mutt sample configs"
 
 		ensure_dir_exists ~/.mutt
+		ensure_file_exists ~/.mutt/aliases
 
 		declare -A mutt_sample_files
 		mutt_sample_files['muttrc-sample']='.muttrc-sample'
