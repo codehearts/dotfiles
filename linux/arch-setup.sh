@@ -269,6 +269,19 @@ for installed_package in "${to_install[@]}"; do
 		replace_term_in_file 'webkit-theme=webkit' 'webkit-theme=bevel' /etc/lightdm/lightdm-webkit*.conf
 		lightdm_service=true
 	;;
+	offlineimap)
+		# Set offlineimap to run in the background
+		ensure_dir_exists ~/.config/systemd/user
+		declare -A offlineimap_autostart
+		offlineimap_autostart['config/systemd/user/offlineimap.service']='.config/systemd/user/offlineimap.service'
+		offlineimap_autostart['config/systemd/user/offlineimap.timer']='.config/systemd/user/offlineimap.timer'
+		set_home_files_from_array offlineimap_autostart $action_copy
+
+		program_box "systemctl --user start offlineimap.timer" "Running offlineimap in background"
+		program_box "systemctl --user start offlineimap.service" "Running offlineimap in background"
+		program_box "systemctl --user enable offlineimap.timer" "Running offlineimap in background"
+		program_box "systemctl --user enable offlineimap.service" "Running offlineimap in background"
+	;;
 	python-pip)
 		program_box "pip2 install --user powerline-status" "Installing Powerline"
 	;;
