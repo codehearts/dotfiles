@@ -295,8 +295,8 @@ fi
 # Linux Software Configs
 ########################################
 
-configs=( compton mpdnotify tint2 xfce4-terminal xfce4-weather-plugin xmonad xprofile)
-default=( "on"    "on"      "off" "on"           "on"                 "on"   "on"    )
+configs=( compton gcalert mpdnotify tint2 xfce4-terminal xfce4-weather-plugin xmonad xprofile)
+default=( "on"    "on"    "on"      "off" "on"           "on"                 "on"   "on"    )
 
 checklist "Choose Linux config files to set up:" configs[@] default[@]
 
@@ -310,6 +310,15 @@ for choice in $choices; do
 		declare -A compton_files
 		compton_files['compton.conf']='.compton.conf'
 		set_home_files_from_array compton_files
+		;;
+	gcalert)
+		infobox "Linking gcalert files"
+
+		ensure_dir_exists ~/.config/gcalert
+
+		declare -A gcalert_files
+		gcalert_files['config/gcalert/gcalertrc']='.config/gcalert/gcalertrc'
+		set_home_files_from_array gcalert_files
 		;;
 	mdpnotify)
 		infobox "Linking mpdnotify files"

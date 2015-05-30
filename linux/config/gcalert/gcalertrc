@@ -1,0 +1,4 @@
+--timeformat=%H:%M
+--icon=calendar
+--check=1800
+--quiet
