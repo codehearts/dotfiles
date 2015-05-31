@@ -1,7 +1,7 @@
 # Sample .offlineimaprc for using offlineimap with Gmail and other email accounts.
 # This config assumes that passwords are stored in GNOME Keyring.
-# It's not that hard to do, see my Wiki article on it:
-# https://github.com/nejsan/dotfiles/wiki/Fetching-mail-with-offlineimap-and-GNOME-Keyring#setting-offlineimap-passwords-in-gnome-keyring
+# It's not difficult, see my Wiki article on it:
+# https://github.com/nejsan/dotfiles/wiki/offlineimap#storing-credentials
 #
 # Replace <user> with the name of your user directory
 # Replace /path/to/.offlineimap.py with the path to .offlineimap.py
