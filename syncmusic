@@ -8,7 +8,7 @@ show_help () {
 	exit 0
 }
 
-if [ $# -lt 3 ]; then
+if [ $# -lt 2 ]; then
 	show_help
 fi
 
