@@ -308,8 +308,10 @@ fi
 # Linux Software Configs
 ########################################
 
-configs=( compton gcalert mpdnotify tint2 xfce4-terminal xfce4-weather-plugin xmonad xprofile)
-default=( "on"    "on"    "on"      "off" "on"           "on"                 "on"   "on"    )
+configs=( compton gcalert mpdnotify shell-scripts tint2 xfce4-terminal)
+default=( "on"    "on"    "on"      "on"          "off" "on"          )
+configs+=(xfce4-weather-plugin xmonad xprofile)
+default+=("on"                 "on"   "on"    )
 
 checklist "Choose Linux config files to set up:" configs[@] default[@]
 
@@ -342,6 +344,16 @@ for choice in $choices; do
 		mpdnotify_files['config/mpdnotify/config']='.config/mpdnotify/config'
 		mpdnotify_files['config/mpdnotify/nocover.png']='.config/mpdnotify/nocover.png'
 		set_home_files_from_array mpdnotify_files
+		;;
+	shell-scripts)
+		program_box "git clone https://github.com/nejsan/arch-shell-scripts.git ~/.scripts" "Installing custom shell scripts"
+
+		infobox "Linking scripts into /usr/local/sbin/"
+		for script in ~/.scripts/*; do
+			if [ "$(basename $script)" != "readme.md" ]; then
+				sudo ln -s $script /usr/local/sbin/$(basename $script)
+			fi
+		done
 		;;
 	tint2)
 		infobox "Linking tint2 config"
