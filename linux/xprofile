@@ -13,4 +13,5 @@ source /etc/X11/xinit/xinitrc.d/30-dbus.sh
 
 ~/.fehbg ~/Pictures/wallpaper 5m fill &
 
+compton -b
 xmonad --replace &
