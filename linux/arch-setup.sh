@@ -283,7 +283,10 @@ for installed_package in "${to_install[@]}"; do
 		program_box "systemctl --user enable offlineimap.service" "Running offlineimap in background"
 	;;
 	python-pip)
-		program_box "pip2 install --user powerline-status" "Installing Powerline"
+		program_box "pip install --user pyglet" "Installing Pyglet"
+	;;
+	python2-pip)
+		program_box "pip2 install --user pyglet" "Installing Pyglet"
 	;;
 	xmonad-contrib)
 		# Set Xmonad to autostart
