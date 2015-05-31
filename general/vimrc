@@ -13,10 +13,8 @@ set backspace=indent,eol,start " Fixes potential backspace issues
 
 colorscheme molokai
 
-" Load Powerline
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
+" Use Powerline symbols with Airline
+let g:airline_powerline_fonts = 1
 
 if has("macunix")
 	set guifont=Meslo\ LG\ S\ Regular\ for\ Powerline:h11
