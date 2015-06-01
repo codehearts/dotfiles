@@ -176,11 +176,14 @@ done
 # Git Submodules
 ########################################
 
-yes_no "Update Git submodules (Vim bundles, etc.)?"
-if $yes; then
-	program_box "git submodule init" "Initializing Git submodules"
-	program_box "git submodule update" "Updating Git submodules"
-	program_box "git submodule foreach git pull origin master" "Pulling Git submodules"
+is_command_installed git
+if $installed; then
+	yes_no "Update Git submodules (Vim bundles, etc.)?"
+	if $yes; then
+		program_box "git submodule init" "Initializing Git submodules"
+		program_box "git submodule update" "Updating Git submodules"
+		program_box "git submodule foreach git pull origin master" "Pulling Git submodules"
+	fi
 fi
 
 # Check if a post_setup function was declared
