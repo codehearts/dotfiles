@@ -119,8 +119,8 @@ defaults+=("on"               "on"             "on" "on"  "on"        )
 
 # Add yaourt packages if yaourt was installed
 if [ "$pkg_mgr" == "yaourt" ]; then
-	packages+=(gcalcli mutt-sidebar urlview)
-	defaults+=("on"    "on"         "on"   )
+	packages+=(gcalcli mutt-sidebar pkgbuild-introspection-git urlview)
+	defaults+=("on"    "on"         "on"                       "on"   )
 fi
 
 checklist "Choose software to install:" packages[@] defaults[@]
