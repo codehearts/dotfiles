@@ -202,10 +202,10 @@ if $yes; then
 
 	# Add yaourt packages if yaourt was installed
 	if [ "$pkg_mgr" == "yaourt" ]; then
-		packages+=(compton dropbox faba-mono-icons-git  gcalert google-chrome      )
-		defaults+=("on"    "on"    "on"                 "on"    "off"              )
-		packages+=(gtk-theme-iris-dark-git lightdm-webkit-theme-bevel-git mpdnotify)
-		defaults+=("on"                    "on"                           "on"     )
+		packages+=(compton dropbox numix-circle-icon-theme-git  gcalert google-chrome)
+		defaults+=("on"    "on"    "on"                         "on"    "off"        )
+		packages+=(gtk-theme-iris-dark-git lightdm-webkit-theme-bevel-git mpdnotify  )
+		defaults+=("on"                    "on"                           "on"       )
 	fi
 
 	checklist "Choose graphical software to install:" packages[@] defaults[@]
@@ -214,13 +214,6 @@ if $yes; then
 	for choice in $choices; do
 		choice=${packages[$choice]} # Get the name of the choice
 		mark_for_installation $choice
-
-		case $choice in
-		faba-mono-icons-git)
-			# The Moka set will fill in a lot of gaps in icon coverage
-			mark_for_installation moka-icon-theme-git
-		;;
-		esac
 	done
 fi
 
