@@ -153,10 +153,10 @@ if $yes; then
 	mark_for_installation xorg-server
 	mark_for_installation xf86-input-synaptics
 
-	packages=( xfce4-panel xfce4-power-manager xfce4-mixer xfce4-session)
-	defaults=( "on"        "on"                "on"        "on"         )
-	packages+=(xfce4-settings xfce4-terminal xfdesktop xfwm4            )
-	defaults+=("on"           "on"           "off"     "off"            )
+	packages=( xfce4-mixer xfce4-notifyd xfce4-panel xfce4-power-manager  )
+	defaults=( "on"        "on"          "on"        "on"                 )
+	packages+=(xfce4-session xfce4-settings xfce4-terminal xfdesktop xfwm4)
+	defaults+=("on"          "on"           "on"           "off"     "off")
 
 	checklist "Choose XFCE components to install:" packages[@] defaults[@]
 
