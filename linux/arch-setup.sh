@@ -310,10 +310,10 @@ fi
 # Linux Software Configs
 ########################################
 
-configs=( compton gcalert mpdnotify shell-scripts tint2 xfce4-terminal)
-default=( "on"    "on"    "on"      "on"          "off" "on"          )
-configs+=(xfce4-weather-plugin xmonad xprofile)
-default+=("on"                 "on"   "on"    )
+configs=( compton gcalert mpdnotify shell-scripts tint2 xfce4-notify)
+default=( "on"    "on"    "on"      "on"          "off" "on"        )
+configs+=(xfce4-terminal xfce4-weather-plugin xmonad xprofile       )
+default+=("on"           "on"                 "on"   "on"           )
 
 checklist "Choose Linux config files to set up:" configs[@] default[@]
 
@@ -365,6 +365,15 @@ for choice in $choices; do
 		declare -A tint2_files
 		tint2_files['config/tint2/default.tint2rc']='.config/tint2/tint2rc'
 		set_home_files_from_array tint2_files
+		;;
+	xfce4-notify)
+		infobox "Linking XFCE Terminal config"
+
+		ensure_dir_exists ~/.themes
+
+		declare -A xfce_notify_files
+		xfce_notify_files['themes/stiff']='.themes/stiff'
+		set_home_files_from_array xfce_notify_files
 		;;
 	xfce4-terminal)
 		# Download the font I use for my terminal config
