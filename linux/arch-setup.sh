@@ -244,6 +244,12 @@ for installed_package in "${to_install[@]}"; do
 		dropbox_autostart['config/autostart/dropbox.desktop']='.config/autostart/dropbox.desktop'
 		set_home_files_from_array dropbox_autostart
 	;;
+	feh)
+		# Add feh script
+		declare -A feh_script
+		feh_script['fehbg']='.fehbg'
+		set_home_files_from_array feh_script
+	;;
 	gcalert)
 		# Set gcalert to autostart
 		ensure_dir_exists ~/.config/autostart
