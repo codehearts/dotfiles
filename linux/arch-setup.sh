@@ -348,7 +348,7 @@ for choice in $choices; do
 		set_home_files_from_array mpdnotify_files
 		;;
 	shell-scripts)
-		program_box "git clone https://github.com/nejsan/arch-shell-scripts.git ~/.scripts" "Installing custom shell scripts"
+		program_box "git clone https://github.com/nejsan/arch-shell-scripts.git $HOME/.scripts" "Installing custom shell scripts"
 
 		infobox "Linking scripts into /usr/local/sbin/"
 		for script in ~/.scripts/*; do
