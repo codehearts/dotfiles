@@ -287,6 +287,10 @@ for installed_package in "${to_install[@]}"; do
 	python2-pip)
 		program_box "pip2 install --user pyglet" "Installing Pyglet"
 	;;
+	virtualbox)
+		# Enable the necessary kernel modules
+		sudo modprobe vboxdrv
+	;;
 	xmonad-contrib)
 		# Set Xmonad to autostart
 		ensure_dir_exists ~/.config/autostart
