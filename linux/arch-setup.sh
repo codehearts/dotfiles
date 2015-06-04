@@ -230,13 +230,6 @@ for installed_package in "${to_install[@]}"; do
 	package=${to_install[$installed_package]} # Get the name of the package
 
 	case $installed_package in
-	compton)
-		# Set Compton to autostart
-		ensure_dir_exists ~/.config/autostart
-		declare -A compton_autostart
-		compton_autostart['config/autostart/Compton.desktop']='.config/autostart/Compton.desktop'
-		set_home_files_from_array compton_autostart
-	;;
 	dropbox)
 		# Set Dropbox to autostart
 		ensure_dir_exists ~/.config/autostart
@@ -291,13 +284,6 @@ for installed_package in "${to_install[@]}"; do
 		# Enable the necessary kernel modules at boot
 		sudo touch /etc/modules-load.d/virtualbox.conf
 		echo 'vboxdrv' | sudo tee /etc/modules-load.d/virtualbox.conf &>/dev/null
-	;;
-	xmonad-contrib)
-		# Set Xmonad to autostart
-		ensure_dir_exists ~/.config/autostart
-		declare -A xmonad_autostart
-		xmonad_autostart['config/autostart/Xmonad.desktop']='.config/autostart/Xmonad.desktop'
-		set_home_files_from_array xmonad_autostart
 	;;
 	esac
 done
