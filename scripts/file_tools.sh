@@ -27,7 +27,19 @@ ensure_file_exists () {
 	touch $1
 }
 
-# Moves a collection of iles onto the system in the user's home directory using symlinks.
+# Moves a collection of files onto the system in the user's home directory using symlinks.
+# $source_prefix can be set to define a subdir where the source files reside.
+# $1: An associative array in the form array[$source] = $dest
+# $2: An optional code for whether to copy or symlink (default is symlink)
+set_home_files_from_array () {
+	# Get the associative array definition and evaluate it into $files
+	tmp="$( declare -p ${1} )"; eval "declare -A files=${tmp#*=}"
+	for i in "${!files[@]}"; do
+		set_file "$base_dir/$source_prefix/$i" "$HOME/${files[$i]}" "$2"
+	done
+}
+
+# Moves a collection of files onto the system using symlinks.
 # $source_prefix can be set to define a subdir where the source files reside.
 # $1: An associative array in the form array[$source] = $dest
 # $2: An optional code for whether to copy or symlink (default is symlink)
