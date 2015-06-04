@@ -3,7 +3,7 @@
 # Prevent evaluating this file multiple times
 utility_included=${utility_included:-false}
 if ! $utility_included; then
-	
+
 
 
 # Determines if the given command is installed
@@ -20,9 +20,9 @@ is_command_installed () {
 # $1: The name to check
 # Sets $is_function to true if it is
 is_bash_function () {
-	is_function=true
+	is_function=false
 	if [ -z "$(type -t $1)" ] && [ "$(type -t $1)" = function ]; then
-		is_function=false
+		is_function=true
 	fi
 }
 

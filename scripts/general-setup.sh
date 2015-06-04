@@ -2,6 +2,7 @@
 
 # Determine which directory this script is in
 general_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+. "$general_dir/utility.sh"
 
 ########################################
 # General Software Configs
