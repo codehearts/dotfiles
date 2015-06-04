@@ -43,7 +43,7 @@ set_home_files_from_array () {
 # $source_prefix can be set to define a subdir where the source files reside.
 # $1: An associative array in the form array[$source] = $dest
 # $2: An optional code for whether to copy or symlink (default is symlink)
-set_home_files_from_array () {
+set_files_from_array () {
 	# Get the associative array definition and evaluate it into $files
 	tmp="$( declare -p ${1} )"; eval "declare -A files=${tmp#*=}"
 	for i in "${!files[@]}"; do
