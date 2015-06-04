@@ -288,8 +288,9 @@ for installed_package in "${to_install[@]}"; do
 		program_box "pip2 install --user pyglet" "Installing Pyglet"
 	;;
 	virtualbox)
-		# Enable the necessary kernel modules
-		sudo modprobe vboxdrv
+		# Enable the necessary kernel modules at boot
+		sudo touch /etc/modules-load.d/virtualbox.conf
+		echo 'vboxdrv' | sudo tee /etc/modules-load.d/virtualbox.conf &>/dev/null
 	;;
 	xmonad-contrib)
 		# Set Xmonad to autostart
