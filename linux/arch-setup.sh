@@ -221,8 +221,10 @@ fi
 # Package Installation
 ########################################
 
-echo "Preparing to install..."
-program_box "$($pkg_mgr --needed -S ${to_install[@]} >/dev/tty)" "Installing packages..."
+if [ "${#to_install[@]}" -ne "0" ]; then
+	echo "Preparing to install..."
+	program_box "$($pkg_mgr --needed -S ${to_install[@]} >/dev/tty)" "Installing packages..."
+fi
 
 # Post-installation
 lightdm_service=false
