@@ -1,0 +1,77 @@
+#!/bin/bash
+
+LATEST=latest
+DATE=`date "+%Y-%m-%d_%H:%M:%S"`
+EXCLUDE_FILE=/etc/backups.exclude
+EXCLUDE=( --exclude={/dev/,/proc/,/sys/,/tmp/,/run/,/mnt/,/media/,/lost+found/,/var/lib/pacman/sync/,/home/*/.cache/} )
+RSYNC_ARGS=( --out-format="" --info=progress2 --delete --delete-excluded --no-inc-recursive --exclude-from="$EXCLUDE_FILE" "${EXCLUDE[@]}" )
+
+# awk program for parsing rsync progress
+AWK_PROG=$(cat <<EOF
+{
+	if (index(\$0, "%") > 0)
+	{
+		split(\$0, pieces, "%")
+		print \$3
+	}
+	fflush();
+}
+EOF
+)
+
+# Parse parameters
+while test $# -gt 0; do
+	case "$1" in
+	  -h|--help|-u|--usage)
+		  print_usage
+		  exit 0
+		  ;;
+	  *)
+		  break
+		  ;;
+	esac
+done
+
+print_usage() {
+	echo -e "Usage: $0 destination\n" >&2
+	echo -e "Backs up the entire filesystem to the backup drive.\n" >&2
+	echo -e "See $EXCLUDE_FILE for the list of excluded files and directories.\n" >&2
+}
+
+if [ ! -d "$1" ]; then
+   echo "Invalid backup path: $1" >&2
+   exit 1
+elif [ ! -w "$1" ]; then
+   echo "Directory not writable: $1" >&2
+   exit 1
+fi
+
+# TODO Check for an handle no space on device
+
+BACKUP_DIR=$(realpath $1)
+START=$(date +%s)
+
+if [[ ! -L "$BACKUP_DIR/$LATEST" ]]; then
+	echo "Creating initial backup at $BACKUP_DIR/${DATE}..."
+
+	rsync -a "${RSYNC_ARGS[@]}" / "$BACKUP_DIR/$DATE" \
+	 | awk "$AWK_PROG" \
+	 | sed --unbuffered 's/\%//g' \
+	 | whiptail --gauge "Creating initial backup at $BACKUP_DIR/${DATE}..." 10 70 0
+else
+	echo "Backing up the latest changes to $BACKUP_DIR/${DATE}..."
+
+	rsync -a "${RSYNC_ARGS[@]}" --link-dest="$BACKUP_DIR/$LATEST" / "$BACKUP_DIR/$DATE" \
+	 | awk "$AWK_PROG" \
+	 | sed --unbuffered 's/\%//g' \
+	 | whiptail --gauge "Backing up the latest changes to $BACKUP_DIR/${DATE}..." 10 70 0
+
+fi
+
+FINISH=$(date +%s)
+echo "Total time: $(( ($FINISH-$START) / 60 )) minutes, $(( ($FINISH-$START) % 60 )) seconds"
+
+# Create a symlink to the latest backup
+cd $BACKUP_DIR
+rm -f $LATEST
+ln -s $DATE $LATEST
