@@ -339,14 +339,15 @@ for choice in $choices; do
 		set_home_files_from_array mpdnotify_files
 		;;
 	shell-scripts)
-		program_box "git clone https://github.com/nejsan/arch-shell-scripts.git $HOME/.scripts" "Installing custom shell scripts"
-
 		infobox "Linking scripts into /usr/local/sbin/"
-		for script in ~/.scripts/*; do
-			if [ "$(basename $script)" != "readme.md" ]; then
-				sudo ln -s $script /usr/local/sbin/$(basename $script)
-			fi
+		declare -A shell_scripts
+		for script in $linux_dir/shell-scripts/*; do
+			shell_scripts["shell-scripts/$(basename $script)"]="/usr/local/sbin/$(basename $script)"
 		done
+
+		sudo chown `whoami` /usr/local/sbin
+		set_files_from_array shell_scripts
+		sudo chown root /usr/local/sbin
 		;;
 	tint2)
 		infobox "Linking tint2 config"
