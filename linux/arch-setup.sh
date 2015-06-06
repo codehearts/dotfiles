@@ -348,7 +348,7 @@ for choice in $choices; do
 		done
 
 		sudo chown `whoami` /usr/local/sbin
-		set_files_from_array shell_scripts
+		set_files_from_array shell_scripts $action_copy
 		sudo chown root /usr/local/sbin
 		;;
 	tint2)
