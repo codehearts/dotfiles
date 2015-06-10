@@ -30,6 +30,7 @@ unset mark_old		# I only want read/new statuses
 set beep_new
 set pipe_decode		# Strip headers and eval mimes when piping
 set thorough_search	# Strip headers and eval mimes before searching
+set text_flowed=yes # Prevent automatic linebreaking in plaintext
 
 # Sidebar --------------------------
 set sidebar_delim	= ' '
