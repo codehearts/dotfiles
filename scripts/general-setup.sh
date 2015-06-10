@@ -103,6 +103,10 @@ for choice in $choices; do
 		mutt_sample_files['mutt/school_config']='.mutt/school_config'
 		mutt_sample_files['mutt/mailcap-sample']='.mutt/mailcap-sample'
 		set_home_files_from_array mutt_sample_files $action_copy
+
+		declare -A mutt_script_files
+		mutt_script_files['mutt/add_sender_to_aliases.sh']='.mutt/add_sender_to_aliases.sh'
+		set_home_files_from_array mutt_script_files
 		;;
 	"msmtp sample config")
 		infobox "Copying msmtp sample config"
