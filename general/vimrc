@@ -88,6 +88,8 @@ autocmd BufNew,BufNewFile,BufRead *.{md} setlocal ft=markdown
 
 " Enable spell checking when writing email
 autocmd FileType mail setlocal spell spelllang=en_us
+" Don't place automatic line breaks when writing emails
+autocmd FileType mail setlocal fo+=aw
 
 " Return to last edit position when opening files
 autocmd BufReadPost *
