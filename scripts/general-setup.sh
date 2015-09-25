@@ -40,6 +40,7 @@ for choice in $choices; do
 
 		declare -A vim_files
 		vim_files['vimrc']='.vimrc'
+		vim_files['vim/autoload']='.vim/autoload'
 		vim_files['vim/bundle']='.vim/bundle'
 		vim_files['vim/colors']='.vim/colors'
 		vim_files['vim/after']='.vim/after'
