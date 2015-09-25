@@ -83,6 +83,10 @@ set guioptions-=m guioptions-=T " Remove toolbars and menu bars in MacVim/GVim
 " Enable spell checking for text, markdown, and latex files by default
 autocmd BufNew,BufNewFile,BufRead *.{txt,markdown,md,tex} setlocal spell spelllang=en_us
 
+" Use
+" 2 spaces for indenting Ruby
+autocmd BufNew,BufNewFile,BufRead *.{rb} setlocal expandtab tabstop=2 shiftwidth=2
+
 " Open .md files as Markdown
 autocmd BufNew,BufNewFile,BufRead *.{md} setlocal ft=markdown
 
