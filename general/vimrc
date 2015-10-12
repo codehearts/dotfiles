@@ -80,6 +80,9 @@ set nobackup nowb noswapfile " Turn backups off
 set guioptions-=r guioptions-=l guioptions-=L guioptions-=b " Remove scrollbar in MacVim/GVim
 set guioptions-=m guioptions-=T " Remove toolbars and menu bars in MacVim/GVim
 
+" Don't save hidden and unloaded buffers in sessions.
+set sessionoptions-=buffers
+
 " Enable spell checking for text, markdown, and latex files by default
 autocmd BufNew,BufNewFile,BufRead *.{txt,markdown,md,tex} setlocal spell spelllang=en_us
 
