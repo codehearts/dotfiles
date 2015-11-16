@@ -6,3 +6,4 @@
 .DS_Store
 .tm_properties
 .helvetihost
+Gemfile.lock
