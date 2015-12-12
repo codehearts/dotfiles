@@ -1,0 +1,23 @@
+#!/bin/bash
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export GDK_DPI_SCALE=0.35
+export GDK_SCALE=2
+
+# Use the menu key as the compose key
+setxkbmap -option compose:menu
+
+xrdb $HOME/.Xresources
+
+# ----- For using gnome-keyring
+
+# Start a dbus session
+#source /etc/X11/xinit/xinitrc.d/30-dbus.sh
+
+# Start GNOME Keyring
+#/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
+
+# Start sxhkd and bspwm if not already running
+if ! pgrep bspwm > /dev/null; then
+	exec bspwm
+fi

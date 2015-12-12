@@ -74,8 +74,8 @@ for choice in $choices; do
 		;;
 	caskroom/cask/brew-cask)
 		# Allow the user to install Cask packages
-		packages=( vagrant virtualbox d235j-xbox360-controller-driver)
-		defaults=( "on"    "on"       "on"                           )
+		packages=( qlstephen qlmarkdown vagrant virtualbox d235j-xbox360-controller-driver)
+		defaults=( "on"      "on"       "on"    "on"       "on"                           )
 
 		checklist "Choose Homebrew Cask software to install:" packages[@] defaults[@]
 
