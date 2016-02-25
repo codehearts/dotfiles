@@ -1,0 +1,31 @@
+wallpaper:   "/home/asuka/Pictures/wallpaper/soft-pink.jpg"
+colors:
+  name:         "soft-pink"
+  background:   "#0e0e0e"
+  foreground:   "#ffffff"
+  primary:      "red"
+  secondary:    "green"
+  black:
+    normal:     "#161d20"
+    bold:       "#6f6d80"
+  red:
+    normal:     "#82b5c4"
+    bold:       "#a3e3f6"
+  green: 
+    normal:     "#a2b9c7"
+    bold:       "#cae7f9"
+  yellow: 
+    normal:     "#bebdc7"
+    bold:       "#edecf9"
+  blue: 
+    normal:     "#aa97b8"
+    bold:       "#d8c0ea"
+  magenta: 
+    normal:     "#c6b1bf"
+    bold:       "#f8ddef"
+  cyan: 
+    normal:     "#c6a4b2"
+    bold:       "#f8cdde" 
+  white: 
+    normal:     "#d7bdad"
+    bold:       "#a685c8"

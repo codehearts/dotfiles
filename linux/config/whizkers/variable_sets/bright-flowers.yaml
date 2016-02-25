@@ -1,0 +1,31 @@
+wallpaper:   "/home/asuka/Pictures/wallpaper/bright-flowers.jpg"
+colors:
+  name:         "bright-flowers"
+  background:   "#0e0e0e"
+  foreground:   "#ffffff"
+  primary:      "red"
+  secondary:    "green"
+  black:
+    normal:     "#161d20"
+    bold:       "#6f6d80"
+  red:
+    normal:     "#bcc741"
+    bold:       "#ebf951"
+  green: 
+    normal:     "#b4c761"
+    bold:       "#e1f979"
+  yellow: 
+    normal:     "#b0c788"
+    bold:       "#dcf9aa"
+  blue: 
+    normal:     "#b2c8b2"
+    bold:       "#defade"
+  magenta: 
+    normal:     "#66b890"
+    bold:       "#81eab7"
+  cyan: 
+    normal:     "#9cc7bc"
+    bold:       "#c3f9eb" 
+  white: 
+    normal:     "#d7bdad"
+    bold:       "#a685c8"

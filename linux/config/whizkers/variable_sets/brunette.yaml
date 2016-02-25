@@ -1,0 +1,31 @@
+wallpaper:    "/home/asuka/Pictures/wallpaper/brunette.png"
+colors:
+  name:         "brunette"
+  primary:      "blue"
+  secondary:    "red"
+  background:   "#0e0e0e"
+  foreground:   "#ffffff"
+  black:
+    normal:     "#161d20"
+    bold:       "#6f6d80"
+  red:
+    normal: "#c28b77"
+    bold: "#f4ae95"
+  green:
+    normal: "#c5afa5"
+    bold: "#f7dbce"
+  yellow:
+    normal: "#c7a18a"
+    bold: "#f9c9ac"
+  blue:
+    normal: "#8395a9"
+    bold: "#a9c1db"
+  magenta:
+    normal: "#a76896"
+    bold: "#d987c2"
+  cyan:
+    normal: "#aa636b"
+    bold: "#dc808a"
+  white:
+    normal:     "#d7bdad"
+    bold:       "#a685c8"
