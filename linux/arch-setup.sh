@@ -113,14 +113,16 @@ fi
 # CLI Software
 ########################################
 
-packages=( bash-completion calc ctags dictd  gnome-keyring  htop      )
-defaults=( "on"            "on" "on"  "on"   "on"           "on"      )
-packages+=(mpd  msmtp mutt  ncmpcpp offlineimap openssh python-pip    )
-defaults+=("on" "on"  "off" "on"    "on"        "on"    "on"          )
-packages+=(python2-keyring python2-pip rfkill rsync texlive-core      )
-defaults+=("on"            "on"        "on"   "on"  "on"              )
-packages+=(texlive-humanities texlive-pictures tmux unzip wpa_actiond )
-defaults+=("on"               "on"             "on" "on"  "on"        )
+packages=( alsa-lib alsa-utils bash-completion calc ctags dictd       )
+defaults=( "on"     "on"       "on"            "on" "on"  "on"        )
+packages+=(gnome-keyring  htop mpd  msmtp mutt  ncmpcpp offlineimap   )
+defaults+=("on"           "on" "on" "on"  "off" "on"    "on"          )
+packages+=(openssh pulseaudio-alsa python-pip python2-keyring         )
+defaults+=("on"    "on"            "on"       "on"                    )
+packages+=(python2-pip rfkill rsync texlive-core texlive-humanities   )
+defaults+=("on"        "on"   "on"  "on"         "on"                 )
+packages+=(texlive-pictures tmux unzip wpa_actiond                    )
+defaults+=("on"             "on" "on"  "on"                           )
 
 # Add yaourt packages if yaourt was installed
 if [ "$pkg_mgr" == "yaourt" ]; then
@@ -134,6 +136,13 @@ checklist "Choose software to install:" packages[@] defaults[@]
 for choice in $choices; do
 	choice=${packages[$choice]} # Get the name of the choice
 	mark_for_installation $choice
+
+	case $choice in
+	python2-keyring)
+		# Install support for alternate keyrings
+		mark_for_installation python2-keyrings-alt
+	;;
+	esac
 done
 
 ########################################
