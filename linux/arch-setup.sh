@@ -181,8 +181,8 @@ if $yes; then
 		defaults+=("on"    "on"                         "on"    "off"           )
 		packages+=(gtk-theme-iris-dark-git lightdm-webkit-theme-tendou          )
 		defaults+=("on"                    "on"                                 )
-		packages+=(mpd-notification-git                                         )
-		defaults+=("on"                                                         )
+		packages+=(mpd-notification-git xdo-git                                 )
+		defaults+=("on"                 "on"                                    )
 	fi
 
 	checklist "Choose graphical software to install:" packages[@] defaults[@]
