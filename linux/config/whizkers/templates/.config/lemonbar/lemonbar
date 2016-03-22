@@ -13,7 +13,7 @@ dow[6]='土'
 workspace() {
 	desktop=1
 	ws=""
-	IFS=':' read -a array <<< $(bspc control --get-status)
+	IFS=':' read -a array <<< $(bspc wm --get-status)
 	for item in "${array[@]}"
 	do
 		name=${item#?}
