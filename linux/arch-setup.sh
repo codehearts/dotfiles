@@ -250,6 +250,10 @@ for installed_package in "${to_install[@]}"; do
 		program_box "pip install --user pyglet"   "Installing Pyglet"
 		program_box "pip install --user whizkers" "Installing Whizkers"
 
+		# Add pip executables to PATH
+		append_entire_string_without_duplicating 'PATH="$PATH:$HOME/.local/bin"' $HOME/.bashrc
+		source $HOME/.bashrc
+
 		# Set up whizkers files
 		ensure_dir_exists ~/.config
 		declare -A whizkers_files
@@ -259,6 +263,10 @@ for installed_package in "${to_install[@]}"; do
 	;;
 	python2-pip)
 		program_box "pip2 install --user pyglet" "Installing Pyglet"
+
+		# Add pip executables to PATH
+		append_entire_string_without_duplicating 'PATH="$PATH:$HOME/.local/bin"' $HOME/.bashrc
+		source $HOME/.bashrc
 	;;
 	virtualbox)
 		# Enable the necessary kernel modules at boot
