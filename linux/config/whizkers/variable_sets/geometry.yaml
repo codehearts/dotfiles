@@ -1,4 +1,4 @@
-wallpaper:   "/home/asuka/Pictures/wallpaper/geometry.jpg"
+wallpaper:   "{{ home_dir }}/Pictures/wallpaper/geometry.jpg"
 colors:
   name:         "geometry"
   background:   "#0e0e0e"

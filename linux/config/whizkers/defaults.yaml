@@ -1,5 +1,6 @@
 # System
 xft_dpi: 166
+home_dir: "{`os.path.expanduser('~')`}"
 
 # GTK
 gtk_theme: "iris-dark"

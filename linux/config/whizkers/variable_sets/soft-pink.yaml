@@ -1,4 +1,4 @@
-wallpaper:   "/home/asuka/Pictures/wallpaper/soft-pink.jpg"
+wallpaper:   "{{ home_dir }}/Pictures/wallpaper/soft-pink.jpg"
 colors:
   name:         "soft-pink"
   background:   "#0e0e0e"

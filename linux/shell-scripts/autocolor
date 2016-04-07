@@ -110,13 +110,16 @@ colors="$(previewcolors --no-preview -n 6 "$SRC")"
 
 primaries="$(echo "$colors" | sed -n "$((primary - 1))p")"
 
+FULL_SRC=$(readlink -f "$SRC")
+VAR_SRC=${FULL_SRC/$HOME/"{{ home_dir }}"}
+
 yaml="$(echo \
   "$NAME" "$BG" "$FG" \
   "${COLORS[$primary]}" "${COLORS[$secondary]}" \
   "$B_n" "$B_b" \
   "$colors" \
   "$W_n" "$W_b" |\
-  xargs printf "$TEMPLATE" "$(readlink -f "$SRC")")"
+  xargs printf "$TEMPLATE" "$VAR_SRC")"
 
 #echo "Generated YAML:"
 echo "$yaml" > "$HOME/.config/whizkers/variable_sets/$NAME.yaml"
