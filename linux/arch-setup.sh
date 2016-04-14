@@ -22,12 +22,6 @@ if $installed; then pkg_mgr=yaourt; fi
 # List of packages to install
 to_install=()
 
-# Ask for the administrator password upfront
-sudo -v
-
-# Keep-alive: update existing `sudo` time stamp until this script has finished
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
-
 # Determines if the given package is installed
 # $1: The name of the package to check for
 # Sets $installed to true if it is
@@ -160,6 +154,9 @@ if $yes; then
 	mark_for_installation xorg-server
 	mark_for_installation xorg-xrdb
 	mark_for_installation xorg-xbacklight
+	mark_for_installation xorg-xinit
+	mark_for_installation xorg-xdpyinfo
+	mark_for_installation xdotool
 	mark_for_installation xf86-input-libinput
 
 	########################################
@@ -168,8 +165,8 @@ if $yes; then
 
 	packages=( accountsservice adobe-source-sans-pro-fonts bspwm chromium       )
 	defaults=( "on"            "on"                        "on"  "off"          )
-	packages+=(compton dunst feh  firefox gvim lemonbar-xft-git                 )
-	defaults+=("on"    "on"  "on" "on"    "on" "on"                             )
+	packages+=(compton dmenu dunst feh  firefox gvim lemonbar-xft-git           )
+	defaults+=("on"    "on"  "on"  "on" "on"    "on" "on"                       )
 	packages+=(lightdm-gtk-greeter rdesktop rxvt-unicode scrot sxhkd slock      )
 	defaults+=("off"               "off"    "on"         "on"  "on"  "off"      )
 	packages+=(tigervnc vagrant virtualbox zathura-pdf-mupdf                    )
@@ -181,8 +178,10 @@ if $yes; then
 		defaults+=("on"    "on"                         "on"    "off"           )
 		packages+=(gtk-theme-iris-dark-git lightdm-webkit-theme-tendou          )
 		defaults+=("on"                    "on"                                 )
-		packages+=(mpd-notification-git xdo-git                                 )
-		defaults+=("on"                 "on"                                    )
+		packages+=(mpd-notification-git otf-meslo-powerline-git ttf-mplus       )
+		defaults+=("on"                 "on"                    "on"            )
+		defaults+=(xdo-git                                                      )
+		defaults+=("on"                                                         )
 	fi
 
 	checklist "Choose graphical software to install:" packages[@] defaults[@]
@@ -191,13 +190,6 @@ if $yes; then
 	for choice in $choices; do
 		choice=${packages[$choice]} # Get the name of the choice
 		mark_for_installation $choice
-
-		case $choice in
-		virtualbox)
-			# Install a related necessary package
-			mark_for_installation virtualbox-host-modules
-		;;
-		esac
 	done
 fi
 
@@ -251,7 +243,8 @@ for installed_package in "${to_install[@]}"; do
 		program_box "pip install --user whizkers" "Installing Whizkers"
 
 		# Add pip executables to PATH
-		append_entire_string_without_duplicating 'PATH="$PATH:$HOME/.local/bin"' $HOME/.bashrc
+		pip_path='PATH=\"\$PATH:\$HOME/.local/bin\"' 
+		append_entire_string_without_duplicating $pip_path $HOME/.bashrc
 		source $HOME/.bashrc
 
 		# Set up whizkers files
@@ -265,7 +258,8 @@ for installed_package in "${to_install[@]}"; do
 		program_box "pip2 install --user pyglet" "Installing Pyglet"
 
 		# Add pip executables to PATH
-		append_entire_string_without_duplicating 'PATH="$PATH:$HOME/.local/bin"' $HOME/.bashrc
+		pip2_path='PATH=\"\$PATH:\$HOME/.local/bin\"' 
+		append_entire_string_without_duplicating $pip2_path $HOME/.bashrc
 		source $HOME/.bashrc
 	;;
 	virtualbox)
@@ -289,8 +283,8 @@ fi
 # Linux Software Configs
 ########################################
 
-configs=( compton gcalert shell-scripts xorg-xinit        )
-default=( "on"    "on"    "on"          "on"              )
+configs=( compton gcalert locking shell-scripts xinitrc    )
+default=( "on"    "on"    "on"    "on"          "on"       )
 
 checklist "Choose Linux config files to set up:" configs[@] default[@]
 
@@ -314,18 +308,44 @@ for choice in $choices; do
 		gcalert_files['config/gcalert/gcalertrc']='.config/gcalert/gcalertrc'
 		set_home_files_from_array gcalert_files
 		;;
+	locking)
+		infobox "Copying lock script into /usr/local/sbin/"
+		declare -A lock_scripts
+		lock_scripts["shell-scripts/katie_lock"]="/usr/local/sbin/katie_lock"
+
+		program_box "$($pkg_mgr --needed -S imagemagick scrot i3lock-lixxia-git >/dev/tty)" "Installing necessary packages..."
+
+		sudo chown `whoami` /usr/local/sbin
+		set_files_from_array lock_scripts $action_copy
+		sudo chown -R root:root /usr/local/sbin
+
+		infobox "Copying locking services into /etc/systemd/system"
+		declare -A lock_services
+		lock_services["etc/systemd/system/lock-sleep@.service"]="/etc/systemd/system/lock-sleep@.service"
+		lock_services["etc/systemd/system/lock-timeout@.service"]="/etc/systemd/system/lock-timeout@.service"
+
+		sudo chown `whoami` /etc/systemd/system
+		set_files_from_array lock_services $action_copy
+		sudo chown -R root:root /etc/systemd/system
+
+		infobox "Enabling locking services"
+		sudo systemctl start  lock-sleep@`whoami`.service
+		sudo systemctl enable lock-sleep@`whoami`.service
+		sudo systemctl start  lock-timeout@`whoami`.service
+		sudo systemctl enable lock-timeout@`whoami`.service
+		;;
 	shell-scripts)
-		infobox "Linking scripts into /usr/local/sbin/"
+		infobox "Copying scripts into /usr/local/sbin/"
 		declare -A shell_scripts
 		for script in $linux_dir/shell-scripts/*; do
 			shell_scripts["shell-scripts/$(basename $script)"]="/usr/local/sbin/$(basename $script)"
 		done
 
-		program_box "$($pkg_mgr --needed -S python2-numpy python2-scipy >/dev/tty)" "Installing necessary packages..."
+		program_box "$($pkg_mgr --needed -S python2-numpy python2-scipy python-imaging imagemagick scrot i3lock-lixxia-git >/dev/tty)" "Installing necessary packages..."
 
 		sudo chown `whoami` /usr/local/sbin
 		set_files_from_array shell_scripts $action_copy
-		sudo chown root /usr/local/sbin
+		sudo chown -R root:root /usr/local/sbin
 		;;
 	xinitrc)
 		infobox "Linking xinitrc config"
