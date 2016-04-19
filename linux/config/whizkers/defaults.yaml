@@ -1,5 +1,5 @@
 # System
-xft_dpi: 166
+xft_dpi: "{`exec('import subprocess;global a;a=subprocess.check_output(\\'xdpyinfo|grep resolution\\',shell=True).decode().split(\\'x\\')[0].split()[1]',globals()) or a`}"
 home_dir: "{`os.path.expanduser('~')`}"
 
 # GTK
@@ -29,7 +29,7 @@ dunst_transparency: 15
 
 # Bar
 bar_height: 32
-bar_width:  1920
+bar_width: "{`exec('import subprocess;global a;a=subprocess.check_output(\\'xdpyinfo|grep dimensions\\',shell=True).decode().split(\\'x\\')[0].split()[1]',globals()) or a`}"
 bar_x: 0
 bar_y: 0
 bar_bgc:             "#ff{` {{ colors }}['background'].lstrip('#')  `}"
@@ -38,8 +38,7 @@ bar_underline_color: "#ff{` {{ colors }}[{{ colors }}['primary']]['normal'].lstr
 bar_font_offset: 0
 bar_underline: 3
 bar_fonts:
-  - "M+ 1p-7"
-  - "Font Awesome-9"
+  - "M+ 1p-8"
 
 # Wallpaper
 wallpaper_dir: ""
