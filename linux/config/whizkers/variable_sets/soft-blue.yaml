@@ -1,0 +1,31 @@
+wallpaper:   "{{ home_dir }}/Pictures/wallpaper/soft-blue.jpg"
+colors:
+  name:         "soft-blue"
+  background:   "#0e0e0e"
+  foreground:   "#ffffff"
+  primary:      "red"
+  secondary:    "green"
+  black:
+    normal:     "#161d20"
+    bold:       "#6f6d80"
+  red:
+    normal:     "#b1c8a4"
+    bold:       "#ddfacd"
+  green: 
+    normal:     "#92c7b2"
+    bold:       "#b6f9de"
+  yellow: 
+    normal:     "#73c5bf"
+    bold:       "#90f7ef"
+  blue: 
+    normal:     "#57b1b5"
+    bold:       "#6fe1e7"
+  magenta: 
+    normal:     "#3d9fad"
+    bold:       "#4eccdf"
+  cyan: 
+    normal:     "#2090aa"
+    bold:       "#29badc" 
+  white: 
+    normal:     "#d7bdad"
+    bold:       "#a685c8"

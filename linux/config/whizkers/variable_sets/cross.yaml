@@ -1,0 +1,31 @@
+wallpaper:   "{{ home_dir }}/Pictures/wallpaper/cross.jpg"
+colors:
+  name:         "cross"
+  background:   "#0e0e0e"
+  foreground:   "#ffffff"
+  primary:      "red"
+  secondary:    "green"
+  black:
+    normal:     "#161d20"
+    bold:       "#6f6d80"
+  red:
+    normal:     "#7cb297"
+    bold:       "#9ee4c1"
+  green: 
+    normal:     "#60aa97"
+    bold:       "#7cdcc3"
+  yellow: 
+    normal:     "#47aa9e"
+    bold:       "#5bdccc"
+  blue: 
+    normal:     "#30a9a6"
+    bold:       "#3edbd7"
+  magenta: 
+    normal:     "#179eaa"
+    bold:       "#1dccdc"
+  cyan: 
+    normal:     "#0495aa"
+    bold:       "#05c0dc" 
+  white: 
+    normal:     "#d7bdad"
+    bold:       "#a685c8"

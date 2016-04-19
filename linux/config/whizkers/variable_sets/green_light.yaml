@@ -1,0 +1,31 @@
+wallpaper:   "{{ home_dir }}/Pictures/wallpaper/green_light.jpg"
+colors:
+  name:         "green_light"
+  background:   "#0e0e0e"
+  foreground:   "#ffffff"
+  primary:      "red"
+  secondary:    "green"
+  black:
+    normal:     "#161d20"
+    bold:       "#6f6d80"
+  red:
+    normal:     "#b9c69f"
+    bold:       "#e7f8c7"
+  green: 
+    normal:     "#9abb98"
+    bold:       "#c3edc0"
+  yellow: 
+    normal:     "#80ab90"
+    bold:       "#a5ddba"
+  blue: 
+    normal:     "#72aa98"
+    bold:       "#93dcc4"
+  magenta: 
+    normal:     "#64a9a2"
+    bold:       "#81dbd1"
+  cyan: 
+    normal:     "#55a1a8"
+    bold:       "#6ed0da" 
+  white: 
+    normal:     "#d7bdad"
+    bold:       "#a685c8"

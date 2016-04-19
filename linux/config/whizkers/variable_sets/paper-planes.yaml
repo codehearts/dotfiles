@@ -1,0 +1,31 @@
+wallpaper:   "{{ home_dir }}/Pictures/wallpaper/paper-planes.jpg"
+colors:
+  name:         "paper-planes"
+  background:   "#0e0e0e"
+  foreground:   "#ffffff"
+  primary:      "red"
+  secondary:    "green"
+  black:
+    normal:     "#161d20"
+    bold:       "#6f6d80"
+  red:
+    normal:     "#aabebc"
+    bold:       "#d6f0ed"
+  green: 
+    normal:     "#5bb0c5"
+    bold:       "#72dcf7"
+  yellow: 
+    normal:     "#2b95c5"
+    bold:       "#35baf7"
+  blue: 
+    normal:     "#146ab3"
+    bold:       "#1987e5"
+  magenta: 
+    normal:     "#787ca1"
+    bold:       "#9da2d3"
+  cyan: 
+    normal:     "#313caa"
+    bold:       "#3f4ddc" 
+  white: 
+    normal:     "#d7bdad"
+    bold:       "#a685c8"
