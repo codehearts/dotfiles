@@ -61,9 +61,10 @@ clock() {
 
 battery() {
 	power='/sys/class/power_supply'
-	charge=$(if [ -d $power/BAT0 ]; then cat $power/BAT0/capacity; fi)
-
-	echo -e "  ${charge}  "
+	if [ -d $power/BAT0 ]; then
+		charge=$(cat $power/BAT0/capacity)
+		echo -e "  ${charge}  •"
+	fi
 }
 
 volume() {
@@ -117,7 +118,7 @@ telegram() {
 #trap on_exit EXIT SIGHUP SIGINT SIGTERM
 
 while :; do
-	echo -e "%{U{{ bar_underline_color }}}$(workspace) %{r} $(telegram)$(skype)$(battery)•$(volume)•$(clock)"
+	echo -e "%{U{{ bar_underline_color }}}$(workspace) %{r} $(telegram)$(skype)$(battery)$(volume)•$(clock)"
 	sleep 0.1
 done | lemonbar \
 	-g {{ bar_width }}x{{ bar_height }}+{{ bar_x }}+{{ bar_y }} \
