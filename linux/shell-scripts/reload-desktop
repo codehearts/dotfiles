@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Reload the desktop
+
+xrdb ~/.Xresources
+
+for pts in /dev/pts/*; do
+	(echo -n "$(use-color < ~/.Xresources)" > $pts) 2>/dev/null
+done
+
+pkill lemonbar
+pkill compton
+pkill dropbox
+pkill gcalert
+pkill dunst
+pkill bspwmrc
+
+exec ${HOME}/.config/bspwm/bspwmrc
