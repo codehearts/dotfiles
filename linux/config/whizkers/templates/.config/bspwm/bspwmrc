@@ -38,6 +38,13 @@ if ! pgrep sxhkd > /dev/null; then
 	sxhkd &
 fi
 
+# Start xss-lock if it is not running
+if hash katie_lock 2>/dev/null; then
+	if ! pgrep xss-lock > /dev/null; then
+		xss-lock -n katie_lock katie_lock &
+	fi
+fi
+
 #$HOME/.fehbg $HOME/Pictures/wallpaper 5m fill &
 . $HOME/.fehbg &
 
