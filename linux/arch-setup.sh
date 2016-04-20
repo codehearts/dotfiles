@@ -43,8 +43,6 @@ mark_for_installation () {
 # System Updates
 ########################################
 
-echo "Performing system upgrade"
-
 $pkg_mgr -Syyu
 
 ########################################
@@ -52,28 +50,21 @@ $pkg_mgr -Syyu
 ########################################
 
 is_command_installed whiptail
-if ! $installed; then
-	echo "Installing whiptail"
-
-	$pkg_mgr -S libnewt
-fi
+if ! $installed; then mark_for_installation libnewt; fi
 
 is_command_installed ntpd
-if ! $installed; then
-	echo "Installing ntp"
-
-	$pkg_mgr -S ntp
-	sudo ntpdate -s time.nist.gov
-	sudo systemctl start ntpd
-	sudo systemctl enable ntpd
-fi
+if ! $installed; then mark_for_installation ntp; fi
 
 is_command_installed git
-if ! $installed; then
-	echo "Installing git"
+if ! $installed; then mark_for_installation git; fi
 
-	$pkg_mgr -S git
+# Install any missing prereqs
+if [ ${#to_install[@]} -ne 0 ]; then
+	$pkg_mgr --needed -S ${to_install[@]} >/dev/tty
 fi
+
+# Reset the list of packages to install
+to_install=()
 
 # Include the dialog script
 . "$linux_dir/../scripts/dialog.sh"
@@ -233,9 +224,10 @@ for installed_package in "${to_install[@]}"; do
 		offlineimap_autostart['config/systemd/user/offlineimap.timer']='.config/systemd/user/offlineimap.timer'
 		set_home_files_from_array offlineimap_autostart $action_copy
 
-		program_box "systemctl --user start offlineimap.timer" "Running offlineimap in background"
-		program_box "systemctl --user start offlineimap.service" "Running offlineimap in background"
-		program_box "systemctl --user enable offlineimap.timer" "Running offlineimap in background"
+		program_box "systemctl --user daemon-reload"              "Reloading systemctl user daemons"
+		program_box "systemctl --user start offlineimap.timer"    "Running offlineimap in background"
+		program_box "systemctl --user start offlineimap.service"  "Running offlineimap in background"
+		program_box "systemctl --user enable offlineimap.timer"   "Running offlineimap in background"
 		program_box "systemctl --user enable offlineimap.service" "Running offlineimap in background"
 	;;
 	python-pip)
@@ -309,30 +301,14 @@ for choice in $choices; do
 		set_home_files_from_array gcalert_files
 		;;
 	locking)
-		infobox "Copying lock script into /usr/local/sbin/"
 		declare -A lock_scripts
 		lock_scripts["shell-scripts/katie_lock"]="/usr/local/sbin/katie_lock"
 
-		program_box "$($pkg_mgr --needed -S imagemagick scrot i3lock-lixxia-git >/dev/tty)" "Installing necessary packages..."
+		program_box "$($pkg_mgr --needed -S imagemagick scrot xss-lock i3lock-lixxia-git >/dev/tty)" "Installing necessary packages..."
 
 		sudo chown `whoami` /usr/local/sbin
 		set_files_from_array lock_scripts $action_copy
 		sudo chown -R root:root /usr/local/sbin
-
-		infobox "Copying locking services into /etc/systemd/system"
-		declare -A lock_services
-		lock_services["etc/systemd/system/lock-sleep@.service"]="/etc/systemd/system/lock-sleep@.service"
-		lock_services["etc/systemd/system/lock-timeout@.service"]="/etc/systemd/system/lock-timeout@.service"
-
-		sudo chown `whoami` /etc/systemd/system
-		set_files_from_array lock_services $action_copy
-		sudo chown -R root:root /etc/systemd/system
-
-		infobox "Enabling locking services"
-		sudo systemctl start  lock-sleep@`whoami`.service
-		sudo systemctl enable lock-sleep@`whoami`.service
-		sudo systemctl start  lock-timeout@`whoami`.service
-		sudo systemctl enable lock-timeout@`whoami`.service
 		;;
 	shell-scripts)
 		infobox "Copying scripts into /usr/local/sbin/"
