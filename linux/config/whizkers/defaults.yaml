@@ -32,8 +32,9 @@ bar_height: 32
 bar_width: "{`exec('import subprocess;global a;a=subprocess.check_output(\\'xdpyinfo|grep dimensions\\',shell=True).decode().split(\\'x\\')[0].split()[1]',globals()) or a`}"
 bar_x: 0
 bar_y: 0
-bar_bgc:             "#ff{` {{ colors }}['background'].lstrip('#')  `}"
-bar_block_bgc:       "#ff{` {{ colors }}['background'].lstrip('#')  `}"
+bar_bg_alpha:        "ff"
+bar_bgc:             "#{{ bar_bg_alpha }}{` {{ colors }}['background'].lstrip('#')  `}"
+bar_block_bgc:       "#{{ bar_bg_alpha }}{` {{ colors }}['background'].lstrip('#')  `}"
 bar_underline_color: "#ff{` {{ colors }}[{{ colors }}['primary']]['normal'].lstrip('#') `}"
 bar_font_offset: 0
 bar_underline: 3

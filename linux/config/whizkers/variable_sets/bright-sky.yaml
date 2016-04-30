@@ -1,4 +1,5 @@
 wallpaper:   "{{ home_dir }}/Pictures/wallpaper/bright-sky.jpg"
+bar_bg_alpha:   "99"
 colors:
   name:         "bright-sky"
   background:   "#0e0e0e"
