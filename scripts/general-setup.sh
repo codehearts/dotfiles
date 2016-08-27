@@ -26,6 +26,7 @@ for choice in $choices; do
 		git_files['gitignore']='.gitignore'
 		set_home_files_from_array git_files
 		git config --global core.excludesfile ~/.gitignore
+		git config --global core.editor $(which vim)
 
 		get_input "Enter your name for Git:"
 		git config --global user.name "$user_input"
