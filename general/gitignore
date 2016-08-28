@@ -1,9 +1,10 @@
 *.o
 *.py[cod]
 *.o
+.bundle
 .vagrant
-.sass-cache
 .DS_Store
-.tm_properties
+.sass-cache
 .helvetihost
+.tm_properties
 Gemfile.lock
