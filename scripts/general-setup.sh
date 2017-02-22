@@ -35,17 +35,19 @@ for choice in $choices; do
 		git config --global user.email "$user_input"
 		;;
 	vim)
-		infobox "Linking vim files"
+		infobox "Copying/Linking vim files"
 
 		ensure_dir_exists ~/.vim
 
-		declare -A vim_files
-		vim_files['vimrc']='.vimrc'
-		vim_files['vim/autoload']='.vim/autoload'
-		vim_files['vim/bundle']='.vim/bundle'
-		vim_files['vim/colors']='.vim/colors'
-		vim_files['vim/after']='.vim/after'
-		set_home_files_from_array vim_files
+		declare -A vim_link_files
+		vim_link_files['vimrc']='.vimrc'
+		vim_link_files['vim/colors']='.vim/colors'
+		set_home_files_from_array vim_link_files
+
+		declare -A vim_copy_files
+		ensure_dir_exists ~/.vim/autoload
+		vim_copy_files['vim/autoload/plug.vim']='.vim/autoload/plug.vim'
+    set_home_files_from_array vim_copy_files $action_copy
 		;;
 	screen)
 		infobox "Linking screen config"
@@ -136,20 +138,6 @@ for choice in $choices; do
 		;;
 	esac
 done
-
-########################################
-# Git Submodules
-########################################
-
-is_command_installed git
-if $installed; then
-	yes_no "Update Git submodules (Vim bundles, etc.)?"
-	if $yes; then
-		program_box "git submodule init" "Initializing Git submodules"
-		program_box "git submodule update" "Updating Git submodules"
-		program_box "git submodule foreach git pull origin master" "Pulling Git submodules"
-	fi
-fi
 
 # Check if a post_setup function was declared
 is_bash_function post_setup
