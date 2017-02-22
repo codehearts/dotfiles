@@ -1,198 +1,145 @@
-" Ideas taken from various people's configurations and http://amix.dk/vim/vimrc.html
+" Kate Hart's .vimrc
+" github.com/codehearts/dotfiles
+"
 
-" Load pathogen
-runtime bundle/pathogen/autoload/pathogen.vim
-execute pathogen#infect()
+call plug#begin('~/.vim/plugged')
 
-filetype plugin indent on
-syntax enable
+" vim
+Plug 'tpope/vim-sensible'
 
-" Settings for Powerline
-set nocompatible noshowmode laststatus=2
-set backspace=indent,eol,start " Fixes potential backspace issues
+" colors
+Plug 'rhysd/vim-color-spring-night'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'vectorstorm/vim-chlordane'
+Plug 'liuchengxu/space-vim-dark'
+Plug 'cseelus/vim-colors-lucid'
+Plug 'snowcrshd/cyberpunk.vim'
+Plug 'roosta/vim-srcery'
+Plug 'trusktr/seti.vim'
+Plug 'jyota/vimColors' " eva, scooby
+Plug 'tomasr/molokai'
 
-colorscheme molokai
+" writing
+Plug 'garbas/vim-snipmate' | Plug 'honza/vim-snippets' | Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'tomtom/tlib_vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'junegunn/vim-easy-align'
+Plug 'vim-syntastic/syntastic'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
+Plug 'ervandew/supertab'
 
-" Use Powerline symbols with Airline
-let g:airline_powerline_fonts = 1
+" ui
+Plug 'vim-airline/vim-airline'
+Plug 'scrooloose/nerdtree'
+Plug 'mhinz/vim-startify'
+Plug 'majutsushi/tagbar'
 
-if has("macunix")
-	set guifont=Meslo\ LG\ S\ Regular\ for\ Powerline:h11
+" git
+Plug 'tpope/vim-fugitive'
 
-	" Use open to view LaTeX output on OS X
-	let g:LatexBox_viewer="open"
-else
-	set guifont=Meslo\ LG\ S\ for\ Powerline\ 11
+" latex
+Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'tex' }
+
+call plug#end()
+
+"
+" gui
+"
+
+if has('gui_running') " gvim/mvim
+  colorscheme lucid
+
+  set go-=r go-=L go-=m go-=T " remove scrollbar and toolbar from gui
+
+  if has('macunix') " macOS
+    set gfn=Input\ Mono:h11
+
+    " use `open` to view latex output on macOS
+    let g:LatexBox_viewer='open'
+  elseif has('win32') || has('win64') " windows
+    set gfn=Hack:h8
+    set go=c " don't use gui prompts
+    set rop=type:directx,\gamma:1.5,contrast:0.5,geom:1,\renmode:5,taamode:1,level:0.5 " directx renering
+  else " linux
+    set gfn=Meslo\ LG\ S\ for\ Powerline\ 8
+  endif
+else " terminal
+  colorscheme srcery
 endif
 
-" Set <leader> to ","
-let mapleader=","
-let g:mapleader=","
+"
+" settings
+"
 
-" Write out buffers with ,w
-nmap <leader>w :w!<CR>
+set et ts=2 sw=2 " use spaces, 1 tab is 2 spaces
+set noswf " don't use swap files
+set hls   " highlight search matches
 
-" Save files using sudo with :w!!, for when Vim was not opened with sudo
-cmap w!! %!sudo tee > /dev/null %
+"
+" assignments
+"
 
-" Treat long lines as break lines
-map j gj
-map k gk
-
-" Move between windows using ctrl-h/j/k/l
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" Replace selected text in current buffer with ,r
-vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
-
-" Search the current working directory using regex with ,sd
-noremap <leader>sd :call SearchDirectory()<CR>
-
-" Useful tab mappings
-map <leader>tn :tabnew<CR>
-map <leader>tc :tabclose<CR>
-" Move tabs left/right with control-shift-left/right
-map <silent><C-S-Left> :execute TabLeft()<CR>
-map <silent><C-S-Right> :execute TabRight()<CR>
-
-" cd to the open buffer's directory with ,cd
-map <leader>cd :cd %:p:h<CR>:pwd<CR>
-
-" Toggle spell checking with ,ss
-map <leader>ss :setlocal spell!<CR>
-
-" Turn on the wild menu, and ignore compiled files
-set wildmenu wildignore=*.o,*~,*.pyc,*.class
-let wildmode="full"
-
-" Autoread files that were changed externally, hide buffers when they are abandoned
-set autoread hid				" 
-
-set ignorecase smartcase hlsearch incsearch " Ignore search case, highlight results
-set number wrap " Show line numbers, wrap text
-set noexpandtab tabstop=4 shiftwidth=4 " Use tabs, 1 tab ~ 4 spaces
-set smarttab ai si " Auto-indent, smart-indent
-set encoding=utf8 ffs=unix,mac,dos
-set nobackup nowb noswapfile " Turn backups off
-set guioptions-=r guioptions-=l guioptions-=L guioptions-=b " Remove scrollbar in MacVim/GVim
-set guioptions-=m guioptions-=T " Remove toolbars and menu bars in MacVim/GVim
-
-" Don't save hidden and unloaded buffers in sessions.
-set sessionoptions-=buffers
-
-" Enable spell checking for text, markdown, and latex files by default
-autocmd BufNew,BufNewFile,BufRead *.{txt,markdown,md,tex} setlocal spell spelllang=en_us
-
-" Use
-" 2 spaces for indenting Ruby
-autocmd BufNew,BufNewFile,BufRead *.{rb} setlocal expandtab tabstop=2 shiftwidth=2
-
-" Open .md files as Markdown
-autocmd BufNew,BufNewFile,BufRead *.{md} setlocal ft=markdown
-
-" Enable spell checking when writing email
-autocmd FileType mail setlocal spell spelllang=en_us
-" Don't place automatic line breaks when writing emails
-autocmd FileType mail setlocal fo+=aw
-
-" Return to last edit position when opening files
-autocmd BufReadPost *
-     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-     \   exe "normal! g`\"" |
-     \ endif
-
-" Remember info about open buffers on close
-set viminfo^=%
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugins
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Toggle NERDTree with ,nt
-nmap <leader>nt :NERDTreeToggle<CR>
-" Open a mirror of a NERDTree from another tab with ,mt
-nmap <leader>mt :NERDTreeMirror<CR>
-
-" cd to the directory of the last opened NERDTree bookmark
-let NERDTreeChDirMode=2
-
-" Toggle Tagbar with ,tb
-nmap <leader>tb :TagbarToggle<CR>
-
-" Automatically open and close the location list when syntax errors are detected
-let g:syntastic_auto_loc_list=1
-" Only show 5 lines of syntax error locations
-let g:syntastic_loc_list_height=5
-" For fun
+" use symbols with airline
+let g:airline_powerline_fonts=1
+" compile latex asynchronously on write, quickfix won't steal cursor
+let g:LatexBox_latexmk_preview_continuously=1
+let g:LatexBox_latexmk_async=1
+let g:LatexBox_quickfix=2
+" use nicer symbols with syntastic
 let g:syntastic_error_symbol='✖'
 let g:syntastic_warning_symbol='⚠'
+" set <leader> to ,
+let mapleader=","
 
-" Never prompt for saving or loading sessions (vim-session)
-let g:session_autoload='no'
-let g:session_autosave='no'
+"
+" bindings
+"
 
-" Compile LaTeX documents asyncronously
-let g:LatexBox_latexmk_async=1
+" j/k stay on wrapped lines
+map j gj
+map k gk
+" switch windows with ctrl-h/j/k/l
+map <C-h> <C-W>h
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-l> <C-W>l
+" write using sudo
+cmap w!! %!sudo tee > /dev/null %
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Helper Functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" write
+nmap <leader>w :w!<cr>
+" tabs
+map <leader>tn :tabnew<cr>
+map <leader>tc :tabclose<cr>
+map <leader>th :tabm-1<cr>
+map <leader>tl :tabm+1<cr>
+" cd to open buffer's pwd
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+" spell checking
+map <leader>ss :setlocal spell!<cr>
+" line numbers
+map <leader>nu :setlocal nu!<cr>
+" vimgrep (manual typing, word under cursor)
+map <leader>gt :noautocmd vimgrep //gj ./**/* <bar> cw<C-left><C-left><C-left><C-left><right>
+map <leader>gw :execute 'noautocmd vimgrep /' . expand('<cword>') . '/gj ./**/*' <bar> cw<cr>
+" regex replace (manual typing, word under cursor)
+map <leader>rt :%s //g<left><left>
+map <leader>rw :execute '%s /' . expand('<cword>') . '/' . input(expand('<cword>') . '▶') . '/g'<cr>
+" vim-plug
+map <leader>pi :PlugInstall<cr>
+map <leader>pu :PlugUpgrade <bar> PlugUpgrade <bar> PlugClean<cr>
+" nerd tree
+map <leader>nt :NERDTreeToggle<cr>
+map <leader>mt :NERDTreeMirror<cr>
+" tagbar
+map <leader>tb :TagbarToggle<cr>
+" easy align
+xmap ga <plug>(EasyAlign)
+nmap ga <plug>(EasyAlign)
 
-function! SearchDirectory()
-	let l:saved_reg=@z
+"
+" file types
+"
 
-	let @z=input("Search directory for: ")
-	execute "vimgrep /".@z."/gj ./**/*"
-	execute "cw"
-
-	let @z=l:saved_reg
-endfunction
-
-function TabLeft()
-	let tab_number=tabpagenr() - 1
-	if tab_number == 0
-		execute "tabm" tabpagenr('$') - 1
-	else
-		execute "tabm" tab_number - 1
-	endif
-endfunction
-
-function TabRight()
-	let tab_number=tabpagenr() - 1
-	let last_tab_number=tabpagenr('$') - 1
-	if tab_number == last_tab_number
-		execute "tabm" 0
-	else
-		execute "tabm" tab_number + 1
-	endif
-endfunction
-
-function! CmdLine(str)
-    exe "menu Foo.Bar :".a:str
-    emenu Foo.Bar
-    unmenu Foo
-endfunction
-
-function! VisualSelection(direction) range
-    let l:saved_reg=@"
-    execute "normal! vgvy"
-
-    let l:pattern=escape(@", '\\/.*$^~[]')
-    let l:pattern=substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'b'
-        execute "normal ?".l:pattern."^M"
-    elseif a:direction == 'gv'
-        call CmdLine("vimgrep ".'/'.l:pattern.'/'.' **/*.')
-    elseif a:direction == 'replace'
-        call CmdLine("%s".'/'.l:pattern.'/')
-    elseif a:direction == 'f'
-        execute "normal /".l:pattern."^M"
-    endif
-
-    let @/=l:pattern
-    let @"=l:saved_reg
-endfunction
+autocmd FileType mail setlocal spell spl=en_us " spellcheck email
+autocmd FileType mail setlocal fo+=aw          " don't automatically break lines in emails
