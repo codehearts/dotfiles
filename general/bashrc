@@ -1,0 +1,55 @@
+red='\e[0;31m'
+magenta='\e[0;35m'
+#bright_red = '\e[0;91m'
+yellow='\e[0;33m'
+green='\e[0;32m'
+blue='\e[0;34m'
+bright_blue='\e[0;94m'
+normal='\e[0m'
+
+# git prompt
+[ -f ~/.git-prompt.sh ] && source ~/.git-prompt.sh
+
+PS1="\$(if [[ \$? == 0 ]]; then echo '\[${green}\]'; else echo '\[${yellow}\]'; fi)⚘ \[${red}\]\W\[${blue}\]\$(__git_ps1)\[${normal}\] "
+
+# env settings
+EDITOR=vim
+
+# keep repeated commands in history once
+HISTCONTROL=ignoreboth
+shopt -s histappend cmdhist
+
+# add ruby gems to path
+if which ruby >/dev/null && which gem >/dev/null; then
+	export PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+fi
+
+# thefuck
+if command -v thefuck >/dev/null 2>&1; then
+	eval "$(thefuck --alias f)"
+fi
+
+# travis ci
+[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
+
+# git aliases
+alias gs="git status"
+alias gc="git commit -m"
+alias gp="git push -u origin \$(git rev-parse --abbrev-ref HEAD)"
+alias mb="git merge-base HEAD"
+
+# *nix aliases
+alias brc="$EDITOR ~/.bashrc && source ~/.bashrc"
+alias grep="grep --color=auto"
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS aliases
+  alias ls="ls -G"
+
+  # add latex to path on macOS
+  export PATH=/usr/local/bin:$PATH
+  export PATH=$PATH:/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin
+else
+  # linux aliases
+  alias ls="ls --color=auto"
+fi
