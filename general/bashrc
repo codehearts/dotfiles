@@ -26,7 +26,7 @@ fi
 EDITOR=vim
 
 # keep repeated commands in history once
-HISTCONTROL=ignoreboth
+HISTCONTROL=ignoreboth:erasedups
 shopt -s histappend cmdhist
 
 # add ruby gems to path
