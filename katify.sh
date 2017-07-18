@@ -6,22 +6,21 @@ setup_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 while test $# -gt 0; do
 	case "$1" in
 		-h|--help)
-			echo "$package - Sets up a system from my preferences."
+			echo "$0 - Configures a system to my liking"
 			echo ""
-			echo "$package [options]"
+			echo "$0 [options]"
 			echo ""
 			echo "Options:"
 			echo "-h"
 			echo "--help"
 			echo "    show this help message"
-			echo "--mac                     "
-			echo "--osx"
-			echo "    setup symlinks for a Mac system"
+			echo "--macos"
+			echo "    katify a macOS system"
 			echo "--arch"
-			echo "    setup symlinks for an Arch Linux system"
+			echo "    katify an Arch Linux system"
 			exit 0
 			;;
-		--mac|--osx)
+		--macos)
 			shift
 			. "$setup_dir/osx/osx-setup.sh"
 			shift
