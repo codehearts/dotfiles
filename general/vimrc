@@ -15,6 +15,7 @@ Plug 'vectorstorm/vim-chlordane'
 Plug 'liuchengxu/space-vim-dark'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'snowcrshd/cyberpunk.vim'
+Plug 'nightsense/seabird'
 Plug 'roosta/vim-srcery'
 Plug 'trusktr/seti.vim'
 Plug 'jyota/vimColors' " eva, scooby
