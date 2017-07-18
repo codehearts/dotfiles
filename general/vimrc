@@ -40,6 +40,9 @@ Plug 'tpope/vim-fugitive'
 " latex
 Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'tex' }
 
+" coffee script
+Plug 'kchmck/vim-coffee-script'
+
 call plug#end()
 
 "
