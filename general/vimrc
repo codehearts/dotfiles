@@ -8,6 +8,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 
 " colors
+Plug 'lu-ren/SerialExperimentsLain'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'vectorstorm/vim-chlordane'
