@@ -7,12 +7,22 @@ blue='\e[0;34m'
 bright_blue='\e[0;94m'
 normal='\e[0m'
 
+# prompt
+PS1="\$(if [[ \$? == 0 ]]; then echo '\[${green}\]'; else echo '\[${yellow}\]'; fi)⚘ \[${red}\]\W\[${normal}\] "
+
 # git prompt
-[ -f ~/.git-prompt.sh ] && source ~/.git-prompt.sh
+if [ -f ~/.git-prompt.sh ]; then
+  source ~/.git-prompt.sh
+  export PS1="$PS1\[${blue}\]\$(__git_ps1)\[${normal}\] "
+fi
 
-PS1="\$(if [[ \$? == 0 ]]; then echo '\[${green}\]'; else echo '\[${yellow}\]'; fi)⚘ \[${red}\]\W\[${blue}\]\$(__git_ps1)\[${normal}\] "
+# travis ci
+[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
-# env settings
+# private bashrc
+[ -f ~/.private-bashrc ] && source ~/.private-bashrc
+
+# use vim as default editor
 EDITOR=vim
 
 # keep repeated commands in history once
@@ -21,24 +31,25 @@ shopt -s histappend cmdhist
 
 # add ruby gems to path
 if which ruby >/dev/null && which gem >/dev/null; then
-	export PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+  export PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
 fi
 
 # thefuck
 if command -v thefuck >/dev/null 2>&1; then
-	eval "$(thefuck --alias f)"
+  eval "$(thefuck --alias f)"
 fi
 
-# travis ci
-[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
-
 # git aliases
+alias ga="git add"
 alias gs="git status"
 alias gc="git commit -m"
 alias gp="git push -u origin \$(git rev-parse --abbrev-ref HEAD)"
 alias mb="git merge-base HEAD"
 
-# *nix aliases
+# docker aliases
+alias dclean='docker rm $(docker ps -a -q) && docker rmi $(docker images -q)'
+
+# system aliases
 alias brc="$EDITOR ~/.bashrc && source ~/.bashrc"
 alias grep="grep --color=auto"
 
