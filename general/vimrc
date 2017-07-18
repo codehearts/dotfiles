@@ -144,5 +144,6 @@ nmap ga <plug>(EasyAlign)
 " file types
 "
 
+let g:python_recommended_style = 0 " don't use PEP8 styling for python
 autocmd FileType mail setlocal spell spl=en_us " spellcheck email
 autocmd FileType mail setlocal fo+=aw          " don't automatically break lines in emails
