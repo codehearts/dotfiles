@@ -8,12 +8,12 @@ bright_blue='\e[0;94m'
 normal='\e[0m'
 
 # prompt
-PS1="\$(if [[ \$? == 0 ]]; then echo '\[${green}\]'; else echo '\[${yellow}\]'; fi)⚘ \[${red}\]\W\[${normal}\] "
+PS1="\$(if [[ \$? == 0 ]]; then echo '\[${green}\]'; else echo '\[${yellow}\]'; fi)⚘ \[${red}\]\W\[${normal}\]"
 
 # git prompt
 if [ -f ~/.git-prompt.sh ]; then
   source ~/.git-prompt.sh
-  export PS1="$PS1\[${blue}\]\$(__git_ps1)\[${normal}\] "
+  export PS1="$PS1\[${blue}\]\$(__git_ps1 \" (%s)\")\[${normal}\] "
 fi
 
 # travis ci
