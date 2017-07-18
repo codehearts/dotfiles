@@ -8,10 +8,10 @@ general_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 # General Software Configs
 ########################################
 
-configs=( git  vim  screen tmux  mpd   ncmpcpp "mutt theme" "mutt sample configs")
-default=( "on" "on" "on"   "off" "off" "off"   "off"        "off"                )
-configs+=("msmtp sample config" "offlineimap sample config"                      )
-default+=("off"                 "off"                                            )
+configs=( bash git  vim  screen tmux  mpd   ncmpcpp "mutt theme" )
+default=( "on" "on" "on" "on"   "off" "off" "off"   "off"        )
+configs+=("mutt sample configs" "msmtp sample config" "offlineimap sample config")
+default+=("off"                 "off"                 "off"                      )
 
 checklist "Choose config files to set up:" configs[@] default[@]
 
@@ -19,6 +19,13 @@ checklist "Choose config files to set up:" configs[@] default[@]
 for choice in $choices; do
 	choice=${configs[$choice]} # Get the name of the choice
 	case $choice in
+  bash)
+    infobox "Linking bash files"
+
+    declare -A bash_files
+    bash_files['bashrc']='.bashrc'
+    set_home_files_from_array bash_files
+    ;;
 	git)
 		infobox "Linking git files"
 
