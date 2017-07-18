@@ -148,3 +148,43 @@ nmap ga <plug>(EasyAlign)
 let g:python_recommended_style = 0 " don't use PEP8 styling for python
 autocmd FileType mail setlocal spell spl=en_us " spellcheck email
 autocmd FileType mail setlocal fo+=aw          " don't automatically break lines in emails
+
+"
+" startify header
+"
+
+function! s:center_text(lines) abort
+  let longest_line   = strwidth(a:lines[0])
+  let centered_lines = map(copy(a:lines),
+    \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+  return centered_lines
+endfunction
+
+let g:wired_ascii = [
+  \ '                       `--.                       ',
+  \ '                   ``.-ssss-.``                   ',
+  \ '               `..-----/oo+------..               ',
+  \ '            `.---::::::://:::::::---.`            ',
+  \ '          `-::::::/++oooooooo++/::::::-`          ',
+  \ '        ./ssss//+osssssssssssssso+/:osss+-`       ',
+  \ '     `-+ssso+/+osssso++++++++osssso+/+ossso/.     ',
+  \ '   ./osso/::/+ssss+++ooossooo+++sssso/::/+sss+.   ',
+  \ ' `+sss+:-:::+ssso++osssssssssso++osss+:::-:/sss+. ',
+  \ '.oss+..--::/ssss++osssssssssssso++osss/::--..+sss-',
+  \ 'osss` .-:::/ssso++sssssssssssssoo+osss/:::--  osso',
+  \ '+sss. `-:::/ssso++sssssssssssssoo+osss/:::-- `ssso',
+  \ '`+sss:.--::/osss++osssssssssssso++ssss/::--.:osso.',
+  \ ' `:osso/::::/osss++oossssssssoo++ssss+::::/osso:` ',
+  \ '   `:+ssso+/:/ossso+++oooooo+++ossso+://oosso:`   ',
+  \ '  -::`.:ossso+/+ossssoo////oossssso//ossso/..-:-  ',
+  \ ' -sss+  `./oso/:/+ossss/:::sssso+/::oso+.`  +sss- ',
+  \ ' `:+/.     `---::::osss----osso:::::--.     ./+:` ',
+  \ '             `.---:osso....+sso:----`             ',
+  \ '                `.-+sso````+sso..``               ',
+  \ '          -/:`     /sso    +ss+      :/-          ',
+  \ '         .sss:     +sso    +sso     -sss.         ',
+  \ '         `ssso.  `:sss+    /sss/.  .+sss.         ',
+  \ '          -ssssssssss+`     +ssssssssss:          ',
+  \ '           `-/+oo+/:.        .:/+oo+/-`           ',
+  \ ]
+let g:startify_custom_header = s:center_text(g:wired_ascii)
