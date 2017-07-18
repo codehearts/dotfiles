@@ -50,6 +50,7 @@ call plug#end()
 "
 
 if has('gui_running') " gvim/mvim
+  set bg=dark
   colorscheme lucid
 
   set go-=r go-=L go-=m go-=T " remove scrollbar and toolbar from gui
