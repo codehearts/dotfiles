@@ -31,6 +31,7 @@ Plug 'tpope/vim-surround'
 Plug 'ervandew/supertab'
 
 " ui
+Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdtree'
 Plug 'mhinz/vim-startify'
@@ -87,6 +88,7 @@ set hls   " highlight search matches
 
 " use symbols with airline
 let g:airline_powerline_fonts=1
+let g:airline_theme='lucius'
 " compile latex asynchronously on write, quickfix won't steal cursor
 let g:LatexBox_latexmk_preview_continuously=1
 let g:LatexBox_latexmk_async=1
