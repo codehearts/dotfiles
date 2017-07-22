@@ -51,20 +51,10 @@ alias gp="git push -u origin \$(git rev-parse --abbrev-ref HEAD)"
 alias gmd="git checkout develop && git pull && git checkout - && git merge develop"
 alias mb="git merge-base HEAD"
 
-# docker aliases
-alias dclean='docker rm $(docker ps -a -q) && docker rmi $(docker images -q)'
-
 # system aliases
 alias brc="$EDITOR ~/.bashrc && source ~/.bashrc"
 alias grep="grep --color=auto"
 alias sizeof="du -Lhs"
-
-# arch linux aliases
-if which yaourt >/dev/null 2>&1; then
-  alias update="yaourt -Syu --aur"
-  alias removeorphans="yaourt -Rns \$(yaourt -Qqtd)"
-  alias clearpkgcache="yaourt -Scc"
-fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   # macOS aliases
@@ -76,4 +66,58 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 else
   # linux aliases
   alias ls="ls --color=auto"
+fi
+
+# arch linux aliases
+if command -v yaourt >/dev/null 2>&1; then
+  alias update="yaourt -Syu --aur"
+  alias removeorphans="yaourt -Rns \$(yaourt -Qqtd)"
+  alias clearpkgcache="yaourt -Scc"
+fi
+
+# docker aliases
+if command -v docker >/dev/null 2>&1; then
+  alias dclean='docker rm $(docker ps -a -q) && docker rmi $(docker images -q)'
+fi
+
+# gcalcli aliases
+if command -v gcalcli >/dev/null 2>&1; then
+  alias gcald="gcalcli --military --detail_location --detail_length --detail_reminders --detail_description agenda 12am 11:59pm"
+  alias gcalw="gcalcli --military calw"
+  alias gcalm="gcalcli --military calm"
+fi
+
+# gcalcli aliases
+if command -v dict >/dev/null 2>&1; then
+  # Provides a colorized definition of the given word
+  #   $1: The word to define.
+  #   $2: The dictionary to use. (Optional)
+  define() {
+    # Use an optional second parameter as the dictionary name
+    if [[ -z "$2" ]]; then
+      database=gcide
+    else
+      database=$2
+    fi
+
+    dict -d $database $1 | colorit | less -r
+  }
+
+  # Provides the English for the given Swedish
+  #   $1: The word to translate
+  swen() {
+    define $1 fd-swe-eng
+  }
+
+  # Provides the Swedish for the given English
+  #   $1: The word to translate
+  ensw() {
+    define $1 fd-eng-swe
+  }
+
+  # Provides a colorized thesaurus entry for the given word
+  #   $1: The word to look up
+  thes() {
+    define $1 moby-thesaurus
+  }
 fi
