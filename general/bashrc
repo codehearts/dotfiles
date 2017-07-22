@@ -1,6 +1,10 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# colors
 red='\e[0;31m'
 magenta='\e[0;35m'
-#bright_red = '\e[0;91m'
+bright_red='\e[0;91m'
 yellow='\e[0;33m'
 green='\e[0;32m'
 blue='\e[0;34m'
@@ -53,6 +57,14 @@ alias dclean='docker rm $(docker ps -a -q) && docker rmi $(docker images -q)'
 # system aliases
 alias brc="$EDITOR ~/.bashrc && source ~/.bashrc"
 alias grep="grep --color=auto"
+alias sizeof="du -Lhs"
+
+# arch linux aliases
+if which yaourt >/dev/null 2>&1; then
+  alias update="yaourt -Syu --aur"
+  alias removeorphans="yaourt -Rns \$(yaourt -Qqtd)"
+  alias clearpkgcache="yaourt -Scc"
+fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   # macOS aliases
