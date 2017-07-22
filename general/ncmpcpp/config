@@ -58,7 +58,7 @@ mpd_music_dir = "~/Music"
 ## If you set format to 44100:16:2, make it 'yes'.
 ##
 #
-visualizer_in_stereo = "yes"
+visualizer_in_stereo = "no"
 #
 visualizer_fifo_path = "/tmp/mpd.fifo"
 #
@@ -301,7 +301,7 @@ autocenter_mode = "yes"
 ## be used to build 'empty' part of progressbar.
 ##
 #progressbar_look = "=>"
-progressbar_look = "■■ "
+progressbar_look = "───"
 #
 #default_place_to_search_in = "database" (database/playlist)
 #
@@ -317,17 +317,17 @@ progressbar_look = "■■ "
 #
 #default_tag_editor_pattern = "%n - %t"
 #
-header_visibility = "yes"
+header_visibility = "no"
 #
-statusbar_visibility = "yes"
+statusbar_visibility = "no"
 #
-#titles_visibility = "yes"
+titles_visibility = "no"
 #
 #header_text_scrolling = "yes"
 #
 #fancy_scrolling = "yes"
 #
-#cyclic_scrolling = "no"
+cyclic_scrolling = "yes"
 #
 #lines_scrolled = "2"
 #
