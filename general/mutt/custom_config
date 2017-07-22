@@ -1,13 +1,13 @@
 # Replace <custom_address> with a custom email address
 
-set folder		= ~/Mail/Custom
-set spoolfile	= +Inbox
+set folder    = ~/Mail/Custom
+set spoolfile = +Inbox
 mailboxes `find ~/Mail/Custom -maxdepth 1 -mindepth 1 -type d -printf "+'%f' "`
 
 # Sending mail
-set from		= <custom_address>
-set sendmail	= "/usr/bin/msmtp -a custom"
-set record		= +Sent
+set from     = <custom_address>
+set sendmail = "/usr/bin/msmtp -a custom"
+set record   = +Sent
 
-set mbox		= +Archive
-set postponed	= +Drafts
+set mbox      = +Archive
+set postponed = +Drafts

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 
 # Opens a tmux session for checking all of my mail accounts
 
@@ -20,28 +20,13 @@ else
 fi
 tmux send-keys $session_info "checkgmail" C-m
 
-# School (2)
-tmux new-window $session_info -n School
-tmux send-keys $session_info "checkschool" C-m
-
-# Nejt (3)
-tmux new-window $session_info -n Nejt
-tmux send-keys $session_info "checknejt" C-m
-
-# Portfolio (4)
-tmux new-window $session_info -n Portfolio
-tmux send-keys $session_info "checkportfolio" C-m
-
-# Mood & Figure (5)
-tmux new-window $session_info -n "M&F"
-tmux send-keys $session_info "checkmaf" C-m
+# Kate Hart (2)
+tmux new-window $session_info -n KateHart
+tmux send-keys $session_info "checkkatehart" C-m
 
 # Set the window history order (the last line is the current window)
-tmux select-window -t "M&F"
-tmux select-window -t Portfolio
-tmux select-window -t Nejt
 tmux select-window -t Gmail
-tmux select-window -t School
+tmux select-window -t KateHart
 
 # If we created a new session, attach it
 if ! $session_existed; then
