@@ -1,0 +1,95 @@
+#!/bin/bash
+
+dow[0]='日'
+dow[1]='月'
+dow[2]='火'
+dow[3]='火'
+dow[4]='水'
+dow[5]='木'
+dow[6]='土'
+
+workspace() {
+	desktop=1
+	ws=""
+	IFS=':' read -a array <<< $(bspc wm --get-status)
+	for item in "${array[@]}"
+	do
+		name=${item#?}
+		if [ "$item" == "LT" ]
+		then
+			ws="${ws}%{S+}"
+		else
+			desk=""
+			case $item in
+				O*) # focused occupied
+					desk="%{R} ${name} %{R}"
+				;;
+				F*) # focused free
+					desk="%{R} ${name} %{R}"
+				;;
+				U*) # focused urgent
+					desk="%{R} ${name} %{R}"
+				;;
+				o*) # occupied
+					desk="%{+o} ${name} %{-o}"
+				;;
+				f*) # free
+					desk=" ${name} "
+				;;
+				u*) # urgent
+					desk=" {$name} "
+				;;
+			esac
+			shift
+			if [ "$desk" != "" ]
+			then
+				#ws="${ws}%{A:bspc desktop -f ^$desktop:}${desk}%{A}"
+				ws="${ws}${desk}"
+				desktop=$((desktop+1))
+			fi
+		fi
+	done
+	ws="${ws}${S0}"
+	echo "${ws}"
+}
+
+clock() {
+	echo "  ${dow[$(date '+%w')]}  •  $(date '+%m')月$(date '+%d')日  •  $(date '+%R')  "
+}
+
+battery() {
+	power='/sys/class/power_supply'
+	if [ -d $power/BAT0 ]; then
+		charge=$(cat $power/BAT0/capacity)
+		echo -e "  ${charge}  •"
+	fi
+}
+
+volume() {
+	status=$(amixer get Master)
+	volume=''
+	#icon=''
+	if echo "$status" | grep -q off; then
+		volume='—'
+		#icon='\uf026'
+	else
+		volume=$(echo "$status" | egrep -o -m 1 "[0-9]+%" | tr -d '%')
+		#icon='\uf028'
+	fi
+
+	echo -e "  $volume  "
+}
+
+DISPLAY_WIDTH=$(xdpyinfo | grep dimensions | awk '{print $2}' | awk -Fx '{print $1}')
+
+while :; do
+	echo -e "%{U{{ bar_underline_color }}}$(workspace) %{r} $(battery)$(volume)•$(clock)"
+	sleep 0.1
+done | lemonbar \
+  -g "$DISPLAY_WIDTH"x{{ bar_height }}+{{ bar_x }}+{{ bar_y }} \
+	-B "{{ bar_bgc }}" \
+	-F "{{ fgc }}" \
+	-o {{ bar_font_offset }} \
+	-u {{ bar_underline }} \
+  {% for f in bar_fonts -%} -f "{{ f }}" {%- endfor %} | \
+	while :; do read line; eval $line; done

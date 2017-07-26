@@ -1,0 +1,24 @@
+wallpapers: "~/Pictures/wallpaper/yellow-gradient.jpg"
+
+name:           "yellow-gradient"
+colors:
+  primary:      "red"
+  secondary:    "blue"
+  red:
+    normal:     "#bdc666"
+    bold:       "#ecf87f"
+  green:
+    normal:     "#b8c553"
+    bold:       "#e6f768"
+  yellow:
+    normal:     "#bcc577"
+    bold:       "#ebf795"
+  blue:
+    normal:     "#bec68a"
+    bold:       "#edf8ac"
+  magenta:
+    normal:     "#c0c69c"
+    bold:       "#f0f8c3"
+  cyan:
+    normal:     "#c0c4ac"
+    bold:       "#f0f6d7"

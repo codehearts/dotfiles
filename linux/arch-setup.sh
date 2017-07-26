@@ -231,28 +231,19 @@ for installed_package in "${to_install[@]}"; do
 		program_box "systemctl --user enable offlineimap.service" "Running offlineimap in background"
 	;;
 	python-pip)
-		program_box "pip install --user pyglet"   "Installing Pyglet"
-		program_box "pip install --user whizkers" "Installing Whizkers"
+		program_box "pip install --user pyglet" "Installing Pyglet"
+		program_box "pip install --user zenbu"  "Installing Zenbu"
+		program_box "pip install --user colorz" "Installing colorz"
 
-		# Add pip executables to PATH
-		pip_path='PATH=\"\$PATH:\$HOME/.local/bin\"' 
-		append_entire_string_without_duplicating $pip_path $HOME/.bashrc
-		source $HOME/.bashrc
-
-		# Set up whizkers files
+		# Set up zenbu files
 		ensure_dir_exists ~/.config
-		declare -A whizkers_files
-		whizkers_files['config/whizkers']='.config/whizkers'
-		set_home_files_from_array whizkers_files
-		whizkers soft-pink
+		declare -A zenbu_files
+		zenbu_files['config/zenbu']='.config/zenbu'
+		set_home_files_from_array zenbu_files
+		zenbu soft-pink
 	;;
 	python2-pip)
 		program_box "pip2 install --user pyglet" "Installing Pyglet"
-
-		# Add pip executables to PATH
-		pip2_path='PATH=\"\$PATH:\$HOME/.local/bin\"' 
-		append_entire_string_without_duplicating $pip2_path $HOME/.bashrc
-		source $HOME/.bashrc
 	;;
 	virtualbox)
 		# Enable the necessary kernel modules at boot

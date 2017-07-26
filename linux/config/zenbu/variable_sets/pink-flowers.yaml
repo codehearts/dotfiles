@@ -1,0 +1,24 @@
+wallpapers: "~/Pictures/wallpaper/pink-flowers.jpg"
+
+name:           "pink-flowers"
+colors:
+  primary:      "red"
+  secondary:    "blue"
+  red:
+    normal:     "#c7b5b3"
+    bold:       "#f9e2df"
+  green:
+    normal:     "#c3be8a"
+    bold:       "#f5eead"
+  yellow:
+    normal:     "#bab763"
+    bold:       "#ece87d"
+  blue:
+    normal:     "#b8b7c7"
+    bold:       "#e6e4f9"
+  magenta:
+    normal:     "#c22875"
+    bold:       "#f43293"
+  cyan:
+    normal:     "#c5778d"
+    bold:       "#f795b0"

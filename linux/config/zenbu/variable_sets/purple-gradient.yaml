@@ -1,0 +1,24 @@
+wallpapers: "~/Pictures/wallpaper/purple-gradient.jpg"
+
+name:           "purple-gradient"
+colors:
+  primary:      "red"
+  secondary:    "blue"
+  red:
+    normal:     "#9455aa"
+    bold:       "#bf6edc"
+  green:
+    normal:     "#a566a7"
+    bold:       "#d684d9"
+  yellow:
+    normal:     "#aa6493"
+    bold:       "#dc81be"
+  blue:
+    normal:     "#a97d93"
+    bold:       "#dba1be"
+  magenta:
+    normal:     "#aa6d83"
+    bold:       "#dc8da9"
+  cyan:
+    normal:     "#ac7374"
+    bold:       "#de9495"

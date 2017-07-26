@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Sets and reloads the theme using zenbu via argument or dmenu
+
+if [ "$#" -eq 0 ]; then
+  selected=$(zenbu -s ~/.config/zenbu/variable_sets/ -l |\
+    dmenu -i -f -b -sb '#000000' -p 'Zenbu')
+  [ -z "$selected" ] && exit 0
+  zenbu $selected >/dev/null
+else
+  zenbu "$@" >/dev/null
+fi
+
+[ "$?" -ne 0 ] && exit 1
+
+reload-desktop
+
+exit 0

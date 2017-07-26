@@ -1,0 +1,24 @@
+wallpapers: "~/Pictures/wallpaper/starry-forest.jpg"
+
+name:           "starry-forest"
+colors:
+  primary:      "red"
+  secondary:    "blue"
+  red:
+    normal:     "#8aa6c4"
+    bold:       "#add0f6"
+  green:
+    normal:     "#6492c5"
+    bold:       "#7db7f7"
+  yellow:
+    normal:     "#587fac"
+    bold:       "#71a3de"
+  blue:
+    normal:     "#4875ab"
+    bold:       "#5d97dd"
+  magenta:
+    normal:     "#3a6caa"
+    bold:       "#4b8bdc"
+  cyan:
+    normal:     "#7489a8"
+    bold:       "#96b1da"

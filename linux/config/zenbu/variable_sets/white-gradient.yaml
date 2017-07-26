@@ -1,0 +1,24 @@
+wallpapers: "~/Pictures/wallpaper/white-gradient.jpg"
+
+name:           "white-gradient"
+colors:
+  primary:      "red"
+  secondary:    "blue"
+  red:
+    normal:     "#c3c7c1"
+    bold:       "#f3f9f1"
+  green:
+    normal:     "#b6c7c0"
+    bold:       "#e3f9f0"
+  yellow:
+    normal:     "#aeb5ba"
+    bold:       "#dce5ec"
+  blue:
+    normal:     "#a4a9b2"
+    bold:       "#d2d8e4"
+  magenta:
+    normal:     "#959baa"
+    bold:       "#c0c8dc"
+  cyan:
+    normal:     "#bbbabe"
+    bold:       "#eceaf0"

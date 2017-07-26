@@ -1,50 +1,29 @@
 #!/usr/bin/env bash
-# Runs colorz2 on an image file to get 6 colors, then stuffs those colors
-# through wzk.
+# Script Name: autocolor
+# Written by Ethan Chan - https://github.com/metakirby5
+# Heavily modified by fullsalvo and codehearts
+# Runs colorz on an image file to get colors, then stuffs those colors
+# through wzb.
+# Dependency: colorz - https://github.com/metakirby5/colorz
 
-# http://stackoverflow.com/a/13221491
-exists() {
-  if [ "$2" != in ]; then
-    echo "Incorrect usage."
-    echo "Correct usage: exists {key} in {array}"
-    return
-  fi
-  eval '[ ${'$3'[$1]+muahaha} ]'
-}
+SRC=~/.autowzb
 
-usage() {
-  echo "USAGE: autowzk [image file / URL] (primary color) (secondary color)"
-  echo "If image URL provided, image will be saved at \"~/.autowzk\"."
-  echo "Available colors: 2 (red),  3 (green),   4 (yellow),"
-  echo "                  5 (blue), 6 (magenta), 7 (cyan)"
-  echo "Defaults: primary=2, secondary=3"
-  exit 1
-}
-
-SRC=~/.autowzk
-BG="#0e0e0e"
-FG="#ffffff"
-B_n="#161d20"
-B_b="#6f6d80"
-W_n="#d7bdad"
-W_b="#a685c8"
-
-declare -A COLORS
 COLORS=(
-  [2]=red
-  [3]=green
-  [4]=yellow
-  [5]=blue
-  [6]=magenta
-  [7]=cyan
+	black
+	red
+	green
+	yellow
+	blue
+	magenta
+	cyan
+	white
 )
 
 read -r -d '' TEMPLATE << EOM
-wallpaper:   "%s"
+wallpapers: "%s"
+
+name:           "%s"
 colors:
-  name:         "%s"
-  background:   "%s"
-  foreground:   "%s"
   primary:      "%s"
   secondary:    "%s"
   black:
@@ -53,74 +32,189 @@ colors:
   red:
     normal:     "%s"
     bold:       "%s"
-  green: 
+  green:
     normal:     "%s"
     bold:       "%s"
-  yellow: 
+  yellow:
     normal:     "%s"
     bold:       "%s"
-  blue: 
+  blue:
     normal:     "%s"
     bold:       "%s"
-  magenta: 
+  magenta:
     normal:     "%s"
     bold:       "%s"
-  cyan: 
+  cyan:
     normal:     "%s"
-    bold:       "%s" 
-  white: 
+    bold:       "%s"
+  white:
     normal:     "%s"
-    bold:       "%s" 
+    bold:       "%s"
 EOM
 
-# Sanity checks, getting args
-[ "$#" -lt 1 ] || [ "$#" -gt 3 ] && usage
+read -r -d '' NOBW <<-'NOBW'
+wallpapers: "%s"
 
-if [ ! -f "$1" ]; then
-  [[ "$1" != http* ]] && usage
+name:           "%s"
+colors:
+  primary:      "%s"
+  secondary:    "%s"
+  red:
+    normal:     "%s"
+    bold:       "%s"
+  green:
+    normal:     "%s"
+    bold:       "%s"
+  yellow:
+    normal:     "%s"
+    bold:       "%s"
+  blue:
+    normal:     "%s"
+    bold:       "%s"
+  magenta:
+    normal:     "%s"
+    bold:       "%s"
+  cyan:
+    normal:     "%s"
+    bold:       "%s"
+NOBW
 
-  curl "$1" -o "$SRC" 2>/dev/null || (echo "URL invalid." && exit 1)
-else
+
+################
+# Declarations #
+################
+
+declare primary="red"
+declare secondary="blue"
+declare temp=$NOBW
+declare col=6
+
+#############
+# Functions #
+#############
+
+usage() {
+    clear
+    more <<-'HELP'
+autowzb - sanpai theme generator
+Usage:
+autowzb [ command [ args... ] ] image file/URL
+If image URL provided, image will be saved at "~/.autowzb".
+Available colors: black, red,  green, yellow,
+                  blue, magenta, cyan, white
+
+Options:
+  -h
+        Show help options
+  -p <color name>
+        Set primary color for template
+  -s <color name>
+        Set secondary color for template
+  -c
+        Include black and white in the templating
+          (default: no black and white)
+HELP
+}
+
+err() {
+	printf "\e[31m$1\e[0m" >&2
+}
+
+hl () {
+	printf "\e[32m$1\e[0m" >&2
+}
+
+is_a_color() {
+	[[ " ${COLORS[*]} " =~ *" $1 "* ]]
+	return $?
+}
+
+wzb ()
+{
+	if [ "$#" -eq 0 ]; then
+	zenbu >/dev/null
+	else
+	zenbu "$@" >/dev/null
+	fi
+
+	[ "$?" -ne 0 ] && exit 1
+
+	reload-desktop
+	[ "$#" -ne 0 ] && sleep 0.5
+
+}
+
+template ()
+{
+	if [ ! -f "$1" ]; then
+	[[ "$1" != http* ]] && usage
+
+	curl "$1" -o "$SRC" 2>/dev/null || (echo "URL invalid." && exit 1)
+	else
   SRC="$1"
+	fi
+
+  SRC="$(readlink -f $SRC)"
+  # Convert absolute home directory to ~
+  RELATIVE_SRC="${SRC/$HOME/\~}"
+  name="$(basename "$1" | cut -f 1 -d .)"
+
+	# Starting...
+	echo "Using primary = $primary, secondary = $secondary..."
+	echo
+
+	colors="$(colorz --no-preview -n $col $SRC)"
+	[ "${PIPESTATUS[0]}" -ne 0 ] && exit 1
+
+	yaml="$(echo \
+  "$RELATIVE_SRC" "$name" \
+  "$primary" "$secondary" \
+  "$colors" |\
+xargs printf "$temp")"
+
+	echo "Writing $name.yaml"
+  echo "$yaml" > ~/.config/zenbu/variable_sets/$name.yaml
+	echo
+
+	echo "Changing desktop..."
+  zenbu $name > /dev/null
+  reload-desktop
+
+	exit
+}
+
+###########
+# Options #
+###########
+
+while getopts ':hp:s:c' option; do
+	case $option in
+	h)
+		usage
+		exit
+		;;
+	p)
+		primary="$OPTARG"
+		;;
+	s)
+		secondary="$OPTARG"
+		;;
+	c)
+		temp=$TEMPLATE
+		col=8
+		;;
+	\?)
+		err "-$OPTARG is not a valid option\n"
+		exit
+		;;
+	esac
+done
+shift $((OPTIND-1))
+
+########
+# Main #
+########
+
+if [[ "$#" -ge 1 ]]; then
+	template "$@"
 fi
-
-NAME=$(basename $SRC)
-NAME=${NAME%.*}
-
-if [ -z "$2" ]; then
-  # Default
-  primary="2"
-else
-  exists "$2" in COLORS 2>/dev/null && primary="$2" || usage
-fi
-
-if [ -z "$3" ]; then
-  # Default
-  secondary="3"
-else
-  exists "$3" in COLORS 2>/dev/null && secondary="$3" || usage
-fi
-
-# Starting...
-echo "Using primary=$primary, secondary=$secondary..."
-echo
-
-colors="$(previewcolors --no-preview -n 6 "$SRC")"
-[ "${PIPESTATUS[0]}" -ne 0 ] && exit 1
-
-primaries="$(echo "$colors" | sed -n "$((primary - 1))p")"
-
-FULL_SRC=$(readlink -f "$SRC")
-VAR_SRC=${FULL_SRC/$HOME/"{{ home_dir }}"}
-
-yaml="$(echo \
-  "$NAME" "$BG" "$FG" \
-  "${COLORS[$primary]}" "${COLORS[$secondary]}" \
-  "$B_n" "$B_b" \
-  "$colors" \
-  "$W_n" "$W_b" |\
-  xargs printf "$TEMPLATE" "$VAR_SRC")"
-
-#echo "Generated YAML:"
-echo "$yaml" > "$HOME/.config/whizkers/variable_sets/$NAME.yaml"
-#echo

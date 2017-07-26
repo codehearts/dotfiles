@@ -1,0 +1,24 @@
+wallpapers: "~/Pictures/wallpaper/bright-sky.jpg"
+
+name:           "bright-sky"
+colors:
+  primary:      "red"
+  secondary:    "blue"
+  red:
+    normal:     "#bdc6c1"
+    bold:       "#ecf8f1"
+  green:
+    normal:     "#9cc3c7"
+    bold:       "#c3f3f9"
+  yellow:
+    normal:     "#7dbdc8"
+    bold:       "#9cecfa"
+  blue:
+    normal:     "#60b7c8"
+    bold:       "#78e4fa"
+  magenta:
+    normal:     "#46b1c7"
+    bold:       "#57ddf9"
+  cyan:
+    normal:     "#289dc7"
+    bold:       "#32c4f9"
