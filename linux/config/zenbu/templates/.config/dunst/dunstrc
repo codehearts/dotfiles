@@ -1,5 +1,5 @@
 [global]
-    font = {{ font }} {{ pixelsize }}
+    font = {{ dunst_font }} {{ dunst_font_size }}
 
     # Allow a small subset of html markup:
     #   <b>bold</b>
@@ -45,7 +45,7 @@
 
     # Split notifications into multiple lines if they don't fit into
     # geometry.
-    word_wrap = yes
+    word_wrap = no
 
     # Ignore newlines '\n' in notifications.
     ignore_newline = no
@@ -113,13 +113,13 @@
     # Draw a line of "separator_height" pixel height between two
     # notifications.
     # Set to 0 to disable.
-    separator_height = {{ border_size }}
+    separator_height = {{ dunst_border_size }}
 
     # Padding between text and separator.
-    padding = 30
+    padding = {{ dunst_padding }}
 
     # Horizontal padding.
-    horizontal_padding = 30
+    horizontal_padding = {{ dunst_padding }}
 
     # Define a color for the separator.
     # possible values are:
@@ -147,7 +147,7 @@
     icon_folders = ''
 
 [frame]
-    width = {{ border_size }}
+    width = {{ dunst_border_size }}
     color = "{{ n_primary }}"
 
 #[shortcuts]
@@ -174,18 +174,18 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "{{ n_black }}"
-    foreground = "{{ n_white }}"
-    timeout = 7
+    background = "{{ bgc }}"
+    foreground = "{{ fgc }}"
+    timeout = 4
 
 [urgency_normal]
     background = "{{ bgc }}"
     foreground = "{{ fgc }}"
-    timeout = 10
+    timeout = 7
 
 [urgency_critical]
-    background = "#C62828"
-    foreground = "#FFFFFF"
+    background = "{{ fgc }}"
+    foreground = "{{ bgc }}"
     timeout = 0
 
 
