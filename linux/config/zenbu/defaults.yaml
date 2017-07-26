@@ -42,7 +42,7 @@ dunst_transparency: 15
 dunst_border_size: 0
 dunst_padding: 20
 dunst_font: "M+ 1p-8"
-dunst_font_size: 12
+dunst_font_size: 10
 
 # Colors
 
