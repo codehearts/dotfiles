@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# Sends a notify-send notification with album art and information from mpc.
+# If the file has no art, it downloads from coverartarchive and embeds it.
+#
+# Adapted from https://bbs.archlinux.org/viewtopic.php?pid=684807#p684807
+# Taken from https://github.com/metakirby5/scripts, modified by codehearts
+# Depends: curl, ffmpeg, mogrify (imagemagick), mpc, notify-send (libnotify)
+
+ALBUM_ART="$(mktemp).png"
+ALBUM_ART_WIDTH="100"
+FMT_SUMMARY="[%title%]|[%file%]"
+FMT_BODY="[[%artist%\n]&%album%]|[%artist%]|[%album%]"
+
+# Runs the given format string through mpc -f for current song
+mpc_format() {
+  local args=("$@")
+  mpc -f "${args[0]}" current
+}
+
+file="$HOME/Music/$(mpc current --format '%file%')"
+artist="$(mpc_format "[%artist%]")"
+album="$(mpc_format "[%album%]")"
+summary="$(mpc_format "$FMT_SUMMARY")"
+body="$(mpc_format "$FMT_BODY")"
+
+# Summary/body can't start w/ -
+summary="${summary/#-/−}"
+body="${body/#-/−}"
+
+# Search artist+album on musicbrainz, return mbid between '<release="' and '"'
+# $1 artist, $2 album
+search_mbid() {
+  curl -sG \
+    -A 'mpc-notify/1.0 ( https://github.com/codehearts )' \
+    --data-urlencode "query=artist:\"${1}\" AND release:\"${2}\"" \
+    http://musicbrainz.org/ws/2/release/ |\
+  egrep -o '<release id=".*' |\
+  cut -d'"' -f2 | cut -d'"' -f1
+}
+
+# Download artwork from coverartarchive, return OK if status 200
+# $1 mbid, $2 size (250 or 500), $3 out_file
+mbid_download() {
+  local http_status=$(curl -sLG \
+    -o "${3}" \
+    -w '%{http_code}' \
+    "http://coverartarchive.org/release/${1}/front-${2}.png")
+  [ $http_status -eq 200 ]
+}
+
+# Search coverartarchive and download art, return OK if downloaded
+# $1 artist, $2 album, $3 size (250 or 500), $4 out_file
+download_artwork() {
+  mbid_download "$(search_mbid "${1}" "${2}")" $3 "${4}"
+}
+
+# Get album art from audio file
+ffmpeg -y -i "$file" "$ALBUM_ART" 2>/dev/null &&\
+  mogrify -resize "$ALBUM_ART_WIDTH" "$ALBUM_ART"
+
+# No embedded album art, find some online and embed it
+if [ $? -ne 0 ]; then
+  OUT_FILE="$(mktemp).mp3"
+  $(download_artwork "$artist" "$album" 250 "$ALBUM_ART") &&\
+  ffmpeg -y -i "$file" -i "$ALBUM_ART" \
+    -map 0:0 -map 1:0 -c copy -id3v2_version 3 \
+    -metadata:s:v title="Album cover" \
+    -metadata:s:v comment="Cover (Front)" "$OUT_FILE" 2>/dev/null &&\
+  mv "$OUT_FILE" "$file" &&\
+  mogrify -resize "$ALBUM_ART_WIDTH" "$ALBUM_ART"
+
+  # Use generic audio icon if download failed
+  [ $? -ne 0 ] && ALBUM_ART="audio-x-generic"
+fi
+
+# Create notification
+notify-send \
+  -u low \
+  -t 2000 \
+  -i "$ALBUM_ART" \
+  "<b>${summary:=silence}</b>" "$body"

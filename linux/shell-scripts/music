@@ -3,7 +3,5 @@
 # Starts mpd, opens ncmpcpp, and kills mpd when finished
 
 mpd
-mpd-notification -m ~/Music &>/dev/null &
 ncmpcpp
-killall mpd-notification
 mpd --kill
