@@ -31,11 +31,11 @@ body="${body/#-/−}"
 # $1 artist, $2 album
 search_mbid() {
   curl -sG \
+    -d 'limit=1' -d 'fmt=json' \
     -A 'mpc-notify/1.0 ( https://github.com/codehearts )' \
     --data-urlencode "query=artist:\"${1}\" AND release:\"${2}\"" \
     http://musicbrainz.org/ws/2/release/ |\
-  egrep -o '<release id=".*' |\
-  cut -d'"' -f2 | cut -d'"' -f1
+  sed -e 's/^.*"releases":\[{"id":"\([[:alnum:]-]\+\)".*$/\1/'
 }
 
 # Download artwork from coverartarchive, return OK if status 200
