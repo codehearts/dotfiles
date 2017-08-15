@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/offlineimap -o -u quiet
+ExecStop=/usr/local/sbin/mail-notify -a300 -m3 -t2000
 
 [Install]
 WantedBy=multi-user.target

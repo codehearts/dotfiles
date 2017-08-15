@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Display new email notifications with the sender and subject line.
+#
+# Author:  Kate Hart (https://github.com/codehearts)
+# Depends: grep, notify-send (libnotify)
+
+# Defaults
+MAIL_DIR=~/Mail
+MESSAGE_AGE=300 # 5m
+NOTIFY_DURATION=2000 # 2s
+NOTIFY_MAX=3
+
+while getopts a:t:d:m:h opt
+do
+  case "$opt" in
+    d) MAIL_DIR="$OPTARG";;
+    a) MESSAGE_AGE="$OPTARG";;
+    t) NOTIFY_DURATION="$OPTARG";;
+    m) NOTIFY_MAX="$OPTARG";;
+    *)
+      echo "mail-notify [-d mail_dir] [-a message_age]"
+      echo "            [-t notification_duration] [-m max_notifications]"
+      exit
+      ;;
+  esac
+done
+
+# Sends a notification via libnotify
+# $1: summary, $2: body
+notify() {
+  notify-send -u low -i email -t $NOTIFY_DURATION \
+    "${1:=Unknown Sender}" "${2:=No Subject}"
+}
+
+TIMESTAMP_THRESHOLD=$(($(date +%s) - MESSAGE_AGE))
+new_count=0
+
+# Find new mail in inboxes since last notify
+for file in $(ls $MAIL_DIR/*/Inbox/new/*); do
+  if [ $TIMESTAMP_THRESHOLD -le $(stat -c %Y "${file}") ]; then
+    # Parse from and subject headers from message
+    from=$(grep '^From: ' "${file}" | cut -d'"' -f2)
+    subject=$(grep '^Subject: ' "${file}" | cut -d' ' -f2-)
+    ((new_count++))
+
+    # Notify new message if under the max notification count
+    [ $new_count -lt $NOTIFY_MAX ] && notify "${from}" "${subject}"
+  fi
+done
+
+# Notify additional new mail last if over max notify count,
+# else notify final from/subject last
+[ $new_count -gt $NOTIFY_MAX ] && notify "Additional Mail" \
+  "$((new_count - NOTIFY_MAX)) additional new mail"
+[ $new_count -eq $NOTIFY_MAX ] && notify "${from}" "${subject}"

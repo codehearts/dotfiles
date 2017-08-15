@@ -1,5 +1,10 @@
 # Codehearts' Code-Bits
 
+### mail-notify
+##### bash 4+ | grep | notify-send (libnotify)
+
+Sends notifications for new emails using notify-send with the from and subject headers. New mail is taken from `$MAIL_DIR/*/Inbox/new/`, which should work with most offlineimap setups. Run this script periodically with `-a $RUN_INTERVAL` to notify of new mail since the last run.
+
 ### mpc-notify
 ##### bash 4+ | curl | ffmpeg | mogrify (imagemagick) | mpc | notify-send (libnotify)
 
