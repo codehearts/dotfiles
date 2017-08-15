@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Syncs music from a machine with iTunes to ~/Music.
+#
+# Author:  Kate Hart (https://github.com/codehearts)
+# Depends: rsync
 
 show_help () {
 	echo "Syncs music from a Mac with iTunes to ~/Music."

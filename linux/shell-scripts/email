@@ -1,6 +1,8 @@
-#!/bin/env bash
-
-# Opens a tmux session for checking all of my mail accounts
+#!/usr/bin/env bash
+# Opens a tmux session with a window for each mutt inbox.
+#
+# Author:  Kate Hart (https://github.com/codehearts)
+# Depends: tmux
 
 # Gmail (1)
 if [ -n "$TMUX" ]; then

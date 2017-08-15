@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Incremental backups to a destination.
+#
+# Author:  Kate Hart (https://github.com/codehearts)
+# Depends: awk, rsync, whiptail
 
 LATEST=latest
 DATE=`date "+%Y-%m-%d_%H:%M:%S"`
@@ -46,7 +50,7 @@ elif [ ! -w "$1" ]; then
    exit 1
 fi
 
-# TODO Check for an handle no space on device
+# TODO Check for and handle no space on device
 
 BACKUP_DIR=$(realpath $1)
 START=$(date +%s)

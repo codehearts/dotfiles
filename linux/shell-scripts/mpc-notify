@@ -2,9 +2,9 @@
 # Sends a notify-send notification with album art and information from mpc.
 # If the file has no art, it downloads from coverartarchive and embeds it.
 #
-# Adapted from https://bbs.archlinux.org/viewtopic.php?pid=684807#p684807
-# Taken from https://github.com/metakirby5/scripts, modified by codehearts
-# Depends: curl, ffmpeg, mogrify (imagemagick), mpc, notify-send (libnotify)
+# Author:   Ethan Chan (https://github.com/metakirby5/scripts)
+# Modified: Kate Hart  (https://github.com/codehearts)
+# Depends:  curl, ffmpeg, mogrify (imagemagick), mpc, notify-send (libnotify)
 
 ALBUM_ART="$(mktemp).png"
 ALBUM_ART_WIDTH="100"

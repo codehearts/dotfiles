@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
-# Reload the desktop
+# Reloads ~/.Xresources and my running desktop software.
+#
+# References: use-color from http://superuser.com/a/921802
+# Author:  Kate Hart (https://github.com/codehearts)
+# Depends: xrdb
 
 xrdb ~/.Xresources
 
-# http://superuser.com/a/921802
 use-color() {
   tr -d ' \t' | sed -n '
   s/.*\.font:/\x1b]710;/p

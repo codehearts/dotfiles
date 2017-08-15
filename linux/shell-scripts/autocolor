@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Script Name: autocolor
-# Written by Ethan Chan - https://github.com/metakirby5
-# Heavily modified by fullsalvo and codehearts
-# Runs colorz on an image file to get colors, then stuffs those colors
-# through wzb.
-# Dependency: colorz - https://github.com/metakirby5/colorz
+# Runs colorz on an image file and saves those colors as a zenbu variable set
+#
+# Author:   Ethan Chan (https://github.com/metakirby5)
+# Modified: fullsalvo  (https://github.com/fullsalvo)
+# Modified: Kate Hart  (https://github.com/codehearts)
+# Depends:  colorz (pypi), curl, reload-desktop (custom), zenbu (pypi)
 
 SRC=~/.autowzb
 

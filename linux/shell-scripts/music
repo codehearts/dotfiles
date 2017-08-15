@@ -1,6 +1,8 @@
-#!/bin/bash
-
-# Starts mpd, opens ncmpcpp, and kills mpd when finished
+#!/usr/bin/env bash
+# Starts mpd, opens ncmpcpp, and kills mpd when finished.
+#
+# Author:  Kate Hart (https://github.com/codehearts)
+# Depends: mpd, ncmpcpp
 
 mpd
 ncmpcpp

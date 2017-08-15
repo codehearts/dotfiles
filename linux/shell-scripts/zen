@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# Sets and reloads the theme using zenbu via argument or dmenu
+# Sets and reloads the theme using zenbu via argument or dmenu.
+#
+# Author:  Kate Hart (https://github.com/codehearts)
+# Depends: dmenu, reload-desktop (custom), zenbu (pypi)
 
 if [ "$#" -eq 0 ]; then
   selected=$(zenbu -s ~/.config/zenbu/variable_sets/ -l |\

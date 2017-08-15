@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Locks the machine behind an editted screenshot of the current desktop.
+#
+# Author:  Kate Hart (https://github.com/codehearts)
+# Depends: i3lock, imagemagick, scrot
 
 icon="$HOME/.xlock/icon.png"
 tmpbg='/tmp/screen.png'
