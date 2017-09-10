@@ -8,7 +8,7 @@
 declare -r REPO_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 declare -r SHARED_DIR="$REPO_DIR/general"
 declare -r LINUX_DIR="$REPO_DIR/linux"
-declare -r MACOS_DIR="$REPO_DIR/macOS"
+declare -r MACOS_DIR="$REPO_DIR/osx"
 
 # Print usage info
 usage() {
@@ -55,7 +55,7 @@ if [ $# -ge 1 ]; then
 fi
 
 #
-# Helper functions
+# Install pypi packages if pip is installed
 #
 
 declare -a pip_packages
@@ -75,16 +75,48 @@ pip_getpkgs() {
   pip_packages+=("${choices[@]}")
 }
 
-#
-# Install pypi packages if pip is installed
-#
-
 if setdown_hascmd pip; then
   declare -a pip_package_choices
   pip_addpkg pip_package_choices colorz on
   pip_addpkg pip_package_choices zenbu on
 
   pip_getpkgs 'Pypi packages to install' pip_package_choices
+
+  if [ "${#pip_packages[@]}" -gt 0 ]; then
+    setdown_putcmd pip install --user "${pip_packages[@]}"
+  fi
+fi
+
+#
+# Install gems if ruby is installed
+#
+
+declare -a ruby_gems
+
+# Determines if a ruby gem is installed
+# if ruby_hasgem compass; then echo "has compass"; fi
+ruby_hasgem() { gem list -i "^$1$" >/dev/null; }
+
+# Adds a gem choice to an array if the gem is not installed
+# ruby_addgem my_choices compass on
+ruby_addgem() { local -n array=$1; ruby_hasgem "$2" || array+=($2 $3); }
+
+# Asks the user to select gems and adds them to the gem array
+# ruby_getgems 'Select gems to install' my_choices
+ruby_getgems() {
+  declare -a choices=$(setdown_getopts "$1" $2)
+  ruby_gems+=("${choices[@]}")
+}
+
+if setdown_hascmd gem; then
+  declare -a ruby_gem_choices
+  ruby_addgem ruby_gem_choices compass on
+
+  ruby_getgems 'Gems to install' ruby_gem_choices
+
+  if [ "${#ruby_gems[@]}" -gt 0 ]; then
+    setdown_putcmd gem install "${ruby_gems[@]}"
+  fi
 fi
 
 # 
@@ -143,6 +175,7 @@ for choice in "${choices[@]}"; do
       ;;
     git)
       setdown_link $SHARED_DIR/gitignore ~/.gitignore
+      git config --global core.precomposeunicode true
       git config --global core.excludesfile ~/.gitignore
       git config --global core.editor vim
       if setdown_hasstr packages git; then
