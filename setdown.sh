@@ -37,9 +37,7 @@ setdown_sudo() {
   local password
   password="$(setdown_getpw "$1")" || return 1
   while ! setdown_putcmd sudo -Sp '' <<< "$password" true; do
-    echo ">$password<"
     password="$(setdown_getpw 'Incorrect password, try again:')" || return 1
-    echo ">$password<"
   done
   unset password
 }
@@ -102,7 +100,7 @@ setdown_sudo_link() {
 }
 
 # Copies $1 to $2 with sudo permissions
-# setdown_sudo/copy my_script /usr/local/sbin/
+# setdown_sudo_copy my_script /usr/local/sbin/
 setdown_sudo_copy() {
   # Create if destination does not exist or user consents to overwrite
   if ! sudo cp -r "$1" "$2" >/dev/null 2>&1; then
