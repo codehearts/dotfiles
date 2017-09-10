@@ -53,6 +53,7 @@ alias gc="git commit -m"
 alias gp="git push -u origin \$(git rev-parse --abbrev-ref HEAD)"
 alias gmd="git checkout develop && git pull && git checkout - && git merge develop"
 alias mb="git merge-base HEAD"
+alias mbd="git merge-base HEAD develop"
 
 # system aliases
 alias brc="$EDITOR ~/.bashrc && source ~/.bashrc"
