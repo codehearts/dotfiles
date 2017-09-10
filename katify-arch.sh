@@ -26,15 +26,19 @@ arch_getpkgs() {
 #
 
 if ! setdown_hascmd yaourt && setdown_getconsent "Install yaourt?"; then
-  pacman --noconfirm -S base-devel
+  if setdown_sudo 'Enter password to install yaourt'; then
+    pacman --noconfirm -S base-devel
 
-  git clone https://aur.archlinux.org/package-query.git
-  cd package-query; makepkg -si; cd ..
+    git clone https://aur.archlinux.org/package-query.git
+    cd package-query; makepkg -si; cd ..
 
-  git clone https://aur.archlinux.org/yaourt.git
-  cd yaourt; makepkg -si; cd ..
+    git clone https://aur.archlinux.org/yaourt.git
+    cd yaourt; makepkg -si; cd ..
 
-  rm -rf yaourt* package-query*
+    rm -rf yaourt* package-query*
+  else
+    setdown_putstr_ok 'Skipping yaourt install'
+  fi
 fi
 
 setdown_hascmd yaourt && has_yaourt=true || has_yaourt=false
@@ -151,7 +155,7 @@ if $has_X; then
 fi
 
 #
-# Ask which packages to each install from each group
+# Ask which packages to install from each group
 #
 
 declare -a choices=$(setdown_getopts 'Package groups to install' groups)
