@@ -47,13 +47,28 @@ fi
 
 ! setdown_hascmd dialog && setdown_hascmd brew && brew install dialog
 
+# Install bash via homebrew to ensure bash 4+ is used
+if [ ! -f /usr/local/bin/bash ] && setdown_hascmd brew; then
+  brew install bash
+
+  if setdown_sudo 'Enter password to set bash from homebrew as default shell'; then
+    setdown_putcmd sudo sh -c 'sudo echo /usr/local/bin/bash >> /etc/shells'
+    setdown_putcmd sudo chsh -s /usr/local/bin/bash "$(whoami)"
+
+    # Rerun this script using bash from homebrew
+    /usr/local/bin/bash -c "${0} ${@}"
+    exit
+  else
+    setdown_putstr_ok 'Skipping brew bash shell setup'
+  fi
+fi
+
 #
 # Ask for and install brew packages
 #
 
 declare -a brew_packages
 
-brew_addpkg brew_packages bash            on
 brew_addpkg brew_packages bash-completion on
 brew_addpkg brew_packages ctags           on
 brew_addpkg brew_packages git             on
@@ -93,19 +108,6 @@ fi
 #
 
 packages+=("${packages_cask[@]}")
-
-#
-# Run additional setup for newly installed packages
-#
-
-if setdown_hasstr packages 'bash'; then
-  if setdown_sudo 'Enter password to install brew cask packages'; then
-    setdown_putcmd sudo sh -c 'sudo echo /usr/local/bin/bash >> /etc/shells'
-    setdown_putcmd sudo chsh -s /usr/local/bin/bash "$(whoami)"
-  else
-    setdown_putstr_ok 'Skipping brew bash shell setup'
-  fi
-fi
 
 #
 # Copy terminal themes
