@@ -72,6 +72,10 @@ declare -a brew_packages
 brew_addpkg brew_packages bash-completion on
 brew_addpkg brew_packages ctags           on
 brew_addpkg brew_packages git             on
+brew_addpkg brew_packages python          on
+brew_addpkg brew_packages python3         on
+brew_addpkg brew_packages ruby            on
+brew_addpkg brew_packages thefuck         on
 
 brew_getpkgs 'Homebrew packages' brew_packages
 
