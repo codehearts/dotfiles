@@ -178,9 +178,11 @@ for choice in "${choices[@]}"; do
       git config --global core.precomposeunicode true
       git config --global core.excludesfile ~/.gitignore
       git config --global core.editor vim
-      if setdown_hasstr packages git; then
+      if ! git config --global user.name; then
         git config --global user.name \
           "$(setdown_getstr 'Git name:' 'Kate Hart')"
+      fi
+      if ! git config --global user.email; then
         git config --global user.email \
           "$(setdown_getstr 'Git email:' 'codehearts@users.noreply.github.com')"
       fi
