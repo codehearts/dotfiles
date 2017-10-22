@@ -171,7 +171,7 @@ $pref_general AppleHighlightColor -string "1.000000 0.749020 0.823529"
 # Jump to the spot that's clicked on the scroll bar
 $pref_general AppleScrollerPagingBehavior -int 1
 
-# Save to disk (not to iCloud) by default
+# Save to disk (not to iCloud) by default (restart Finder)
 $pref_general NSDocumentSaveNewDocumentsToCloud -bool false
 
 # Expand save and print panels by default
@@ -180,8 +180,11 @@ $pref_general NSNavPanelExpandedStateForSaveMode2 -bool true
 $pref_general PMPrintingExpandedStateForPrint     -bool true
 $pref_general PMPrintingExpandedStateForPrint2    -bool true
 
-# Use a 24 hour clock
+# Use a 24 hour clock (restart SystemUIServer)
 $pref_general AppleICUForce24HourTime -bool true
+
+# Use celsius
+$pref_general AppleTemperatureUnit -string "Celsius"
 
 # Play a feedback sound when adjusting volume
 $pref_general com.apple.sound.beep.feedback -int 1
@@ -189,14 +192,14 @@ $pref_general com.apple.sound.beep.feedback -int 1
 # Never start the screensaver
 $pref_screensaver idleTime 0
 
-# Screensaver: Require password immediately after sleep or screen saver begins
-$pref_screensaver askForPassword -int 1
-$pref_screensaver askForPasswordDelay -int 0
+# Screensaver: Require password immediately after sleep or screen saver begins (removed from High Sierra)
+#$pref_screensaver askForPassword -int 1
+#$pref_screensaver askForPasswordDelay -int 0
 
-# Trackpad: enable tap to click for this user and for the login screen
-setdown_putcmd defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-$pref_general com.apple.mouse.tapBehavior -int 1
-$pref_trackpad Clicking -bool true
+# Trackpad: enable tap to click for this user and for the login screen (removed from High Sierra)
+#setdown_putcmd defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+#$pref_general com.apple.mouse.tapBehavior -int 1
+#$pref_trackpad Clicking -bool true
 
 # Trackpad: use four finger horizontal swipe to move between fullscreen apps
 $pref_trackpad TrackpadThreeFingerHorizSwipeGesture -int 0
@@ -206,17 +209,26 @@ $pref_trackpad TrackpadFourFingerHorizSwipeGesture -int 2
 $pref_trackpad TrackpadThreeFingerVertSwipeGesture -int 0
 $pref_trackpad TrackpadFourFingerVertSwipeGesture -int 2
 
-# Accessibility: Use scroll gesture with the Ctrl (^) modifier key to zoom
+# Accessibility: Use scroll gesture with the Ctrl (^) modifier key to zoom (requires restart)
 $pref_access closeViewScrollWheelToggle -bool true
 $pref_access HIDScrollZoomModifierMask -int 262144
 
-# Finder: Hide desktop icons for hard drives, servers, and removable media
+# Finder: Hide desktop icons for hard drives, servers, and removable media (restart Finder)
 $pref_finder ShowExternalHardDrivesOnDesktop -bool false
 $pref_finder ShowHardDrivesOnDesktop -bool false
 $pref_finder ShowMountedServersOnDesktop -bool false
 $pref_finder ShowRemovableMediaOnDesktop -bool false
 
-# Dock: Automatically hide and show
+# Finder: Use current directory as default search scope
+$pref_finder FXDefaultSearchScope -string "SCcf"
+
+# Finder: Display files as an icon grid
+$pref_finder FXPreferredViewStyle -string "icnv"
+
+# Finder: Don't warn when emptying the trash
+$pref_finder WarnOnEmptyTrash -bool false
+
+# Dock: Automatically hide and show (restart Dock)
 $pref_dock autohide -bool true
 
 # Safari: Enable the develop menu and web inspector
@@ -235,3 +247,8 @@ $pref_terminal StringEncodings -array 4
 # Terminal: Use my default theme
 $pref_terminal 'Default Window Settings' -string "$default_terminal_theme";
 $pref_terminal 'Startup Window Settings' -string "$default_terminal_theme";
+
+# Restart services to apply changes
+killall -KILL SystemUIServer
+killall -KILL Finder
+killall -KILL Dock
