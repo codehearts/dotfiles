@@ -165,6 +165,7 @@ for choice in "${choices[@]}"; do
       ;;
     bash)
       setdown_link $SHARED_DIR/bashrc ~/.bashrc
+      setdown_link $SHARED_DIR/bash_profile ~/.bash_profile
       ;;
     compton)
       setdown_link $LINUX_DIR/compton.conf ~/.compton.conf
