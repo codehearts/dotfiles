@@ -93,7 +93,7 @@ cask_addpkg cask_packages d235j-xbox360-controller-driver off
 cask_addpkg cask_packages qlmarkdown                      on
 cask_addpkg cask_packages qlstephen                       on
 
-brew_getpkgs 'Homebrew cask packages' brew_packages
+brew_getpkgs 'Homebrew cask packages' cask_packages
 
 if [ "${#packages_cask[@]}" -gt 0 ]; then
   if setdown_sudo 'Enter password to install brew cask packages'; then
