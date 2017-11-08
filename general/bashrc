@@ -48,12 +48,14 @@ fi
 
 # git aliases
 alias ga="git add"
+alias gd="git diff"
 alias gs="git status"
 alias gc="git commit -m"
 alias gp="git push -u origin \$(git rev-parse --abbrev-ref HEAD)"
 alias gmd="git checkout develop && git pull && git checkout - && git merge develop"
 alias mb="git merge-base HEAD"
 alias mbd="git merge-base HEAD develop"
+grb() { git rebase -i HEAD~$1; }
 
 # system aliases
 alias brc="$EDITOR ~/.bashrc && source ~/.bashrc"
@@ -91,7 +93,7 @@ if command -v gcalcli >/dev/null 2>&1; then
   alias gcalm="gcalcli --military calm"
 fi
 
-# gcalcli aliases
+# dict aliases
 if command -v dict >/dev/null 2>&1; then
   # Provides a colorized definition of the given word
   #   $1: The word to define.
