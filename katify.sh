@@ -111,6 +111,7 @@ ruby_getgems() {
 if setdown_hascmd gem; then
   declare -a ruby_gem_choices
   ruby_addgem ruby_gem_choices compass on
+  ruby_addgem ruby_gem_choices travis on
 
   ruby_getgems 'Gems to install' ruby_gem_choices
 
