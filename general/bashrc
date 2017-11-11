@@ -46,6 +46,16 @@ if command -v thefuck >/dev/null 2>&1; then
   eval "$(thefuck --alias f)"
 fi
 
+# virtualenv
+if command -v virtualenv >/dev/null 2>&1; then
+  # Use homebrew's Python 3 for virtualenvwrapper
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    VIRTUALENVWRAPPER_PYTHON=`which python3`
+  fi
+
+  source /usr/local/bin/virtualenvwrapper.sh
+fi
+
 # git aliases
 alias ga="git add"
 alias gd="git diff"
