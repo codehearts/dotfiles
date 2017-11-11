@@ -136,7 +136,7 @@ map <leader>rt :%s //g<left><left>
 map <leader>rw :execute '%s /' . expand('<cword>') . '/' . input(expand('<cword>') . '▶') . '/g'<cr>
 " vim-plug
 map <leader>pi :PlugInstall<cr>
-map <leader>pu :PlugUpgrade <bar> PlugUpgrade <bar> PlugClean<cr>
+map <leader>pu :PlugUpdate <bar> PlugUpgrade <bar> PlugClean<cr>
 " nerd tree
 map <leader>nt :NERDTreeToggle<cr>
 map <leader>mt :NERDTreeMirror<cr>
