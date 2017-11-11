@@ -179,6 +179,8 @@ for choice in "${choices[@]}"; do
       git config --global core.precomposeunicode true
       git config --global core.excludesfile ~/.gitignore
       git config --global core.editor vim
+      git config --global interactive.singleKey true
+      git config --global advice.statusHints false
       if ! git config --global user.name; then
         git config --global user.name \
           "$(setdown_getstr 'Git name:' 'Kate Hart')"
