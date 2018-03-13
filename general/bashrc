@@ -1,139 +1,49 @@
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+[[ $- != *i* ]] && return # Do nothing if not running interactively
 
-# colors
-red='\e[0;31m'
-magenta='\e[0;35m'
-bright_red='\e[0;91m'
-yellow='\e[0;33m'
-green='\e[0;32m'
-blue='\e[0;34m'
-bright_blue='\e[0;94m'
-normal='\e[0m'
+  black='\e[0;30m';         white='\e[0;97m';  grey='\e[0;37m';   dark_grey='\e[0;90m'
+    red='\e[0;31m';     light_red='\e[0;91m'; green='\e[0;32m'; light_green='\e[0;92m'
+ yellow='\e[0;33m';  light_yellow='\e[0;93m';  blue='\e[0;34m';  light_blue='\e[0;94m'
+magenta='\e[0;35m'; light_magenta='\e[0;95m';  cyan='\e[0;36m';  light_cyan='\e[0;96m'
+ normal='\e[0;39m';
 
-# prompt
-PS1="\$(if [[ \$? == 0 ]]; then echo '\[${green}\]'; else echo '\[${yellow}\]'; fi)⚘ \[${red}\]\W\[${normal}\] "
+# Green flower with red cwd, flower is yellow if last command returned non-zero
+export PS1="\[\$((( \$? )) && echo '$yellow' || echo '$green')\]⚘ \[$red\]\W\[$normal\] "
 
-# git prompt
-if [ -f ~/.git-prompt.sh ]; then
-  source ~/.git-prompt.sh
-  export PS1="$PS1\[${blue}\]\$(__git_ps1 \"(%s)\")\[${normal}\] "
-fi
-
-# travis ci
-[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
-
-# private bashrc
-[ -f ~/.private-bashrc ] && source ~/.private-bashrc
-
-# use vim as default editor
-EDITOR=vim
-
-# keep repeated commands in history once
-HISTCONTROL=ignoreboth:erasedups
+# Keep repeated commands in history once
+export HISTCONTROL=ignoreboth:erasedups
 shopt -s histappend cmdhist
 
-# add ruby gems to path
-if which ruby >/dev/null 2>&1 && which gem >/dev/null; then
-  export PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
-fi
+export EDITOR=vim
 
-# add user executables to path (from pip --user)
-PATH="$PATH:$HOME/.local/bin"
+# Returns true if the given command is available
+hascmd() { command -v $1 >/dev/null 2>&1; }
 
-# thefuck
-if command -v thefuck >/dev/null 2>&1; then
-  eval "$(thefuck --alias f)"
-fi
-
-# virtualenv
-if command -v virtualenv >/dev/null 2>&1; then
-  # Use homebrew's Python 3 for virtualenvwrapper
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    VIRTUALENVWRAPPER_PYTHON=`which python3`
-  fi
-
-  source /usr/local/bin/virtualenvwrapper.sh
-fi
-
-# git aliases
-alias ga="git add"
-alias gd="git diff"
-alias gs="git status"
-alias gc="git commit -m"
-alias gp="git push -u origin \$(git rev-parse --abbrev-ref HEAD)"
-alias gmd="git checkout develop && git pull && git checkout - && git merge develop"
-alias mb="git merge-base HEAD"
-alias mbd="git merge-base HEAD develop"
-grb() { git rebase -i HEAD~$1; }
-
-# system aliases
-alias brc="$EDITOR ~/.bashrc && source ~/.bashrc"
+# Aliases
 alias grep="grep --color=auto"
+alias ls="ls --color=auto"
 alias sizeof="du -Lhs"
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  # macOS aliases
+# Add local bin to PATH, used by pip --user
+export PATH="$PATH:$HOME/.local/bin"
+
+# Use python3 for virtualenvwrapper
+hascmd virtualenv && hascmd python3 && export VIRTUALENVWRAPPER_PYTHON=`which python3`
+
+# Add Ruby gems to PATH
+hascmd gem && export PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+
+# Configure thefuck and alias it to f
+hascmd thefuck && eval "$(thefuck --alias f)"
+
+# macOS
+if [[ "$OSTYPE" == darwin* ]]; then
+  # Add LaTeX to PATH
+  export PATH="/usr/local/bin:$PATH"
+  export PATH="$PATH:/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
+
   alias ls="ls -G"
-
-  # add latex to path on macOS
-  export PATH=/usr/local/bin:$PATH
-  export PATH=$PATH:/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin
-else
-  # linux aliases
-  alias ls="ls --color=auto"
 fi
 
-# arch linux aliases
-if command -v yaourt >/dev/null 2>&1; then
-  alias update="yaourt -Syu --aur"
-  alias removeorphans="yaourt -Rns \$(yaourt -Qqtd)"
-  alias clearpkgcache="yaourt -Scc"
-fi
-
-# docker aliases
-if command -v docker >/dev/null 2>&1; then
-  alias dclean='docker rm $(docker ps -a -q) && docker rmi $(docker images -q)'
-fi
-
-# gcalcli aliases
-if command -v gcalcli >/dev/null 2>&1; then
-  alias gcald="gcalcli --military --detail_location --detail_length --detail_reminders --detail_description agenda 12am 11:59pm"
-  alias gcalw="gcalcli --military calw"
-  alias gcalm="gcalcli --military calm"
-fi
-
-# dict aliases
-if command -v dict >/dev/null 2>&1; then
-  # Provides a colorized definition of the given word
-  #   $1: The word to define.
-  #   $2: The dictionary to use. (Optional)
-  define() {
-    # Use an optional second parameter as the dictionary name
-    if [[ -z "$2" ]]; then
-      database=gcide
-    else
-      database=$2
-    fi
-
-    dict -d $database $1 | colorit | less -r
-  }
-
-  # Provides the English for the given Swedish
-  #   $1: The word to translate
-  swen() {
-    define $1 fd-swe-eng
-  }
-
-  # Provides the Swedish for the given English
-  #   $1: The word to translate
-  ensw() {
-    define $1 fd-eng-swe
-  }
-
-  # Provides a colorized thesaurus entry for the given word
-  #   $1: The word to look up
-  thes() {
-    define $1 moby-thesaurus
-  }
-fi
+[ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
+[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
+[ -f ~/.private-bashrc ] && source ~/.private-bashrc
