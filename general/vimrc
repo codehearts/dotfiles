@@ -82,6 +82,7 @@ endif
 set et ts=2 sw=2 " use spaces, 1 tab is 2 spaces
 set noswf " don't use swap files
 set ic scs hls " ignore case, smart case, highlight search matches
+set enc=utf-8 " use utf-8 encoding
 
 "
 " assignments
