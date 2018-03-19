@@ -120,7 +120,7 @@ if setdown_hascmd gem; then
   fi
 fi
 
-# 
+#
 # Ask which dotfiles to set up
 #
 
@@ -145,7 +145,7 @@ dotfiles_addconfig dotfile_choices zenbu       on
 setdown_hascmd msmtp       && dotfile_choices+=('msmtp templates'       off)
 setdown_hascmd mutt        && dotfile_choices+=('mutt templates'        off)
 setdown_hascmd offlineimap && dotfile_choices+=('offlineimap templates' off)
- 
+
 declare -a choices=$(setdown_getopts 'Dotfiles to set up' dotfile_choices)
 for choice in "${choices[@]}"; do
   case "$choice" in
@@ -182,6 +182,7 @@ for choice in "${choices[@]}"; do
       git config --global core.editor vim
       git config --global interactive.singleKey true
       git config --global advice.statusHints false
+      git config --global submodule.recurse  true
       if ! git config --global user.name; then
         git config --global user.name \
           "$(setdown_getstr 'Git name:' 'Kate Hart')"
