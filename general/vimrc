@@ -65,9 +65,8 @@ if has('gui_running') " gvim/mvim
     " use `open` to view latex output on macOS
     let g:LatexBox_viewer='open'
   elseif has('win32') || has('win64') " windows
-    set gfn=Hack:h8
-    set go=c " don't use gui prompts
-    set rop=type:directx,\gamma:1.5,contrast:0.5,geom:1,\renmode:5,taamode:1,level:0.5 " directx renering
+    set gfn=Hack:h8 go=c " don't use gui prompts
+    set rop=type:directx,\gamma:1.5,contrast:0.5,geom:1,\renmode:5,taamode:1,level:0.5 " directx rendering
   else " linux
     set gfn=Meslo\ LG\ S\ for\ Powerline\ 8
   endif
