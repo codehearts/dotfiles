@@ -94,6 +94,8 @@ let g:airline_theme='lucius'
 let g:LatexBox_latexmk_preview_continuously=1
 let g:LatexBox_latexmk_async=1
 let g:LatexBox_quickfix=2
+" don't trim whitespace in markdown or make files
+let g:trimmer_blacklist = ['markdown', 'make']
 " use nicer symbols with syntastic
 let g:syntastic_error_symbol='✖'
 let g:syntastic_warning_symbol='⚠'
