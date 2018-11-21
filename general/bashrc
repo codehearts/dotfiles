@@ -30,7 +30,7 @@ export PATH="$PATH:$HOME/.local/bin"
 hascmd virtualenv && hascmd python3 && export VIRTUALENVWRAPPER_PYTHON=`which python3`
 
 # Add Ruby gems to PATH
-hascmd gem && export PATH="$PATH:$(ruby -rubygems -e 'puts Gem.user_dir')/bin"
+hascmd gem && export PATH="$PATH:$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
 
 # Configure thefuck and alias it to f
 hascmd thefuck && eval "$(thefuck --alias f)"
