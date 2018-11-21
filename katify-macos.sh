@@ -169,6 +169,9 @@ pref_terminal="$pref com.apple.terminal"
 pref_textedit="$pref com.apple.TextEdit"
 pref_trackpad="$pref com.apple.driver.AppleBluetoothMultitouch.trackpad"
 
+# Don't display accented characters when holding a key
+defaults write -g ApplePressAndHoldEnabled -bool false
+
 # Pink highlight color
 $pref_general AppleHighlightColor -string "1.000000 0.749020 0.823529"
 
