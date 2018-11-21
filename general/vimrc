@@ -1,4 +1,4 @@
-" Kate Hart's .vimrc
+" codehearts .vimrc
 " github.com/codehearts/dotfiles
 "
 
@@ -10,33 +10,33 @@ Plug 'tpope/vim-sensible'
 " colors
 Plug 'lu-ren/SerialExperimentsLain'
 Plug 'rhysd/vim-color-spring-night'
-Plug 'NLKNguyen/papercolor-theme'
+Plug 'soft-aesthetic/soft-era-vim'
 Plug 'vectorstorm/vim-chlordane'
-Plug 'liuchengxu/space-vim-dark'
+Plug 'reedes/vim-colors-pencil'
 Plug 'cseelus/vim-colors-lucid'
-Plug 'snowcrshd/cyberpunk.vim'
-Plug 'nightsense/seabird'
-Plug 'roosta/vim-srcery'
+Plug 'srcery-colors/srcery-vim'
+Plug 'dennougorilla/azuki.vim'
+Plug 'cseelus/vim-colors-tone'
+Plug 'tjammer/blayu.vim'
 Plug 'trusktr/seti.vim'
 Plug 'jyota/vimColors' " eva, scooby
-Plug 'tomasr/molokai'
 
 " writing
 Plug 'garbas/vim-snipmate' | Plug 'honza/vim-snippets' | Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'tomtom/tlib_vim'
-Plug 'scrooloose/nerdcommenter'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-easy-align'
 Plug 'vim-syntastic/syntastic'
-Plug 'derekprior/vim-trimmer'
 Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'ervandew/supertab'
 
 " ui
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'mhinz/vim-startify'
-Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar', { 'on':  'TagbarToggle' }
 
 " git
 Plug 'tpope/vim-fugitive'
@@ -44,20 +44,17 @@ Plug 'tpope/vim-fugitive'
 " latex
 Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'tex' }
 
-" coffee script
-Plug 'kchmck/vim-coffee-script'
-
 call plug#end()
 
 "
-" gui
+" interface
 "
 
-if has('gui_running') " gvim/mvim
-  set bg=dark
-  colorscheme lucid
+set bg=dark
+colorscheme lucid
 
-  set go-=r go-=L go-=m go-=T " remove scrollbar and toolbar from gui
+if has('gui_running') " gvim/mvim
+  set go-=r go-=L go-=m go-=T " remove scrollbars and toolbar from gui
 
   if has('macunix') " macOS
     set gfn=Input\ Mono:h11
@@ -70,8 +67,6 @@ if has('gui_running') " gvim/mvim
   else " linux
     set gfn=Meslo\ LG\ S\ for\ Powerline\ 8
   endif
-else " terminal
-  colorscheme srcery
 endif
 
 "
@@ -82,9 +77,10 @@ set et ts=2 sw=2 " use spaces, 1 tab is 2 spaces
 set noswf " don't use swap files
 set ic scs hls " ignore case, smart case, highlight search matches
 set enc=utf-8 " use utf-8 encoding
+set nu rnu " show relative line numbers
 
 "
-" assignments
+" plugin assignments
 "
 
 " use symbols with airline
@@ -94,8 +90,6 @@ let g:airline_theme='lucius'
 let g:LatexBox_latexmk_preview_continuously=1
 let g:LatexBox_latexmk_async=1
 let g:LatexBox_quickfix=2
-" don't trim whitespace in markdown or make files
-let g:trimmer_blacklist = ['markdown', 'make']
 " use nicer symbols with syntastic
 let g:syntastic_error_symbol='✖'
 let g:syntastic_warning_symbol='⚠'
@@ -128,17 +122,12 @@ map <leader>tl :tabm+1<cr>
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 " spell checking
 map <leader>ss :setlocal spell!<cr>
-" line numbers
-map <leader>nu :setlocal nu!<cr>
 " vimgrep (manual typing, word under cursor)
-map <leader>gt :noautocmd vimgrep //gj ./**/* <bar> cw<C-left><C-left><C-left><C-left><right>
-map <leader>gw :execute 'noautocmd vimgrep /' . expand('<cword>') . '/gj ./**/*' <bar> cw<cr>
+map <leader>gr :vimgrep //gj ./**/* <bar> cw<c-left><c-left><c-left><c-left><right>
+xmap <leader>gr y:vimgrep '<c-r>"' ./**/* <bar> cw<cr>
 " regex replace (manual typing, word under cursor)
-map <leader>rt :%s //g<left><left>
-map <leader>rw :execute '%s /' . expand('<cword>') . '/' . input(expand('<cword>') . '▶') . '/g'<cr>
-" vim-plug
-map <leader>pi :PlugInstall<cr>
-map <leader>pu :PlugUpdate <bar> PlugUpgrade <bar> PlugClean<cr>
+map <leader>re :%s //g<left><left>
+xmap <leader>re y:%s /<c-r>"//g<c-right><left><left>
 " nerd tree
 map <leader>nt :NERDTreeToggle<cr>
 map <leader>mt :NERDTreeMirror<cr>
