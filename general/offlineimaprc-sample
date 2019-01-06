@@ -42,6 +42,7 @@ type = Gmail
 remoteuser = <gmail_address>
 remotepasseval = keyring.get_password("offlineimap", "<gmail_address>")
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+ssl_version = tls1_2
 # Rename INBOX to Inbox, remove the [Gmail]/ prefix for our local copy
 nametrans = lambda folder: {
   'INBOX':             'Inbox',
