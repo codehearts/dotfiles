@@ -14,15 +14,9 @@ bspc config pointer_modifier mod1
 
 bspc monitor -d 一 二 三 四 五 六 七 八 九 十
 
-
 # Clear out old rules
 for x in {1..100}; do bspc rule -r head; done
 
-bspc rule -a Skype state=floating
-bspc rule -a Telegram state=floating
-bspc rule -a telegram-desktop state=floating
-bspc rule -a Polly state=floating
-bspc rule -a Ccgo state=pseudo_tiled
 bspc rule -a URxvt:scratchpad state=floating center=on
 
 # Software
