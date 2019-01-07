@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export GDK_DPI_SCALE=0.35
@@ -17,7 +17,3 @@ xrdb $HOME/.Xresources
 # Start GNOME Keyring
 #/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
 
-# Start sxhkd and bspwm if not already running
-if ! pgrep bspwm > /dev/null; then
-	exec bspwm
-fi

@@ -137,7 +137,7 @@ if $has_X; then
   arch_addpkg desktop_packages                feh                         on
   $has_yaourt && arch_addpkg desktop_packages lemonbar-xft-git            on
   arch_addpkg desktop_packages                lightdm-gtk-greeter         off
-  $has_yaourt && arch_addpkg desktop_packages lightdm-webkit-theme-tendou on
+  $has_yaourt && arch_addpkg desktop_packages ly                          on
   arch_addpkg desktop_packages                rxvt-unicode                on
   arch_addpkg desktop_packages                scrot                       on
   arch_addpkg desktop_packages                sxhkd                       on

@@ -133,7 +133,7 @@ dotfiles_addconfig dotfile_choices bash        on
 dotfiles_addconfig dotfile_choices compton     on
 dotfiles_addconfig dotfile_choices gcalert     on
 dotfiles_addconfig dotfile_choices git         on
-dotfiles_addconfig dotfile_choices lightdm     on
+dotfiles_addconfig dotfile_choices ly          on
 dotfiles_addconfig dotfile_choices mpd         on
 dotfiles_addconfig dotfile_choices ncmpcpp     on
 dotfiles_addconfig dotfile_choices offlineimap on
@@ -192,13 +192,14 @@ for choice in "${choices[@]}"; do
           "$(setdown_getstr 'Git email:' 'codehearts@users.noreply.github.com')"
       fi
       ;;
-    lightdm)
+    ly)
       if setdown_hascmd systemctl; then
-        if [ "$(systemctl is-enabled lightdm)" != "enabled" ]; then
-          if setdown_sudo 'Enter password to enable lightdm'; then
-            sudo systemctl enable lightdm.service
+        if [ "$(systemctl is-enabled ly)" != "enabled" ]; then
+          if setdown_sudo 'Enter password to enable ly'; then
+            sudo systemctl enable ly.service
+            sudo systemctl disable getty@tty2.service
           else
-            setdown_putstr_ok 'Skipping lightdm service enable'
+            setdown_putstr_ok 'Skipping ly service enable'
           fi
         fi
       fi
@@ -242,6 +243,8 @@ for choice in "${choices[@]}"; do
       ;;
     X)
       setdown_link $LINUX_DIR/xinitrc ~/.xinitrc
+      setdown_link $LINUX_DIR/xinitrc ~/.xsession
+      chmod +x ~/.xsession
       ;;
     zenbu)
       setdown_link $LINUX_DIR/config/zenbu/ ~/.config/
