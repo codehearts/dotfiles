@@ -8,12 +8,3 @@ export GDK_SCALE=2
 setxkbmap -option compose:menu
 
 xrdb $HOME/.Xresources
-
-# ----- For using gnome-keyring
-
-# Start a dbus session
-#source /etc/X11/xinit/xinitrc.d/30-dbus.sh
-
-# Start GNOME Keyring
-#/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh
-

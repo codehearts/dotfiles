@@ -142,9 +142,10 @@ dotfiles_addconfig dotfile_choices tmux        on
 dotfiles_addconfig dotfile_choices vim         on
 dotfiles_addconfig dotfile_choices X           on
 dotfiles_addconfig dotfile_choices zenbu       on
-setdown_hascmd msmtp       && dotfile_choices+=('msmtp templates'       off)
-setdown_hascmd mutt        && dotfile_choices+=('mutt templates'        off)
-setdown_hascmd offlineimap && dotfile_choices+=('offlineimap templates' off)
+setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring',        on)
+setdown_hascmd msmtp         && dotfile_choices+=('msmtp templates'       off)
+setdown_hascmd mutt          && dotfile_choices+=('mutt templates'        off)
+setdown_hascmd offlineimap   && dotfile_choices+=('offlineimap templates' off)
 
 declare -a choices=$(setdown_getopts 'Dotfiles to set up' dotfile_choices)
 for choice in "${choices[@]}"; do
@@ -251,6 +252,17 @@ for choice in "${choices[@]}"; do
       if setdown_hasstr pip_packages zenbu; then
         zenbu soft-pink
         setdown_hascmd reload-desktop && reload-desktop
+      fi
+      ;;
+    'gnome keyring')
+      if setdown_sudo 'Enter password to configure gnome keyring via PAM'; then
+        # Append after the last line beginning with "auth"
+        sudo sed -i '/^auth/!{1h;1!H};/^auth/{x;1!p};$!d;g;s/^auth\([^\n]*\)/auth\1\nauth       optional     pam_gnome_keyring.so/' /etc/pam.d/login
+
+        # Append after the last line beginning with "session"
+        sudo sed -i '/^session/!{1h;1!H};/^session/{x;1!p};$!d;g;s/^auth\([^\n]*\)/session\1\nsession       optional     pam_gnome_keyring.so auto_start/' /etc/pam.d/login
+      else
+        setdown_putstr_ok 'Skipping gnome keyring PAM configuration'
       fi
       ;;
     'msmtp templates')

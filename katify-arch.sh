@@ -74,9 +74,9 @@ arch_addpkg email_packages                gnome-keyring        on
 arch_addpkg email_packages                msmtp                on
 arch_addpkg email_packages                neomutt              on
 arch_addpkg email_packages                offlineimap          on
-arch_addpkg email_packages                python2-keyring      on
-arch_addpkg email_packages                python2-keyrings-alt on
 arch_addpkg email_packages                python2-gnomekeyring on
+arch_addpkg email_packages                python2-gobject      on # for python2-keyrings-alt
+arch_addpkg email_packages                python2-keyrings-alt on
 $has_yaourt && arch_addpkg email_packages urlview              on
   
 groups+=(Programming on)
