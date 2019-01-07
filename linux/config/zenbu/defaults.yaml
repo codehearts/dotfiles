@@ -2,16 +2,16 @@
 xft_dpi: 144
 
 # GTK
-gtk_theme: "iris-dark"
-gtk_icon_theme: "Numix-Circle"
+gtk_theme: "Arc-Dark"
+gtk_icon_theme: "Arc"
 gtk_font_size: 10
 
 # Fonts
 font: "M+ 1p"
 term_fonts:
-  - "Meslo LG S for Powerline"
+  - "Dank Mono"
 use_bold: false
-pixelsize: 16
+pixelsize: 18
 term_letterspace: 0
 
 # WM

@@ -118,8 +118,6 @@ $has_x && arch_addpkg extra_packages                xorg-xdpyinfo on # lemonbar
 if $has_X; then
   groups+=(Fonts on)
   declare -a font_packages
-  arch_addpkg font_packages                adobe-source-sans-pro-fonts on
-  $has_yaourt && arch_addpkg font_packages otf-meslo-powerline-git     on
   $has_yaourt && arch_addpkg font_packages ttf-mplus                   on
 
   groups+=(Browsers on)
@@ -130,16 +128,16 @@ if $has_X; then
 
   groups+=(Desktop on)
   declare -a desktop_packages
+  arch_addpkg desktop_packages                arc-gtk-theme               on
+  arch_addpkg desktop_packages                arc-icon-theme              on
   arch_addpkg desktop_packages                bspwm                       on
   arch_addpkg desktop_packages                compton                     on
   arch_addpkg desktop_packages                dmenu                       on
   arch_addpkg desktop_packages                dunst                       on
   arch_addpkg desktop_packages                feh                         on
-  $has_yaourt && arch_addpkg desktop_packages gtk-theme-iris-dark-git     on
   $has_yaourt && arch_addpkg desktop_packages lemonbar-xft-git            on
   arch_addpkg desktop_packages                lightdm-gtk-greeter         off
   $has_yaourt && arch_addpkg desktop_packages lightdm-webkit-theme-tendou on
-  $has_yaourt && arch_addpkg desktop_packages numix-circle-icon-theme-git on
   arch_addpkg desktop_packages                rxvt-unicode                on
   arch_addpkg desktop_packages                scrot                       on
   arch_addpkg desktop_packages                sxhkd                       on
