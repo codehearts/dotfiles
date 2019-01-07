@@ -17,7 +17,7 @@ bspc monitor -d 一 二 三 四 五 六 七 八 九 十
 # Clear out old rules
 for x in {1..100}; do bspc rule -r head; done
 
-bspc rule -a URxvt:scratchpad state=floating center=on
+bspc rule -a URxvt:scratchpad state=floating sticky=on center=on
 
 # Software
 compton &

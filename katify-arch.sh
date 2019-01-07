@@ -110,8 +110,6 @@ arch_addpkg extra_packages                          calc          on
 arch_addpkg extra_packages                          dictd         on
 $has_yaourt && arch_addpkg extra_packages           gcalcli       on
 $has_yaourt && $has_X && arch_addpkg extra_packages gcalert       on
-$has_x && arch_addpkg extra_packages                xdotool       on # sxhkd
-$has_yaourt && $has_X && arch_addpkg extra_packages xdo-git       on # sxhkd
 $has_x && arch_addpkg extra_packages                xorg-xdpyinfo on # lemonbar
 
 if $has_X; then

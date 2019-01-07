@@ -49,9 +49,12 @@ super + z
 
 # scratchpad terminal
 super + d
-  xdotool search --onlyvisible --classname scratchpad windowunmap \
-  || xdotool search --classname scratchpad windowmap \
-  || urxvtc -name scratchpad -geometry 80x20+410+80 &
+  if bspc node "$(cat /tmp/scratchpad_id)" --flag hidden; then \
+    bspc node -f "$(cat /tmp/scratchpad_id)"; \
+  else \
+    (urxvtc -name scratchpad -geometry 80x20+0+0 -e sh -c \
+      "bspc query -N -n focused.floating > /tmp/scratchpad_id && $SHELL" &); \
+  fi
 
 # quit bspwm normally
 super + alt + Escape
