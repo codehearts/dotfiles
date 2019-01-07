@@ -24,16 +24,9 @@ dmenu_flags: '-i -f -fn "{{ font }}:pixelsize={{ pixelsize }}" -nf "{{ colors.fo
 
 # bar
 bar_height: 32
-bar_x: 0
-bar_y: 0
-bar_bg_alpha:        "da"
-bar_bgc:             "#{{ bar_bg_alpha }}{{ colors.background|zen_nohash }}"
-bar_block_bgc:       "#{{ bar_bg_alpha }}{{ colors.background|zen_nohash }}"
-bar_underline_color: "#ff{{ colors[colors.primary].normal|zen_nohash }}"
-bar_font_offset: 0
 bar_underline: 3
 bar_fonts:
-  - "M+ 1p-8"
+  - "M+ 1p-14;3"
 
 # dunst
 dunst_offset: 15

@@ -24,7 +24,7 @@ for pts in /dev/pts/*; do
 	(echo -n "$(use-color < ~/.Xresources)" > $pts) 2>/dev/null
 done
 
-pkill lemonbar
+pkill polybar
 pkill compton
 pkill dropbox
 pkill gcalert
