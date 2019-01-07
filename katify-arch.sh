@@ -72,8 +72,7 @@ groups+=(Email on)
 declare -a email_packages
 arch_addpkg email_packages                gnome-keyring        on
 arch_addpkg email_packages                msmtp                on
-$has_yaourt || arch_addpkg email_packages mutt                 on
-$has_yaourt && arch_addpkg email_packages mutt-sidebar         on
+arch_addpkg email_packages                neomutt              on
 arch_addpkg email_packages                offlineimap          on
 arch_addpkg email_packages                python2-keyring      on
 arch_addpkg email_packages                python2-keyrings-alt on

@@ -20,11 +20,11 @@ else
 	# Create a new session called "email"
 	tmux new-session -d -s email -n Gmail
 fi
-tmux send-keys $session_info "checkgmail" C-m
+tmux send-keys $session_info "neomutt -f ~/Mail/Gmail/Inbox" C-m
 
 # Kate Hart (2)
 tmux new-window $session_info -n KateHart
-tmux send-keys $session_info "checkkatehart" C-m
+tmux send-keys $session_info "neomutt -f ~/Mail/KateHart/Inbox" C-m
 
 # Set the window history order (the last line is the current window)
 tmux select-window -t Gmail

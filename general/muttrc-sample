@@ -34,9 +34,9 @@ set text_flowed    = yes # Prevent automatic linebreaking in plaintext
 set display_filter = "~/.mutt/add_sender_to_aliases.sh"
 
 # Sidebar --------------------------
-set sidebar_delim   = ' '
-set sidebar_visible = yes
-set sidebar_width   = 24
+set sidebar_divider_char = ' '
+set sidebar_visible      = yes
+set sidebar_width        = 24
 color sidebar_new color221 color223
 
 # Sidebar Navigation ---------------
@@ -71,6 +71,7 @@ set date_format  = "%b %d"
 set index_format = "[%Z] %D %-20.20F %s"
 
 # Index Key Bindings ---------------
+bind index g    noop
 bind index gg   first-entry
 bind index G    last-entry
 bind index R    group-reply
@@ -92,6 +93,7 @@ alternative_order text/plain text/enriched text/html
 # Pager Key Bindings ---------------
 bind pager k  previous-line
 bind pager j  next-line
+bind pager g  noop
 bind pager gg top
 bind pager G  bottom
 bind pager R  group-reply
