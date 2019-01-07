@@ -5,10 +5,10 @@
 # Depends: dmenu, reload-desktop (custom), zenbu (pypi)
 
 if [ "$#" -eq 0 ]; then
-  selected=$(zenbu -s ~/.config/zenbu/variable_sets/ -l |\
+  selected=$(ls ~/Pictures/wallpaper/ |\
     dmenu -i -f -b -sb '#000000' -p 'Zenbu')
   [ -z "$selected" ] && exit 0
-  zenbu $selected >/dev/null
+  zenbu && wal -i ~/Pictures/wallpaper/$selected >/dev/null
 else
   zenbu "$@" >/dev/null
 fi

@@ -134,6 +134,7 @@ if $has_X; then
   arch_addpkg desktop_packages                lightdm-gtk-greeter         off
   $has_yaourt && arch_addpkg desktop_packages ly                          on
   $has_yaourt && arch_addpkg desktop_packages polybar                     on
+  arch_addpkg desktop_packages                python-pywal                on
   arch_addpkg desktop_packages                rxvt-unicode                on
   arch_addpkg desktop_packages                scrot                       on
   arch_addpkg desktop_packages                sxhkd                       on

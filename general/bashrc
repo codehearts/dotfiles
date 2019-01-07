@@ -45,5 +45,6 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 
 [ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh
+[ -f ~/.cache/wal/sequences ] && (cat ~/.cache/wal/sequences &)
 [ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 [ -f ~/.private-bashrc ] && source ~/.private-bashrc

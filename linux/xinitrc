@@ -7,4 +7,7 @@ export GDK_SCALE=2
 # Use the menu key as the compose key
 setxkbmap -option compose:menu
 
-xrdb $HOME/.Xresources
+# Apply previous wal theme if installed
+if command -v wal >/dev/null 2>&1; then
+  wal -R
+fi
