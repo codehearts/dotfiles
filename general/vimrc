@@ -57,23 +57,21 @@ call plug#end()
 " interface
 "
 
-set bg=dark
-colorscheme lucid
+if has('gui_running') " gui
+  set bg=dark
+  colorscheme lucid
 
-if has('gui_running') " gvim/mvim
   set go-=r go-=L go-=m go-=T " remove scrollbars and toolbar from gui
+  set gfn=DankMono-Regular:h12
 
   if has('macunix') " macOS
-    set gfn=Input\ Mono:h11
-
-    " use `open` to view latex output on macOS
-    let g:LatexBox_viewer='open'
+    let g:LatexBox_viewer='open' " use `open` to view latex output on macOS
   elseif has('win32') || has('win64') " windows
-    set gfn=Hack:h8 go=c " don't use gui prompts
     set rop=type:directx,\gamma:1.5,contrast:0.5,geom:1,\renmode:5,taamode:1,level:0.5 " directx rendering
   else " linux
-    set gfn=Meslo\ LG\ S\ for\ Powerline\ 8
   endif
+else " term
+  colorscheme srcery
 endif
 
 "
