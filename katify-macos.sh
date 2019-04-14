@@ -71,6 +71,7 @@ declare -a brew_packages
 
 brew_addpkg brew_packages bash-completion on
 brew_addpkg brew_packages ctags           on
+brew_addpkg brew_packages ffmpeg          on
 brew_addpkg brew_packages git             on
 brew_addpkg brew_packages python          on
 brew_addpkg brew_packages python3         on
@@ -94,6 +95,7 @@ fi
 declare -a cask_packages
 
 cask_addpkg cask_packages d235j-xbox360-controller-driver off
+cask_addpkg cask_packages iina                            on
 cask_addpkg cask_packages qlmarkdown                      on
 cask_addpkg cask_packages qlstephen                       on
 
