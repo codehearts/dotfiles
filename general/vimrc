@@ -24,6 +24,7 @@ Plug 'garbas/vim-snipmate' | Plug 'honza/vim-snippets' | Plug 'MarcWeber/vim-add
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-easy-align'
 Plug 'vim-syntastic/syntastic'
+Plug 'codehearts/mascara-vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -38,6 +39,13 @@ Plug 'majutsushi/tagbar', { 'on':  'TagbarToggle' }
 
 " git
 Plug 'tpope/vim-fugitive'
+
+" python
+Plug 'plytophogy/vim-virtualenv', { 'for': 'python' }
+Plug 'vim-python/python-syntax'
+
+" c/c++
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 " latex
 Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'tex' }
@@ -81,6 +89,8 @@ set nu rnu " show relative line numbers
 " plugin assignments
 "
 
+" highlight everything in python files
+let g:python_highlight_all=1
 " use symbols with airline
 let g:airline_powerline_fonts=1
 let g:airline_theme='lucius'
