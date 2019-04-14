@@ -107,9 +107,6 @@ let mapleader=","
 " bindings
 "
 
-" j/k stay on wrapped lines
-map j gj
-map k gk
 " switch windows with ctrl-h/j/k/l
 map <C-h> <C-W>h
 map <C-j> <C-W>j
