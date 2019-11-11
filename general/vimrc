@@ -19,21 +19,20 @@ Plug 'dennougorilla/azuki.vim'
 Plug 'cseelus/vim-colors-tone'
 Plug 'tjammer/blayu.vim'
 
-" writing
-Plug 'garbas/vim-snipmate' | Plug 'honza/vim-snippets' | Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'tomtom/tlib_vim'
+" editor
+Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-easy-align'
-Plug 'vim-syntastic/syntastic'
-Plug 'codehearts/mascara-vim'
-Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-Plug 'ervandew/supertab'
+Plug 'dense-analysis/ale'
 Plug 'janko-m/vim-test'
+Plug 'tmsvg/pear-tree'
 
 " ui
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
+Plug 'codehearts/mascara-vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'mhinz/vim-startify'
 Plug 'majutsushi/tagbar', { 'on':  'TagbarToggle' }
@@ -44,12 +43,6 @@ Plug 'tpope/vim-fugitive'
 " python
 Plug 'plytophogy/vim-virtualenv', { 'for': 'python' }
 Plug 'vim-python/python-syntax'
-
-" c/c++
-Plug 'octol/vim-cpp-enhanced-highlight'
-
-" latex
-Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'tex' }
 
 call plug#end()
 
@@ -65,7 +58,6 @@ if has('gui_running') " gui
   set gfn=DankMono-Regular:h12
 
   if has('macunix') " macOS
-    let g:LatexBox_viewer='open' " use `open` to view latex output on macOS
   elseif has('win32') || has('win64') " windows
     set rop=type:directx,\gamma:1.5,contrast:0.5,geom:1,\renmode:5,taamode:1,level:0.5 " directx rendering
   else " linux
@@ -97,11 +89,13 @@ let g:airline_theme='lucius'
 let g:LatexBox_latexmk_preview_continuously=1
 let g:LatexBox_latexmk_async=1
 let g:LatexBox_quickfix=2
-" use nicer symbols with syntastic
-let g:syntastic_error_symbol='✖'
-let g:syntastic_warning_symbol='⚠'
+" use nicer symbols with ale
+let g:ale_sign_error='✖'
+let g:ale_sign_warning='⚠'
 " set <leader> to ,
 let mapleader=","
+" use asyncomplete for completion with ale
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options())
 
 "
 " bindings
@@ -152,38 +146,34 @@ autocmd FileType mail setlocal fo+=aw          " don't automatically break lines
 " startify header
 "
 
-function! s:center_text(lines) abort
-  let longest_line   = strwidth(a:lines[0])
-  let centered_lines = map(copy(a:lines),
-    \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
-  return centered_lines
-endfunction
-
-let g:wired_ascii = [
-  \ '                       `--.                       ',
-  \ '                   ``.-ssss-.``                   ',
-  \ '               `..-----/oo+------..               ',
-  \ '            `.---::::::://:::::::---.`            ',
-  \ '          `-::::::/++oooooooo++/::::::-`          ',
-  \ '        ./ssss//+osssssssssssssso+/:osss+-`       ',
-  \ '     `-+ssso+/+osssso++++++++osssso+/+ossso/.     ',
-  \ '   ./osso/::/+ssss+++ooossooo+++sssso/::/+sss+.   ',
-  \ ' `+sss+:-:::+ssso++osssssssssso++osss+:::-:/sss+. ',
-  \ '.oss+..--::/ssss++osssssssssssso++osss/::--..+sss-',
-  \ 'osss` .-:::/ssso++sssssssssssssoo+osss/:::--  osso',
-  \ '+sss. `-:::/ssso++sssssssssssssoo+osss/:::-- `ssso',
-  \ '`+sss:.--::/osss++osssssssssssso++ssss/::--.:osso.',
-  \ ' `:osso/::::/osss++oossssssssoo++ssss+::::/osso:` ',
-  \ '   `:+ssso+/:/ossso+++oooooo+++ossso+://oosso:`   ',
-  \ '  -::`.:ossso+/+ossssoo////oossssso//ossso/..-:-  ',
-  \ ' -sss+  `./oso/:/+ossss/:::sssso+/::oso+.`  +sss- ',
-  \ ' `:+/.     `---::::osss----osso:::::--.     ./+:` ',
-  \ '             `.---:osso....+sso:----`             ',
-  \ '                `.-+sso````+sso..``               ',
-  \ '          -/:`     /sso    +ss+      :/-          ',
-  \ '         .sss:     +sso    +sso     -sss.         ',
-  \ '         `ssso.  `:sss+    /sss/.  .+sss.         ',
-  \ '          -ssssssssss+`     +ssssssssss:          ',
-  \ '           `-/+oo+/:.        .:/+oo+/-`           ',
-  \ ]
-let g:startify_custom_header = s:center_text(g:wired_ascii)
+let g:momiji = startify#center([
+  \ '     ⣶                                 ⢀⣀⣀⣀⣀⣀⣀⡀       ',
+  \ '  ⠰⣟⠓⣿⡾⢷⡄⣾⣛⣷          ⣀⣠⣤⣤⣤⣤⣶⣶⣶⣶⣶⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀      ',
+  \ '  ⢤⣽⡷⣿ ⢸⡇⢻⣤⡴         ⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠿⠿⠿⠿⠿⠟⠛⠛⠛⠋⠉⠉⢿⣿⣿⣿⡇      ',
+  \ '                     ⣿⣿⣿                   ⢸⣿⣿⣿⡇      ',
+  \ '⢸⡇⢸⡇⠰⣟⠓ ⣾⣛⣷⠰⣟⠓       ⣿⣿⡇   ⣠⣧        ⣴⠶⣦    ⣿⣿⣿⡇      ',
+  \ '⠘⣧⣼⠃⢤⣽⡷ ⢻⣤⡴⢤⣽⡷     ⣶⣿⣿⣿⡇  ⢰⡟⠘⣧⣀       ⣴⠋    ⣿⣿⣿⣧      ',
+  \ '    ⠶       ⣶ ⣴⠶⣦  ⣿⡿⠿⠟⠃  ⢸⠁ ⠈⠛⢧⣄     ⣤     ⢹⣿⣿⣿⣄⣀⣀⣀⣀⡀',
+  \ '⣿ ⣿ ⣿ ⣿⢻⣿⢻⡆ ⣿  ⣴⠋      ⢀⣠⡤⠜⠒⠛⠓⠶⠆⠙⠻⠶⣤⣀⡀      ⠸⠿⣿⣿⣿⣿⣿⣿⣿⣿',
+  \ '⠙⢦⣿ ⣿ ⣿⠘⠋⢸⡇ ⣤  ⣤  ⢀⣀⣠⣴⠞⠋⠁          ⠈⠉⠛⠛⠒⠶⣦⣤⣤⣀    ⠉⠉⠙⠛⠻',
+  \ '             ⢠⢴⣶⣿⣟⣻⣽⣯⡥⠶⢖⡿⠿⠃               ⠉⠙⠻⢶⣤⣤⣤⣤⣤⣄  ',
+  \ '        ⢸⣿⣿⣿⡆⠘⣧⠈⠉⠉⠛⢛⣷⣤⣤⡟⠁      ⣀⣤⡾⠟⠂          ⠉⠻⣷⣄⣽⢿⡄ ',
+  \ '         ⢿⣿⣿⡇ ⠸⣧   ⢘⣷⢦⣿⠁  ⢀⣠⣤⣶⡾⠋⠁                ⠙⢿⣄⢿⡀',
+  \ '       ⣠⣶⣿⣿⣿⣿  ⠘⣷⡄ ⣨⡿⣹⡿⣀⣴⣞⡋⠁⣴⡿⠶⢒⡶                  ⠻⣾⣷',
+  \ '     ⣠⣾⣿⣿⣿⣿⠟⠃   ⢹⣧⡾⣣⣾⠻⡷⠋⣶⡟⠻⣧   ⢸⠁                   ⢻⣿',
+  \ '   ⣠⣿⣿⣿⡿⠟⠁    ⢠⡴⠟⣳⡟⠋⣠⠄  ⢿⣶⣾⠿  ⢀⡇            ⣀       ⠈⣿',
+  \ '⢀⣴⣿⣿⡿⠋⠁   ⢀⣠⣴⣾⣿⢾⣾⠋⣠⠏⢁⡴⠊⣠      ⣼⡇           ⣠⠏        ⠹',
+  \ '⢸⣿⣿⣿⡆ ⠶⠿⠿⠿⠟⠻⣿⡿⢻⣿ ⠈⠁⠐⠁⡤⠋⠁      ⠙⠷⠶⠶⠶⠾⣿⣿⣋⣠⡴⣿⡏   ⣀       ',
+  \ ' ⣿⣿⣿⣿       ⣼⠇⢸⣿  ⡄                 ⣾⠋⠙⢿⡄⢀⠟    ⣿ ⡀  ⠻⣆',
+  \ ' ⢹⣿⣿⣿⡇     ⣼⠇ ⠘⣿⡀ ⢇⡰     ⢶⣄⣀⡀       ⠻⣦⣴⢿⣹⠏⣀⣀⣴ ⢀⠇⣶⣿  ⢀⠙',
+  \ ' ⠸⣿⣿⣿⡇    ⣠⠟   ⠹⣧       ⢠⡟⠉⠘⢷⣤⡤   ⢀⣠   ⠈⠛⠛⣻⡟⠁ ⣼⢰⡏⣿  ⣼ ',
+  \ '  ⢿⣿⣿⣿   ⢠⣿ ⣀⣀⣤⣤⣿⣇      ⣾  ⢀⡾⠃   ⠐⠋⣠⠖⠋⣠⠄⢀⣼⠛  ⢰⣯⡿⢥⣿ ⣰⠃ ',
+  \ '  ⢸⣿⣿⣿⡇  ⢸⠿⠛⠋⠉⠉ ⠈⠻⣦⡀    ⠹⣤⡴⠋        ⠴⠋⢁⣴⣛⣡⠖  ⣼⡿  ⣿⢠⡿⣿⡳',
+  \ '  ⠸⣿⣿⣿⣷          ⣼⢻⣧⣄              ⢀⣠⣾⣿⣿⠛⠁  ⣴⠏⠁⠈⢣⣧⣾⣿⠛⠁',
+  \ '   ⣿⣿⣿⣿⣀⣀⣀⣤⣤⡄   ⣼⠗⠋⢹⡿⣶⣄⣀         ⣠⣴⣿⣿⠟⠉     ⠉  ⢠⠜⣯⣤⣼⣶⣶',
+  \ '   ⢸⣿⣿⣿⣿⣿⣿⣿⣿⡇      ⣼⠁⢉⣹⣿⣷⣶⣤⣀⣀⣀⣤⣖⣛⠋⣩⡿⠃       ⢠⡆⢠⡏    ⣿⠿',
+  \ '    ⠻⠿⠿⠿⢿⣿⣿⡿⠁      ⠉⣿⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⠉⢉⣵⠟         ⣼⣇⣾  ⣤  ⣿ ',
+  \ '        ⢸⣿⣿⡟     ⢀⡶⠋⠉⠙⢦⡀      ⢀⣴⠟       ⢀⣤⣴⠎⣿⣹⠇⢠⣾⠻⣧⡀⣿⣠',
+  \ '        ⣿⣿⣿⠁     ⣾     ⣷    ⢀⣴⠟⠁     ⣀⣠⡶⢟⣿⢿⣆⣿⡇⢀⡿⠃ ⠘⢿⣻⡟',
+  \ ])
+let g:startify_custom_header = g:momiji
