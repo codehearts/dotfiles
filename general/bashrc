@@ -6,8 +6,8 @@
 magenta='\e[0;35m'; light_magenta='\e[0;95m';  cyan='\e[0;36m';  light_cyan='\e[0;96m'
  normal='\e[0;39m';
 
-# Green flower with red cwd, flower is yellow if last command returned non-zero
-export PS1="\[\$((( \$? )) && echo '$yellow' || echo '$green')\]⚘ \[$red\]\W\[$normal\] "
+# Green moon with red cwd, yellow star if last command returned non-zero
+export PS1="\[\$((( \$? )) && echo '$yellow'✦ || echo '$green'☾)\] \[$red\]\W\[$normal\] "
 
 # Keep repeated commands in history once
 export HISTCONTROL=ignoreboth:erasedups
@@ -33,13 +33,11 @@ hascmd virtualenv && hascmd python3 && export VIRTUALENVWRAPPER_PYTHON=`which py
 hascmd gem && export PATH="$PATH:$(ruby -r rubygems -e 'puts Gem.user_dir')/bin"
 
 # Configure thefuck and alias it to f
-hascmd thefuck && eval "$(thefuck --alias f)"
+hascmd thefuck && eval "$(thefuck --alias fuck)"
 
 # macOS
 if [[ "$OSTYPE" == darwin* ]]; then
-  # Add LaTeX to PATH
   export PATH="/usr/local/bin:$PATH"
-  export PATH="$PATH:/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
 
   alias ls="ls -G"
 fi
