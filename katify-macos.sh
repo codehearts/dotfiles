@@ -64,38 +64,15 @@ if [ ! -f /usr/local/bin/bash ] && setdown_hascmd brew; then
 fi
 
 #
-# Ask for and install brew packages
-#
-
-declare -a brew_packages
-
-brew_addpkg brew_packages bash-completion on
-brew_addpkg brew_packages ctags           on
-brew_addpkg brew_packages ffmpeg          on
-brew_addpkg brew_packages git             on
-brew_addpkg brew_packages python          on
-brew_addpkg brew_packages python3         on
-brew_addpkg brew_packages ruby            on
-brew_addpkg brew_packages thefuck         on
-
-brew_getpkgs 'Homebrew packages' brew_packages
-
-if [ "${#packages[@]}" -gt 0 ]; then
-  if setdown_sudo 'Enter password to install brew packages'; then
-    setdown_putcmd brew install "${packages[@]}"
-  else
-    setdown_putstr_ok 'Skipping brew package install'
-  fi
-fi
-
-#
 # Ask for and install brew cask packages
 #
 
 declare -a cask_packages
 
 cask_addpkg cask_packages d235j-xbox360-controller-driver off
+cask_addpkg cask_packages docker                          on
 cask_addpkg cask_packages iina                            on
+cask_addpkg cask_packages macvim                          on
 cask_addpkg cask_packages qlmarkdown                      on
 cask_addpkg cask_packages qlstephen                       on
 
@@ -114,6 +91,37 @@ fi
 #
 
 packages+=("${packages_cask[@]}")
+
+#
+# Ask for and install brew packages
+#
+
+declare -a brew_packages
+
+brew_addpkg brew_packages bash-completion on
+brew_addpkg brew_packages ctags           off
+brew_addpkg brew_packages ffmpeg          on
+brew_addpkg brew_packages git             on
+brew_addpkg brew_packages python          on
+brew_addpkg brew_packages python3         on
+brew_addpkg brew_packages ruby            off
+brew_addpkg brew_packages thefuck         on
+
+# Install docker completions if Docker is installed
+if setdown_hascmd docker; then
+  brew_addpkg brew_packages docker-completion on
+  brew_addpkg brew_packages docker-compose-completion on
+fi
+
+brew_getpkgs 'Homebrew packages' brew_packages
+
+if [ "${#packages[@]}" -gt 0 ]; then
+  if setdown_sudo 'Enter password to install brew packages'; then
+    setdown_putcmd brew install "${packages[@]}"
+  else
+    setdown_putstr_ok 'Skipping brew package install'
+  fi
+fi
 
 #
 # Copy terminal themes
