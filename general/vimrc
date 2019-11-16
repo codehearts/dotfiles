@@ -49,12 +49,15 @@ Plug 'tmsvg/pear-tree'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 Plug 'codehearts/mascara-vim'
+Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'mhinz/vim-startify'
-Plug 'majutsushi/tagbar', { 'on':  'TagbarToggle' }
 
 " git
 Plug 'tpope/vim-fugitive'
+
+" rust
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
 " python
 Plug 'plytophogy/vim-virtualenv', { 'for': 'python' }
@@ -106,8 +109,27 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme = 'lucius'
 
 " use nicer symbols with ale
-let g:ale_sign_error='✖'
-let g:ale_sign_warning='⚠'
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '⌦'
+" don't log ale linter output
+let g:ale_history_log_output = 0
+" specify lsp and linters
+let g:ale_linters = { 'rust': ['rls'] }
+" configure rls to use all cargo features and clippy
+let g:ale_rust_rls_config = { 'rust': { 'all_features': 'true', 'clippy_preference': 'on' } }
+" specify fixers for ale
+let g:ale_fixers = { 'rust': [ 'rustfmt' ], 'javascript': [ 'prettier' ], 'typescript': [ 'eslint' ] }
+" fix syntax when saving buffers
+let g:ale_fix_on_save=1
+
+" cd to repo root from startify
+let g:startify_change_to_vcs_root = 1
+
+" use ale with vista to default to lsp
+let g:vista_default_executive = 'ale'
+" don't display icons in vista
+let g:vista#renderer#enable_icon = 0
+
 " set <leader> to ,
 let mapleader = ","
 
@@ -146,8 +168,12 @@ xmap <leader>re y:%s /<c-r>"//g<c-right><left><left>
 " nerd tree
 map <leader>nt :NERDTreeToggle<cr>
 map <leader>mt :NERDTreeMirror<cr>
-" tagbar
-map <leader>tb :TagbarToggle<cr>
+" vista
+map <leader>tb :Vista!!<cr>
+" ale
+map <leader>ad :ALEDetail<cr>
+map <leader>ah :ALEHover<cr>
+map <leader>ag :ALEGoToDefinitionInSplit<cr>
 " easy align
 xmap ga <plug>(EasyAlign)
 nmap ga <plug>(EasyAlign)
