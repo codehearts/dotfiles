@@ -9,3 +9,9 @@ This repo is mostly for my own convenience, but might be of interest to those wo
 brew install git && git clone https://github.com/codehearts/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles && ./katify.sh --macOS
 ```
+
+## Commit Legend
+
+| macOS | Shell | Vim |
+| ----- | ----- | --- |
+| 🍎   | 🐚   |🖍  |
