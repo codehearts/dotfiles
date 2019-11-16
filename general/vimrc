@@ -1,5 +1,6 @@
 " codehearts .vimrc
 " github.com/codehearts/dotfiles
+" vim: et:ts=2:sw=2
 "
 
 call plug#begin('~/.vim/plugged')
@@ -8,6 +9,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 
 " colors
+Plug 'sansbrina/vim-garbage-oracle', { 'branch': 'release' }
 Plug 'lu-ren/SerialExperimentsLain'
 Plug 'rhysd/vim-color-spring-night'
 Plug 'soft-aesthetic/soft-era-vim'
@@ -15,9 +17,23 @@ Plug 'vectorstorm/vim-chlordane'
 Plug 'reedes/vim-colors-pencil'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'srcery-colors/srcery-vim'
+Plug 'sainnhe/gruvbox-material'
 Plug 'dennougorilla/azuki.vim'
 Plug 'cseelus/vim-colors-tone'
+Plug 'srijs/vim-colors-rusty'
 Plug 'tjammer/blayu.vim'
+Plug 'abnt713/vim-hashpunk'
+Plug 'yuttie/hydrangea-vim'
+Plug 'beikome/cosme.vim'
+Plug 'smallwat3r/vim-mono-sw'
+Plug 'sonjapeterson/1989.vim'
+Plug 'kocakosm/hilal'
+Plug 'kristiandupont/shades-of-teal'
+Plug 'carlson-erik/wolfpack'
+Plug 'sjl/badwolf'
+Plug 'bcicen/vim-vice'
+Plug 'mbbill/vim-seattle'
+Plug 'AlessandroYorba/Sierra'
 
 " editor
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -55,6 +71,7 @@ if has('gui_running') " gui
   colorscheme lucid
 
   set go-=r go-=L go-=m go-=T " remove scrollbars and toolbar from gui
+  set go+=! " use a full terminal for :sh
   set gfn=DankMono-Regular:h12
 
   if has('macunix') " macOS
@@ -75,25 +92,25 @@ set noswf " don't use swap files
 set ic scs hls " ignore case, smart case, highlight search matches
 set enc=utf-8 " use utf-8 encoding
 set nu rnu " show relative line numbers
+set fcs=vert:⎸ " use nicer characters for splits
 
 "
 " plugin assignments
 "
 
 " highlight everything in python files
-let g:python_highlight_all=1
+let g:python_highlight_all = 1
+
 " use symbols with airline
-let g:airline_powerline_fonts=1
-let g:airline_theme='lucius'
-" compile latex asynchronously on write, quickfix won't steal cursor
-let g:LatexBox_latexmk_preview_continuously=1
-let g:LatexBox_latexmk_async=1
-let g:LatexBox_quickfix=2
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'lucius'
+
 " use nicer symbols with ale
 let g:ale_sign_error='✖'
 let g:ale_sign_warning='⚠'
 " set <leader> to ,
-let mapleader=","
+let mapleader = ","
+
 " use asyncomplete for completion with ale
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options())
 
