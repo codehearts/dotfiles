@@ -10,7 +10,7 @@ if [ "$#" -eq 0 ]; then
   [ -z "$selected" ] && exit 0
   zenbu && wal -i ~/Pictures/wallpaper/$selected >/dev/null
 else
-  zenbu "$@" >/dev/null
+  zenbu && wal -i "$@" >/dev/null
 fi
 
 [ "$?" -ne 0 ] && exit 1

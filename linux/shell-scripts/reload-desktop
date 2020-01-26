@@ -1,14 +1,74 @@
 #!/usr/bin/env bash
-# Reloads ~/.Xresources and my running desktop software.
+# Reloads my running desktop software and applies colorschemes.
 #
-# References: use-color from http://superuser.com/a/921802
-# Author:  Kate Hart (https://github.com/codehearts)
+# Author: Kate Hart (https://github.com/codehearts)
 
-pkill polybar
-pkill compton
-pkill dropbox
-pkill gcalert
-pkill dunst
-pkill bspwmrc
+is_installed() {
+  command -v "$1" >/dev/null 2>&1
+}
 
-exec ${HOME}/.config/bspwm/bspwmrc
+# Reload the bspwmrc if available
+[ -f "$HOME/.config/bspwm/bspwmrc" ] && source "$HOME/.config/bspwm/bspwmrc"
+
+# Apply Xresources
+is_installed xrdb && xrdb "$HOME/.Xresources"
+
+# Apply previous wal theme if wal is installed
+is_installed wal && wal -R
+
+# Source colors for the current theme
+source "$HOME/.cache/wal/colors.sh"
+
+# Start compton if it's not already
+if ! pgrep 'compton' > /dev/null; then
+  compton &
+fi
+
+# Start the urxvt daemon if it's not running
+if is_installed urxvtd && ! pgrep 'urxvtd' > /dev/null; then
+	urxvtd --quiet --opendisplay --fork
+fi
+
+# Start or reload sxhkd
+if pgrep 'sxhkd' > /dev/null; then
+  pkill -USR1 -x sxhkd
+elif is_installed sxhkd; then
+	sxhkd &
+fi
+
+# Start dropbox if it's not running
+if is_installed dropbox && ! pgrep dropbox > /dev/null; then
+  dropbox &
+fi
+
+# Start xss-lock if it's not running
+if is_installed katie_lock && ! pgrep xss-lock > /dev/null; then
+  xss-lock -n katie_lock katie_lock &
+fi
+
+# Reload dunst
+if is_installed dunst; then
+  pkill dunst
+  dunst \
+    -lb "${color0:=#F0F0F0}" \
+    -nb "$color0" \
+    -cb "$color0" \
+    -lf "${color8:=#000000}" \
+    -bf "$color8" \
+    -cf "$color8" \
+    -nf "$color8" \
+    > /dev/null 2>&1 &
+fi
+
+# Reload gcalert
+if is_installed gcalert; then
+  pkill gcalert
+  gcalert &
+fi
+
+# Start or reload polybar
+if !is_installed wal && pgrep 'polybar' > /dev/null; then
+  pkill -USR1 polybar
+elif is_installed polybar; then
+  polybar default &
+fi
