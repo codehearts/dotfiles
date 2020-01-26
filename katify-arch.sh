@@ -22,26 +22,24 @@ arch_getpkgs() {
 ! setdown_hascmd dialog && sudo pacman --noconfirm -S dialog
 
 #
-# Ask to install yaourt if not present
+# Ask to install yay if not present
 #
 
-if ! setdown_hascmd yaourt && setdown_getconsent "Install yaourt?"; then
-  if setdown_sudo 'Enter password to install yaourt'; then
-    pacman --noconfirm -S base-devel
+if ! setdown_hascmd yay && setdown_getconsent "Install yay?"; then
+  if setdown_sudo 'Enter password to install yay'; then
+    git clone https://aur.archlinux.org/yay.git
+    cd yay; makepkg -si; cd ..; rm -rf yay
 
-    git clone https://aur.archlinux.org/package-query.git
-    cd package-query; makepkg -si; cd ..
-
-    git clone https://aur.archlinux.org/yaourt.git
-    cd yaourt; makepkg -si; cd ..
-
-    rm -rf yaourt* package-query*
+    yay --save \
+      --answerclean=All --nocleanmenu \
+      --answerdiff=None --nodiffmenu \
+      --removemake --cleanafter
   else
-    setdown_putstr_ok 'Skipping yaourt install'
+    setdown_putstr_ok 'Skipping yay install'
   fi
 fi
 
-setdown_hascmd yaourt && has_yaourt=true || has_yaourt=false
+setdown_hascmd yay && has_yay=true || has_yay=false
 
 #
 # Ask to install X (input, backlight, server, xinit) if not present
@@ -77,7 +75,7 @@ arch_addpkg email_packages                offlineimap          on
 arch_addpkg email_packages                python2-gnomekeyring on
 arch_addpkg email_packages                python2-gobject      on # for python2-keyrings-alt
 arch_addpkg email_packages                python2-keyrings-alt on
-$has_yaourt && arch_addpkg email_packages urlview              on
+$has_yay && arch_addpkg email_packages    urlview              on
   
 groups+=(Programming on)
 declare -a programming_packages
@@ -93,7 +91,7 @@ groups+=(Utility on)
 declare -a utility_packages
 $has_X && arch_addpkg utility_packages      accountsservice on
 arch_addpkg utility_packages                bash-completion on
-$has_yaourt && arch_addpkg utility_packages dropbox         on
+$has_yay && arch_addpkg utility_packages    dropbox         on
 arch_addpkg utility_packages                git             on
 arch_addpkg utility_packages                htop            on
 arch_addpkg utility_packages                ntp             on
@@ -108,19 +106,19 @@ groups+=(Extras on)
 declare -a extra_packages
 arch_addpkg extra_packages                          calc          on
 arch_addpkg extra_packages                          dictd         on
-$has_yaourt && arch_addpkg extra_packages           gcalcli       on
-$has_yaourt && $has_X && arch_addpkg extra_packages gcalert       on
+$has_yay && arch_addpkg extra_packages              gcalcli       on
+$has_yay && $has_X && arch_addpkg extra_packages    gcalert       on
 
 if $has_X; then
   groups+=(Fonts on)
   declare -a font_packages
-  $has_yaourt && arch_addpkg font_packages ttf-mplus                   on
+  $has_yay && arch_addpkg font_packages    ttf-mplus on
 
   groups+=(Browsers on)
   declare -a browser_packages
   arch_addpkg browser_packages                chromium      off
   arch_addpkg browser_packages                firefox       on
-  $has_yaourt && arch_addpkg browser_packages google-chrome off
+  $has_yay && arch_addpkg browser_packages    google-chrome off
 
   groups+=(Desktop on)
   declare -a desktop_packages
@@ -132,8 +130,8 @@ if $has_X; then
   arch_addpkg desktop_packages                dunst                       on
   arch_addpkg desktop_packages                feh                         on
   arch_addpkg desktop_packages                lightdm-gtk-greeter         off
-  $has_yaourt && arch_addpkg desktop_packages ly                          on
-  $has_yaourt && arch_addpkg desktop_packages polybar                     on
+  $has_yay && arch_addpkg desktop_packages    ly                          on
+  $has_yay && arch_addpkg desktop_packages    polybar                     on
   arch_addpkg desktop_packages                python-pywal                on
   arch_addpkg desktop_packages                rxvt-unicode                on
   arch_addpkg desktop_packages                scrot                       on
@@ -142,11 +140,11 @@ if $has_X; then
 
   groups+=('Shell Scripts' on)
   declare -a script_packages
-  $has_yaourt && arch_addpkg script_packages i3lock-lixxia-git on
+  $has_yay && arch_addpkg script_packages    i3lock-lixxia-git on
   arch_addpkg script_packages                imagemagick       on
   arch_addpkg script_packages                scrot             on
   arch_addpkg script_packages                tmux              on
-  $has_yaourt && arch_addpkg script_packages xss-lock          on
+  $has_yay && arch_addpkg script_packages    xss-lock          on
 fi
 
 #
@@ -183,7 +181,7 @@ done
 
 if [ "${#packages[@]}" -gt 0 ]; then
   if setdown_sudo 'Enter password to install packages'; then
-    $has_yaourt && pkg_manager=yaourt || pkg_manager='sudo pacman'
+    $has_yay && pkg_manager=yay || pkg_manager='sudo pacman'
     setdown_putcmd $pkg_manager --noconfirm -Syyu "${packages[@]}"
 
     # Clean up any orphaned packages
