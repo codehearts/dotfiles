@@ -125,7 +125,7 @@ if $has_X; then
   arch_addpkg desktop_packages                arc-gtk-theme               on
   arch_addpkg desktop_packages                arc-icon-theme              on
   arch_addpkg desktop_packages                bspwm                       on
-  arch_addpkg desktop_packages                compton                     on
+  arch_addpkg desktop_packages                picom                       on
   arch_addpkg desktop_packages                dmenu                       on
   arch_addpkg desktop_packages                dunst                       on
   arch_addpkg desktop_packages                feh                         on

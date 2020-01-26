@@ -19,9 +19,9 @@ is_installed wal && wal -R
 # Source colors for the current theme
 source "$HOME/.cache/wal/colors.sh"
 
-# Start compton if it's not already
-if ! pgrep 'compton' > /dev/null; then
-  compton &
+# Start picom if it's not already
+if ! pgrep 'picom' > /dev/null; then
+  picom &
 fi
 
 # Start the urxvt daemon if it's not running

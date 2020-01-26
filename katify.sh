@@ -130,13 +130,13 @@ dotfiles_addconfig() { local -n dots=$1; setdown_hascmd "$2" && dots+=($2 $3); }
 
 declare -a dotfile_choices=('shell scripts' on)
 dotfiles_addconfig dotfile_choices bash        on
-dotfiles_addconfig dotfile_choices compton     on
 dotfiles_addconfig dotfile_choices gcalert     on
 dotfiles_addconfig dotfile_choices git         on
 dotfiles_addconfig dotfile_choices ly          on
 dotfiles_addconfig dotfile_choices mpd         on
 dotfiles_addconfig dotfile_choices ncmpcpp     on
 dotfiles_addconfig dotfile_choices offlineimap on
+dotfiles_addconfig dotfile_choices picom       on
 dotfiles_addconfig dotfile_choices screen      on
 dotfiles_addconfig dotfile_choices tmux        on
 dotfiles_addconfig dotfile_choices vim         on
@@ -168,9 +168,6 @@ for choice in "${choices[@]}"; do
     bash)
       setdown_link $SHARED_DIR/bashrc ~/.bashrc
       setdown_link $SHARED_DIR/bash_profile ~/.bash_profile
-      ;;
-    compton)
-      setdown_link $LINUX_DIR/compton.conf ~/.compton.conf
       ;;
     gcalert)
       mkdir -p ~/.config/gcalertrc/
@@ -230,6 +227,10 @@ for choice in "${choices[@]}"; do
         systemctl --user enable offlineimap.timer
         systemctl --user enable offlineimap.service
       fi
+      ;;
+    picom)
+      mkdir -p ~/.config/picom/
+      setdown_link $LINUX_DIR/config/picom/picom.conf ~/.config/picom/
       ;;
     screen)
       setdown_link $SHARED_DIR/screenrc ~/.screenrc
