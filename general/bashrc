@@ -40,6 +40,8 @@ if [[ "$OSTYPE" == darwin* ]]; then
   export PATH="/usr/local/bin:$PATH"
 
   alias ls="ls -G"
+elif [[ "$OSTYPE" == linux-gnu ]]; then
+  alias lock="xset s activate"
 fi
 
 [ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh

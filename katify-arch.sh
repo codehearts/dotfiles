@@ -136,11 +136,11 @@ if $has_X; then
   arch_addpkg desktop_packages                rxvt-unicode                on
   arch_addpkg desktop_packages                scrot                       on
   arch_addpkg desktop_packages                sxhkd                       on
+  arch_addpkg desktop_packages                xsecurelock                 on
   arch_addpkg desktop_packages                zathura-pdf-mupdf           on
 
   groups+=('Shell Scripts' on)
   declare -a script_packages
-  $has_yay && arch_addpkg script_packages    i3lock-lixxia-git on
   arch_addpkg script_packages                imagemagick       on
   arch_addpkg script_packages                scrot             on
   arch_addpkg script_packages                tmux              on

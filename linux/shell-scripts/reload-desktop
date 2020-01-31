@@ -41,9 +41,18 @@ if is_installed dropbox && ! pgrep dropbox > /dev/null; then
   dropbox &
 fi
 
-# Start xss-lock if it's not running
-if is_installed katie_lock && ! pgrep xss-lock > /dev/null; then
-  xss-lock -n katie_lock katie_lock &
+# Lock the machine on sleep or after 10m
+if is_installed xsecurelock && ! pgrep xss-lock > /dev/null; then
+  xset s 600
+
+  XSECURELOCK_SHOW_USERNAME=0 \
+  XSECURELOCK_SHOW_HOSTNAME=0 \
+  XSECURELOCK_SHOW_DATETIME=0 \
+  XSECURELOCK_PASSWORD_PROMPT=hidden \
+  XSECURELOCK_SAVER=saver_mpv \
+  XSECURELOCK_LIST_VIDEOS_COMMAND='feh --zoom=fill -Ff ~/.cache/wal/wal' \
+  XSECURELOCK_NO_COMPOSITE=1 \
+    xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock &
 fi
 
 # Reload dunst
