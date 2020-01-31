@@ -2,7 +2,7 @@
 
 # String of colors 31 to 36, separated by newlines
 colors=''
-for i in $(seq 1 6); do
+for i in $(seq 1 7); do
   colors=$(printf '%s\n3%s' "$colors" "$i")
 done
 
