@@ -5,11 +5,8 @@
 super + Return
   urxvtc
 
-{XF86Search}
-  dmenu_run {{ dmenu_flags }} -p Run:
-
-super + space
-  dmenu_run {{ dmenu_flags }} -p Run:
+{XF86Search,super + space}
+  dmenu_run -i -f -fn "M+ 1p:pixelsize=18" -b -p Run:
 
 super + a
   urxvtc -e music
@@ -21,7 +18,7 @@ super + v
   gvim
 
 super + z
-  PATH="$PATH:~/.local/bin" zen
+  dessiner
 
 {XF86AudioLowerVolume}
     amixer sset Master 5%- &> /dev/null
@@ -62,7 +59,7 @@ super + alt + Escape
 
 # reload desktop
 super + q
-  reload-desktop
+  bonjour
 
 
 #

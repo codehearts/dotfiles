@@ -1,0 +1,71 @@
+#!/usr/bin/env sh
+#
+# Applies colorschemes and runs my baseline software
+# This includes wm/compositor/lock/notification daemons
+# Author: Catherine Hart (https://github.com/codehearts)
+
+# determines if a program is installed
+is_installed() { command -v "$1" >/dev/null 2>&1; }
+
+# determines if a program is running
+is_running() { pgrep "$1" >/dev/null 2>&1; }
+
+# starts a backgrounded process if not already running
+start() { is_installed "$1" && ! is_running "$1" && "$@" & }
+
+# starts a backgrounded process or sends USR1 if already running
+start_or_restart() {
+  if is_running "$1"; then
+    pkill -USR1 "$1"
+  elif is_installed "$1"; then
+    "$@" &
+  fi
+}
+
+# apply colorschemes and reload xrdb/polybar via wal or manually
+if is_installed wal; then
+  wal -R # reload previous theme and source colors
+  source "$HOME/.cache/wal/colors.sh"
+else
+  is_installed xrdb && xrdb "$HOME/.Xresources" # apply xresources
+fi
+
+# configure bspwm
+[ -f "$HOME/.config/bspwm/bspwmrc" ] && . "$HOME/.config/bspwm/bspwmrc"
+
+# start backgrounded software
+start_or_restart sxhkd
+start_or_restart polybar default
+start picom --daemon
+start urxvtd --quiet --opendisplay --fork
+# start gcalert TODO use gcalert again some day
+start dropbox
+
+# run dunst using configured colors
+if is_installed dunst; then
+  is_running dunst && pkill dunst
+
+  dunst \
+    -lb "${color0:=#f0f0f0}" \
+    -nb "$color0" \
+    -cb "$color0" \
+    -lf "${color8:=#000000}" \
+    -bf "$color8" \
+    -cf "$color8" \
+    -nf "$color8" \
+    > /dev/null 2>&1 &
+fi
+
+# lock when going to sleep or idle for 10m
+if is_installed xsecurelock && ! is_running xss-lock; then
+  xset s 600
+
+  XSECURELOCK_SHOW_USERNAME=0 \
+  XSECURELOCK_SHOW_HOSTNAME=0 \
+  XSECURELOCK_SHOW_DATETIME=0 \
+  XSECURELOCK_PASSWORD_PROMPT=hidden \
+  XSECURELOCK_SAVER=saver_mpv \
+  XSECURELOCK_LIST_VIDEOS_COMMAND="feh --zoom=fill -Ff $HOME/.cache/wal/wal" \
+  XSECURELOCK_NO_COMPOSITE=1 \
+    xss-lock -n /usr/lib/xsecurelock/dimmer -l -- xsecurelock &
+fi

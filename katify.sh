@@ -77,8 +77,7 @@ pip_getpkgs() {
 
 if setdown_hascmd pip; then
   declare -a pip_package_choices
-  pip_addpkg pip_package_choices colorz on
-  pip_addpkg pip_package_choices zenbu on
+  pip_addpkg pip_package_choices haishoku on
 
   pip_getpkgs 'Pypi packages to install' pip_package_choices
 
@@ -130,18 +129,22 @@ dotfiles_addconfig() { local -n dots=$1; setdown_hascmd "$2" && dots+=($2 $3); }
 
 declare -a dotfile_choices=('shell scripts' on)
 dotfiles_addconfig dotfile_choices bash        on
+dotfiles_addconfig dotfile_choices bspwm       on
+dotfiles_addconfig dotfile_choices dunst       on
 dotfiles_addconfig dotfile_choices gcalert     on
 dotfiles_addconfig dotfile_choices git         on
+dotfiles_addconfig dotfile_choices gtk         on
 dotfiles_addconfig dotfile_choices ly          on
 dotfiles_addconfig dotfile_choices mpd         on
 dotfiles_addconfig dotfile_choices ncmpcpp     on
 dotfiles_addconfig dotfile_choices offlineimap on
 dotfiles_addconfig dotfile_choices picom       on
 dotfiles_addconfig dotfile_choices screen      on
+dotfiles_addconfig dotfile_choices sxhkd       on
 dotfiles_addconfig dotfile_choices tmux        on
 dotfiles_addconfig dotfile_choices vim         on
 dotfiles_addconfig dotfile_choices X           on
-dotfiles_addconfig dotfile_choices zenbu       on
+dotfiles_addconfig dotfile_choices zathura     on
 setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring',        on)
 setdown_hascmd msmtp         && dotfile_choices+=('msmtp templates'       off)
 setdown_hascmd mutt          && dotfile_choices+=('mutt templates'        off)
@@ -169,6 +172,14 @@ for choice in "${choices[@]}"; do
       setdown_link $SHARED_DIR/bashrc ~/.bashrc
       setdown_link $SHARED_DIR/bash_profile ~/.bash_profile
       ;;
+    bspwm)
+      mkdir -p ~/.config/bspwm/
+      setdown_link $LINUX_DIR/config/bspwm/bspwmrc ~/.config/bspwm/
+      ;;
+    dunst)
+      mkdir -p ~/.config/dunst/
+      setdown_link $LINUX_DIR/config/dunst/dunstrc ~/.config/dunst/
+      ;;
     gcalert)
       mkdir -p ~/.config/gcalertrc/
       setdown_link $LINUX_DIR/config/gcalert/gcalertrc ~/.config/gcalertrc/
@@ -189,6 +200,10 @@ for choice in "${choices[@]}"; do
         git config --global user.email \
           "$(setdown_getstr 'Git email:' 'codehearts@users.noreply.github.com')"
       fi
+      ;;
+    gtk)
+      mkdir -p ~/.config/gtk-3.0/
+      setdown_link $LINUX_DIR/config/gtk-3.0/settings.ini ~/.config/gtk-3.0/
       ;;
     ly)
       if setdown_hascmd systemctl; then
@@ -232,8 +247,16 @@ for choice in "${choices[@]}"; do
       mkdir -p ~/.config/picom/
       setdown_link $LINUX_DIR/config/picom/picom.conf ~/.config/picom/
       ;;
+    polybar)
+      mkdir -p ~/.config/polybar/
+      setdown_link $LINUX_DIR/config/polybar/config ~/.config/polybar/config
+      ;;
     screen)
       setdown_link $SHARED_DIR/screenrc ~/.screenrc
+      ;;
+    sxhkd)
+      mkdir -p ~/.config/sxhkd/
+      setdown_link $LINUX_DIR/config/sxhkd/sxhkdrc ~/.config/sxhkd/
       ;;
     tmux)
       setdown_link $SHARED_DIR/tmux.conf ~/.tmux.conf
@@ -246,14 +269,13 @@ for choice in "${choices[@]}"; do
     X)
       setdown_link $LINUX_DIR/xinitrc ~/.xinitrc
       setdown_link $LINUX_DIR/xinitrc ~/.xsession
+      setdown_link $LINUX_DIR/Xresources ~/.Xresources
       chmod +x ~/.xsession
       ;;
-    zenbu)
-      setdown_link $LINUX_DIR/config/zenbu/ ~/.config/
-      if setdown_hasstr pip_packages zenbu; then
-        zenbu soft-pink
-        setdown_hascmd reload-desktop && reload-desktop
-      fi
+    zathura)
+      mkdir -p ~/.config/wal/templates/
+      setdown_link $LINUX_DIR/config/wal/templates/zathurarc ~/.config/wal/templates
+      setdown_link ~/.cache/wal/zathurarc ~/.config/zathura/zathurarc
       ;;
     'gnome keyring')
       if setdown_sudo 'Enter password to configure gnome keyring via PAM'; then

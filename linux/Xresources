@@ -2,7 +2,7 @@
 
 #define MOD mod4
 
-Xft.dpi:       {{ xft_dpi }}
+Xft.dpi:       144
 Xft.autohint:  0
 Xft.lcdfilter: lcddefault
 Xft.hintstyle: hintfull
@@ -13,15 +13,9 @@ Xft.rgba:      rgb
 !! URxvt
 
 ! Fonts
-URxvt.font: {% for f in term_fonts -%}
-  xft:{{ f }}:pixelsize={{ pixelsize }}:antialias=true:hinting=true,
-{%- endfor %}
-URxvt.boldFont: {% for f in term_fonts -%}
-  xft:{{ f }}{{
-    ':bold' if use_bold else ''
-  }}:pixelsize={{ pixelsize }}:antialias=true:hinting=true,
-{%- endfor %}
-URxvt.letterSpace: {{ term_letterspace }}
+URxvt.font: xft:Dank Mono:pixelsize=18:antialias=true:hinting=true,
+URxvt.boldFont: xft:Dank Mono:pixelsize=18:antialias=true:hinting=true,
+URxvt.letterSpace: 0
 
 ! Appearance
 URxvt.saveLines:        12000

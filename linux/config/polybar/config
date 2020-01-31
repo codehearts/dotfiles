@@ -1,15 +1,13 @@
 [bar/default]
 background = ${colors.background}
 foreground = ${colors.foreground}
-{% for font in bar_fonts -%}
-font-{{ loop.index0 }} = {{ font }}
-{%- endfor %}
+font-0 = "M+ 1p-14;3"
 separator = " • "
 padding-right = 1
 modules-left = bspwm
 modules-right = alsa battery date
-line-size = {{ bar_underline }}
-height = {{ bar_height }}
+line-size = 3
+height = 32
 width = 100%
 
 [colors]
