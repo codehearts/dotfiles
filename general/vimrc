@@ -52,7 +52,7 @@ Plug 'tmsvg/pear-tree'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 Plug 'codehearts/mascara-vim'
-Plug 'liuchengxu/vista.vim', { 'on': 'Vista' }
+Plug 'liuchengxu/vista.vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'mhinz/vim-startify'
 
@@ -112,14 +112,17 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme = 'lucius'
 
 " use nicer symbols with ale
-let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '⌦'
+let g:ale_sign_error = '禁'
+let g:ale_sign_warning = '可'
+" use nicer symbols for ale with airline
+let airline#extensions#ale#error_symbol = g:ale_sign_error
+let airline#extensions#ale#warning_symbol = g:ale_sign_warning
+let airline#extensions#ale#open_lnum_symbol = ''
+let airline#extensions#ale#close_lnum_symbol = ''
 " don't log ale linter output
 let g:ale_history_log_output = 0
 " specify lsp and linters
-let g:ale_linters = { 'rust': ['rls'] }
-" configure rls to use all cargo features and clippy
-let g:ale_rust_rls_config = { 'rust': { 'all_features': 'true', 'clippy_preference': 'on' } }
+let g:ale_linters = { 'rust': ['analyzer'] }
 " specify fixers for ale
 let g:ale_fixers = { 'rust': [ 'rustfmt' ], 'javascript': [ 'prettier' ], 'typescript': [ 'eslint' ] }
 " fix syntax when saving buffers
@@ -176,10 +179,12 @@ map <leader>tb :Vista!!<cr>
 " ale
 map <leader>ad :ALEDetail<cr>
 map <leader>ah :ALEHover<cr>
-map <leader>ag :ALEGoToDefinitionInSplit<cr>
+map <leader>ag :ALEGoToDefinition -split<cr>
 " easy align
 xmap ga <plug>(EasyAlign)
 nmap ga <plug>(EasyAlign)
+" fzf
+map <leader>f :call fzf#run(fzf#vim#with_preview({'source': 'fd . --type f', 'sink': 'e'}))<cr>
 
 "
 " file types
