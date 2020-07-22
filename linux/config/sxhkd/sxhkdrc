@@ -144,13 +144,25 @@ super + ctrl + shift + space
 # resize tiled/floating
 #
 
-# expand the tiled space in the given direction
+# move a floating window or expand a tiled space in the given direction
+# sxhkd only parses one {} set, so we must assign all 3 possible args at once
 super + alt + {h,j,k,l}
-	bspc node {@west -r -10,@south -r +10,@north -r -10,@east -r +10}
+  arg={'-20 0:@west:-10','0 20:@south:+10','0 -20:@north:-10','20 0:@east:+10'}; \
+  if bspc query -N -n .focused.floating; then \
+    bspc node --move $(echo $arg | cut -d: -f1); \
+  else \
+    bspc node $(echo $arg | cut -d: -f2) -r $(echo $arg | cut -d: -f3); \
+  fi
 
-# contract the tiled space in the given direction
+# resize a floating window or contract a tiled space in the given direction
+# sxhkd only parses one {} set, so we must assign all 3 possible args at once
 super + alt + shift + {h,j,k,l}
-	bspc node {@east -r -10,@north -r +10,@south -r -10,@west -r +10}
+  arg={'-20 0:@east:-10','0 20:@north:+10','0 -20:@south:-10','20 0:@west:+10'}; \
+  if bspc query -N -n .focused.floating >/dev/null 2>&1; then \
+    bspc node --resize bottom_right $(echo $arg | cut -d: -f1); \
+  else \
+    bspc node $(echo $arg | cut -d: -f2) -r $(echo $arg | cut -d: -f3); \
+  fi
 
 #
 # pointer focus/move/resize
