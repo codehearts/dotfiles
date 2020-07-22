@@ -70,10 +70,6 @@ super + q
 super + {_,shift + }w
 	bspc node -{c,k}
 
-# alternate between the tiled and monocle layout
-super + m
-	bspc desktop -l next
-
 # rotate around the node
 super + r
 	bspc node @/ -R 90
@@ -85,10 +81,6 @@ super + r
 # set the window state
 super + {t,shift + t,s,f}
 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
-
-# set the node flags
-super + ctrl + {x,y,z}
-	bspc node -g {locked,sticky,private}
 
 #
 # focus/swap
@@ -102,19 +94,9 @@ super + {_,shift + }{h,j,k,l}
 super + {_,shift + }c
 	bspc node -f {next,prev}
 
-# focus the next/previous desktop
-super + bracket{left,right}
-	bspc desktop -f {prev,next}
-
 # focus the last node/desktop
 super + {grave,Tab}
 	bspc {node,desktop} -f last
-
-# focus the older or newer node in the focus history
-super + {o,i}
-	bspc wm -h off; \
-	bspc node {older,newer} -f; \
-	bspc wm -h on
 
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
