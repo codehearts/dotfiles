@@ -173,16 +173,16 @@ for choice in "${choices[@]}"; do
       setdown_link $SHARED_DIR/bash_profile ~/.bash_profile
       ;;
     bspwm)
-      mkdir -p ~/.config/bspwm/
-      setdown_link $LINUX_DIR/config/bspwm/bspwmrc ~/.config/bspwm/
+      mkdir -p $XDG_CONFIG_HOME/bspwm/
+      setdown_link $LINUX_DIR/config/bspwm/bspwmrc $XDG_CONFIG_HOME/bspwm/
       ;;
     dunst)
-      mkdir -p ~/.config/dunst/
-      setdown_link $LINUX_DIR/config/dunst/dunstrc ~/.config/dunst/
+      mkdir -p $XDG_CONFIG_HOME/dunst/
+      setdown_link $LINUX_DIR/config/dunst/dunstrc $XDG_CONFIG_HOME/dunst/
       ;;
     gcalert)
-      mkdir -p ~/.config/gcalertrc/
-      setdown_link $LINUX_DIR/config/gcalert/gcalertrc ~/.config/gcalertrc/
+      mkdir -p $XDG_CONFIG_HOME/gcalertrc/
+      setdown_link $LINUX_DIR/config/gcalert/gcalertrc $XDG_CONFIG_HOME/gcalertrc/
       ;;
     git)
       setdown_link $SHARED_DIR/gitignore ~/.gitignore
@@ -202,8 +202,8 @@ for choice in "${choices[@]}"; do
       fi
       ;;
     gtk)
-      mkdir -p ~/.config/gtk-3.0/
-      setdown_link $LINUX_DIR/config/gtk-3.0/settings.ini ~/.config/gtk-3.0/
+      mkdir -p $XDG_CONFIG_HOME/gtk-3.0/
+      setdown_link $LINUX_DIR/config/gtk-3.0/settings.ini $XDG_CONFIG_HOME/gtk-3.0/
       ;;
     ly)
       if setdown_hascmd systemctl; then
@@ -244,19 +244,19 @@ for choice in "${choices[@]}"; do
       fi
       ;;
     picom)
-      mkdir -p ~/.config/picom/
-      setdown_link $LINUX_DIR/config/picom/picom.conf ~/.config/picom/
+      mkdir -p $XDG_CONFIG_HOME/picom/
+      setdown_link $LINUX_DIR/config/picom/picom.conf $XDG_CONFIG_HOME/picom/
       ;;
     polybar)
-      mkdir -p ~/.config/polybar/
-      setdown_link $LINUX_DIR/config/polybar/config ~/.config/polybar/config
+      mkdir -p $XDG_CONFIG_HOME/polybar/
+      setdown_link $LINUX_DIR/config/polybar/config $XDG_CONFIG_HOME/polybar/config
       ;;
     screen)
       setdown_link $SHARED_DIR/screenrc ~/.screenrc
       ;;
     sxhkd)
-      mkdir -p ~/.config/sxhkd/
-      setdown_link $LINUX_DIR/config/sxhkd/sxhkdrc ~/.config/sxhkd/
+      mkdir -p $XDG_CONFIG_HOME/sxhkd/
+      setdown_link $LINUX_DIR/config/sxhkd/sxhkdrc $XDG_CONFIG_HOME/sxhkd/
       ;;
     tmux)
       setdown_link $SHARED_DIR/tmux.conf ~/.tmux.conf
