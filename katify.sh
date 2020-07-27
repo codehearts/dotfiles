@@ -127,6 +127,8 @@ fi
 # dotfiles_addconfig my_choices bash on
 dotfiles_addconfig() { local -n dots=$1; setdown_hascmd "$2" && dots+=($2 $3); }
 
+can_configure_email() { setdown_hascmd msmtp || setdown_hascmd neomutt || setdown_hascmd mbsync; }
+
 declare -a dotfile_choices=('shell scripts' on)
 dotfiles_addconfig dotfile_choices bash        on
 dotfiles_addconfig dotfile_choices bspwm       on
@@ -138,6 +140,7 @@ dotfiles_addconfig dotfile_choices ly          on
 dotfiles_addconfig dotfile_choices mbsync      on
 dotfiles_addconfig dotfile_choices mpd         on
 dotfiles_addconfig dotfile_choices ncmpcpp     on
+dotfiles_addconfig dotfile_choices neomutt     on
 dotfiles_addconfig dotfile_choices picom       on
 dotfiles_addconfig dotfile_choices screen      on
 dotfiles_addconfig dotfile_choices sxhkd       on
@@ -145,8 +148,8 @@ dotfiles_addconfig dotfile_choices tmux        on
 dotfiles_addconfig dotfile_choices vim         on
 dotfiles_addconfig dotfile_choices X           on
 dotfiles_addconfig dotfile_choices zathura     on
-setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring',        on)
-setdown_hascmd mutt          && dotfile_choices+=('mutt templates'        off)
+can_configure_email          && dotfile_choices+=('email accounts'  off)
+setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring',  on)
 
 declare -a choices=$(setdown_getopts 'Dotfiles to set up' dotfile_choices)
 for choice in "${choices[@]}"; do
@@ -239,6 +242,13 @@ for choice in "${choices[@]}"; do
       setdown_link $SHARED_DIR/ncmpcpp/config ~/.ncmpcpp/
       setdown_link $SHARED_DIR/ncmpcpp/keys ~/.ncmpcpp/
       ;;
+    neomutt)
+      mkdir -p $XDG_CONFIG_HOME/neomutt
+      touch $XDG_CONFIG_HOME/neomutt/{accounts,aliases}
+      setdown_link $SHARED_DIR/neomutt/neomuttrc $XDG_CONFIG_HOME/neomutt/neomuttrc
+      setdown_link $SHARED_DIR/neomutt/colors $XDG_CONFIG_HOME/neomutt/colors
+      setdown_link $SHARED_DIR/neomutt/mailcap ~/.mailcap
+      ;;
     picom)
       mkdir -p $XDG_CONFIG_HOME/picom/
       setdown_link $LINUX_DIR/config/picom/picom.conf $XDG_CONFIG_HOME/picom/
@@ -272,9 +282,69 @@ for choice in "${choices[@]}"; do
       chmod +x ~/.xsession
       ;;
     zathura)
-      mkdir -p ~/.config/wal/templates/
-      setdown_link $LINUX_DIR/config/wal/templates/zathurarc ~/.config/wal/templates
-      setdown_link ~/.cache/wal/zathurarc ~/.config/zathura/zathurarc
+      mkdir -p $XDG_CONFIG_HOME/wal/templates/
+      xdg-mime default org.pwmt.zathura.desktop application/pdf
+      setdown_link $LINUX_DIR/config/wal/templates/zathurarc $XDG_CONFIG_HOME/wal/templates
+      setdown_link ~/.cache/wal/zathurarc $XDG_CONFIG_HOME/zathura/zathurarc
+      ;;
+    'email accounts')
+      local email_service email_address email_account email_name email_host
+
+      while email_service="$(setdown_getchoice 'Configure email for service?' no protonmail gmail)"; do
+        case "$email_service" in
+          protonmail )
+            email_address="$(setdown_getstr 'Email address:')"
+            email_account="$(setdown_getstr 'Email account:')"
+            email_name="$(setdown_getstr 'Email sender name:')"
+            email_host=127.0.0.1
+            ;;
+          gmail )
+            email_address="$(setdown_getstr 'Email address:')"
+            email_account="$(setdown_getstr 'Email account:')"
+            email_name="$(setdown_getstr 'Email sender name:')"
+            email_host=smtp.gmail.com
+            ;;
+          * )
+            break
+        esac
+
+        mkdir -p "$HOME/Mail/${email_account}"
+
+        if setdown_hascmd mbsync; then
+          cat "$SHARED_DIR/mbsyncrc-${email_service}" \
+            | email_address="$email_address" email_account="$email_account" envsubst \
+            >> $HOME/.mbsyncrc
+
+          if setdown_hascmd secret-tool; then
+            setdown_getpw "Enter IMAP password for $email_address" \
+              | secret-tool store --label=imap host "$email_service" service imap user "$email_address"
+          fi
+        fi
+
+        if setdown_hascmd msmtp; then
+          mkdir -p $XDG_CONFIG_HOME/msmtp
+
+          # Create the config with defaults if it doesn't already exist
+          if [ ! -f $XDG_CONFIG_HOME/msmtp/config ]; then
+            setdown_copy $SHARED_DIR/config/msmtp/config $XDG_CONFIG_HOME/msmtp/config
+          fi
+
+          if setdown_hascmd secret-tool; then
+            setdown_getpw "Enter SMTP password for $email_address" \
+              | secret-tool store --label=smtp host "$email_host" service smtp user "$email_address"
+          fi
+
+          cat "$SHARED_DIR/config/msmtp/config-${email_service}" \
+            | email_address="$email_address" email_account="$email_account" envsubst \
+            >> $XDG_CONFIG_HOME/msmtp/config
+        fi
+
+        if setdown_hascmd neomutt; then
+          cat "$SHARED_DIR/config/neomutt/account-template" \
+            | email_account="$email_account" email_name="$email_name" envsubst \
+            >> $XDG_CONFIG_HOME/neomutt/accounts
+        fi
+      done
       ;;
     'gnome keyring')
       if setdown_sudo 'Enter password to configure gnome keyring via PAM'; then
@@ -286,16 +356,6 @@ for choice in "${choices[@]}"; do
       else
         setdown_putstr_ok 'Skipping gnome keyring PAM configuration'
       fi
-      ;;
-    'mutt templates')
-      mkdir -p ~/.mutt
-      setdown_copy $SHARED_DIR/muttrc-sample ~/.muttrc-sample
-      setdown_copy $SHARED_DIR/mutt/custom_config ~/.mutt/
-      setdown_copy $SHARED_DIR/mutt/school_config ~/.mutt/
-      setdown_copy $SHARED_DIR/mutt/gmail_config ~/.mutt/
-      setdown_copy $SHARED_DIR/mutt/mailcap-sample ~/.mutt/
-      setdown_link $SHARED_DIR/mutt/add_sender_to_aliases.sh ~/.mutt/
-      setdown_link $SHARED_DIR/mutt/loveless-theme ~/.mutt/
       ;;
   esac
 done

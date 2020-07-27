@@ -63,6 +63,16 @@ setdown_getopts() {
   echo ')'
 }
 
+# Displays a radio button list with choices from the given arguments
+# user_choice=$(setdown_getchoice 'Title' 'opt 1' 'opt 2')
+# echo "User chose $user_choice"
+setdown_getchoice() {
+  local title=$1
+  shift
+  [[ "$@" ]] && $setdown_dialog --no-items --menu \
+    "$title" 24 70 16 "$@"
+}
+
 #
 # Filesystem
 #

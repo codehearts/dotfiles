@@ -1,0 +1,8 @@
+folder-hook ~/Mail/${email_account} " \
+  setenv my_account ${email_account}; \
+  set realname = '${email_name}'; \
+  set folder   = ~/Mail/${email_account}; \
+  set sendmail = 'msmtp -a ${email_account}'; \
+  mailboxes `find ~/Mail/${email_account} -type d -name cur | sed -e 's:/cur/*$::' -e 's/ /\\ /g' -e 's:${HOME}/Mail/${email_account}/:+:g' | tr '\n' ' '` \
+"
+
