@@ -69,12 +69,9 @@ arch_addpkg audio_packages ncmpcpp         on
 groups+=(Email on)
 declare -a email_packages
 arch_addpkg email_packages                gnome-keyring        on
+arch_addpkg email_packages                isync                on
 arch_addpkg email_packages                msmtp                on
 arch_addpkg email_packages                neomutt              on
-arch_addpkg email_packages                offlineimap          on
-arch_addpkg email_packages                python2-gnomekeyring on
-arch_addpkg email_packages                python2-gobject      on # for python2-keyrings-alt
-arch_addpkg email_packages                python2-keyrings-alt on
 $has_yay && arch_addpkg email_packages    urlview              on
   
 groups+=(Programming on)
@@ -82,7 +79,6 @@ declare -a programming_packages
 arch_addpkg programming_packages           ctags              on
 $has_X && arch_addpkg programming_packages gvim               on
 arch_addpkg programming_packages           python-pip         on
-arch_addpkg programming_packages           python2-pip        on
 arch_addpkg programming_packages           texlive-core       off
 arch_addpkg programming_packages           texlive-humanities off
 arch_addpkg programming_packages           texlive-pictures   off

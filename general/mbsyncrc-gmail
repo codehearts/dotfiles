@@ -1,0 +1,25 @@
+IMAPAccount ${email_account}
+Host imap.gmail.com
+Port 993
+User ${email_address}
+PassCmd "secret-tool lookup host gmail service imap user ${email_address}"
+SSLType IMAPS
+
+IMAPStore ${email_account}-remote
+Account ${email_account}
+
+MaildirStore ${email_account}-local
+Path ~/Mail/${email_account}/
+Inbox ~/Mail/${email_account}/Inbox
+SubFolders Verbatim
+
+Channel ${email_account}
+Master :${email_account}-remote:
+Slave :${email_account}-local:
+# Exclude everything under the internal [Gmail] folder, except the interesting folders
+Patterns * ![Gmail]* "[Gmail]/Drafts" "[Gmail]/Sent Mail" "[Gmail]/Trash"
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+

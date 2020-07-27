@@ -135,9 +135,9 @@ dotfiles_addconfig dotfile_choices gcalert     on
 dotfiles_addconfig dotfile_choices git         on
 dotfiles_addconfig dotfile_choices gtk         on
 dotfiles_addconfig dotfile_choices ly          on
+dotfiles_addconfig dotfile_choices mbsync      on
 dotfiles_addconfig dotfile_choices mpd         on
 dotfiles_addconfig dotfile_choices ncmpcpp     on
-dotfiles_addconfig dotfile_choices offlineimap on
 dotfiles_addconfig dotfile_choices picom       on
 dotfiles_addconfig dotfile_choices screen      on
 dotfiles_addconfig dotfile_choices sxhkd       on
@@ -148,7 +148,6 @@ dotfiles_addconfig dotfile_choices zathura     on
 setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring',        on)
 setdown_hascmd msmtp         && dotfile_choices+=('msmtp templates'       off)
 setdown_hascmd mutt          && dotfile_choices+=('mutt templates'        off)
-setdown_hascmd offlineimap   && dotfile_choices+=('offlineimap templates' off)
 
 declare -a choices=$(setdown_getopts 'Dotfiles to set up' dotfile_choices)
 for choice in "${choices[@]}"; do
@@ -217,6 +216,19 @@ for choice in "${choices[@]}"; do
         fi
       fi
       ;;
+    mbsync)
+      if setdown_hascmd systemctl; then
+        mkdir -p $XDG_CONFIG_HOME/systemd/user/
+        setdown_link $LINUX_DIR/config/systemd/user/isync.service \
+          $XDG_CONFIG_HOME/systemd/user/
+        setdown_link $LINUX_DIR/config/systemd/user/isync.timer \
+          $XDG_CONFIG_HOME/systemd/user/
+
+        systemctl --user daemon-reload
+        systemctl --user start isync.timer isync.service
+        systemctl --user enable isync.timer isync.service
+      fi
+      ;;
     mpd)
       mkdir -p ~/.mpd/playlists
       mkdir -p ~/.mpd/tmp
@@ -227,21 +239,6 @@ for choice in "${choices[@]}"; do
       mkdir -p ~/.ncmpcpp
       setdown_link $SHARED_DIR/ncmpcpp/config ~/.ncmpcpp/
       setdown_link $SHARED_DIR/ncmpcpp/keys ~/.ncmpcpp/
-      ;;
-    offlineimap)
-      if setdown_hascmd systemctl; then
-        mkdir -p ~/.config/systemd/user/
-        setdown_copy $LINUX_DIR/config/systemd/user/offlineimap.service \
-          ~/.config/systemd/user/
-        setdown_copy $LINUX_DIR/config/systemd/user/offlineimap.timer \
-          ~/.config/systemd/user/
-
-        systemctl --user daemon-reload
-        systemctl --user start offlineimap.timer
-        systemctl --user start offlineimap.service
-        systemctl --user enable offlineimap.timer
-        systemctl --user enable offlineimap.service
-      fi
       ;;
     picom)
       mkdir -p $XDG_CONFIG_HOME/picom/
@@ -302,10 +299,6 @@ for choice in "${choices[@]}"; do
       setdown_copy $SHARED_DIR/mutt/mailcap-sample ~/.mutt/
       setdown_link $SHARED_DIR/mutt/add_sender_to_aliases.sh ~/.mutt/
       setdown_link $SHARED_DIR/mutt/loveless-theme ~/.mutt/
-      ;;
-    'offlineimap templates')
-      setdown_copy $SHARED_DIR/offlineimaprc-sample ~/.offlineimaprc-sample
-      setdown_link $SHARED_DIR/offlineimap.py ~/.offlineimap.py
       ;;
   esac
 done

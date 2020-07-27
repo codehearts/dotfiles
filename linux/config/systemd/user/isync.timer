@@ -1,7 +1,7 @@
 [Timer]
 OnActiveSec=0s
 OnUnitInactiveSec=300s
-Unit=offlineimap.service
+Unit=isync.service
 
 [Install]
 WantedBy=timers.target

@@ -1,0 +1,24 @@
+IMAPAccount ${email_account}
+Host 127.0.0.1
+Port 1143
+User ${email_address}
+PassCmd "secret-tool lookup host protonmail service imap user ${email_address}"
+CertificateFile ~/.config/protonmail/bridge/cert.pem
+
+IMAPStore ${email_account}-remote
+Account ${email_account}
+
+MaildirStore ${email_account}-local
+Path ~/Mail/${email_account}/
+Inbox ~/Mail/${email_account}/Inbox
+SubFolders Verbatim
+
+Channel ${email_account}
+Master :${email_account}-remote:
+Slave :${email_account}-local:
+Patterns *
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+
