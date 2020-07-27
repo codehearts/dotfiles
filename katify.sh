@@ -146,7 +146,6 @@ dotfiles_addconfig dotfile_choices vim         on
 dotfiles_addconfig dotfile_choices X           on
 dotfiles_addconfig dotfile_choices zathura     on
 setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring',        on)
-setdown_hascmd msmtp         && dotfile_choices+=('msmtp templates'       off)
 setdown_hascmd mutt          && dotfile_choices+=('mutt templates'        off)
 
 declare -a choices=$(setdown_getopts 'Dotfiles to set up' dotfile_choices)
@@ -284,11 +283,6 @@ for choice in "${choices[@]}"; do
       else
         setdown_putstr_ok 'Skipping gnome keyring PAM configuration'
       fi
-      ;;
-    'msmtp templates')
-      mkdir -p ~/.msmtp
-      setdown_copy $REPO_DIR/msmtprc-sample ~/.msmtprc-sample
-      setdown_link $SHARED_DIR/msmtp/msmtp-gnome-tool.py ~/.msmtp/
       ;;
     'mutt templates')
       mkdir -p ~/.mutt
