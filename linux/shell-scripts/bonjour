@@ -38,6 +38,7 @@ start_or_restart sxhkd
 start_or_restart polybar default
 start picom --daemon
 start urxvtd --quiet --opendisplay --fork
+start protonmail-bridge --no-window --noninteractive
 # start gcalert TODO use gcalert again some day
 start dropbox
 

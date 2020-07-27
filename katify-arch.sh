@@ -68,11 +68,13 @@ arch_addpkg audio_packages ncmpcpp         on
 
 groups+=(Email on)
 declare -a email_packages
-arch_addpkg email_packages                gnome-keyring        on
-arch_addpkg email_packages                isync                on
-arch_addpkg email_packages                msmtp                on
-arch_addpkg email_packages                neomutt              on
-$has_yay && arch_addpkg email_packages    urlview              on
+arch_addpkg email_packages                gnome-keyring     on
+arch_addpkg email_packages                isync             on
+arch_addpkg email_packages                msmtp             on
+arch_addpkg email_packages                neomutt           on
+$has_yay && arch_addpkg protonmail-bridge protonmail-bridge on
+$has_yay && arch_addpkg email_packages    urlview           on
+arch_addpkg email_packages                w3m               on
   
 groups+=(Programming on)
 declare -a programming_packages
