@@ -148,25 +148,18 @@ dotfiles_addconfig dotfile_choices tmux        on
 dotfiles_addconfig dotfile_choices vim         on
 dotfiles_addconfig dotfile_choices X           on
 dotfiles_addconfig dotfile_choices zathura     on
-can_configure_email          && dotfile_choices+=('email accounts'  off)
-setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring',  on)
+can_configure_email          && dotfile_choices+=('email accounts' off)
+setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring', off)
 
 declare -a choices=$(setdown_getopts 'Dotfiles to set up' dotfile_choices)
 for choice in "${choices[@]}"; do
   case "$choice" in
     'shell scripts')
-        for script in $LINUX_DIR/shell-scripts/*; do
-          name="$(basename "$script")"
+        mkdir -p "$HOME/.local/bin"
 
-          # Don't ask for sudo and copy if the files are the same
-          if [ "$(cat /usr/local/sbin/"$name")" != "$(cat "$script")" ]; then
-            if setdown_sudo 'Enter password to copy shell scripts'; then
-              setdown_sudo_copy "$script" /usr/local/sbin/
-            else
-              setdown_putstr_ok 'Skipping shell script copy'
-              break
-            fi
-          fi
+        for script in $LINUX_DIR/shell-scripts/*; do
+          name="$(basename "$1")"
+          setdown_link "$script" "$HOME/.local/bin/$name"
         done
       ;;
     bash)

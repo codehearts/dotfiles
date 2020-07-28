@@ -23,7 +23,7 @@ alias grep="grep --color=auto"
 alias ls="ls --color=auto"
 alias sizeof="du -Lhs"
 
-# Add local bin to PATH, used by pip --user
+# Add local bin to PATH, used by pip --user and me
 export PATH="$PATH:$HOME/.local/bin"
 
 # Use python3 for virtualenvwrapper
@@ -40,8 +40,6 @@ if [[ "$OSTYPE" == darwin* ]]; then
   export PATH="/usr/local/bin:$PATH"
 
   alias ls="ls -G"
-elif [[ "$OSTYPE" == linux-gnu ]]; then
-  alias lock="xset s activate"
 fi
 
 [ -f /usr/local/bin/virtualenvwrapper.sh ] && source /usr/local/bin/virtualenvwrapper.sh

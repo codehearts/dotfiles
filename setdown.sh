@@ -99,7 +99,7 @@ setdown_copy() {
 }
 
 # Creates a symlink $2 pointing to $1
-# setdown_sudo link ~/dotfiles/my_script /usr/local/sbin/
+# setdown_sudo link ~/dotfiles/my_script ~/bin/
 setdown_sudo_link() {
   # Create link if doesn't exist, already points to target, or user consents 
   if ! sudo ln -s "$1" "$2" >/dev/null 2>&1; then
@@ -110,7 +110,7 @@ setdown_sudo_link() {
 }
 
 # Copies $1 to $2 with sudo permissions
-# setdown_sudo_copy my_script /usr/local/sbin/
+# setdown_sudo_copy my_script ~/bin/
 setdown_sudo_copy() {
   # Create if destination does not exist or user consents to overwrite
   if ! sudo cp -r "$1" "$2" >/dev/null 2>&1; then

@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CONFIG_DIR="$HOME/.config"
+export PATH="$PATH:$HOME/.local/bin"
 export GDK_DPI_SCALE=0.35
 export GDK_SCALE=2
 
