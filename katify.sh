@@ -238,9 +238,9 @@ for choice in "${choices[@]}"; do
     neomutt)
       mkdir -p $XDG_CONFIG_HOME/neomutt
       touch $XDG_CONFIG_HOME/neomutt/{accounts,aliases}
-      setdown_link $SHARED_DIR/neomutt/neomuttrc $XDG_CONFIG_HOME/neomutt/neomuttrc
-      setdown_link $SHARED_DIR/neomutt/colors $XDG_CONFIG_HOME/neomutt/colors
-      setdown_link $SHARED_DIR/neomutt/mailcap ~/.mailcap
+      setdown_link $SHARED_DIR/config/neomutt/neomuttrc $XDG_CONFIG_HOME/neomutt/neomuttrc
+      setdown_link $SHARED_DIR/config/neomutt/colors $XDG_CONFIG_HOME/neomutt/colors
+      setdown_link $SHARED_DIR/config/neomutt/mailcap ~/.mailcap
       ;;
     picom)
       mkdir -p $XDG_CONFIG_HOME/picom/
@@ -277,7 +277,7 @@ for choice in "${choices[@]}"; do
     zathura)
       mkdir -p $XDG_CONFIG_HOME/wal/templates/
       xdg-mime default org.pwmt.zathura.desktop application/pdf
-      setdown_link $LINUX_DIR/config/wal/templates/zathurarc $XDG_CONFIG_HOME/wal/templates
+      setdown_link $LINUX_DIR/config/wal/templates/zathurarc $XDG_CONFIG_HOME/wal/templates/zathurarc
       setdown_link ~/.cache/wal/zathurarc $XDG_CONFIG_HOME/zathura/zathurarc
       ;;
     'email accounts')
@@ -334,7 +334,7 @@ for choice in "${choices[@]}"; do
 
         if setdown_hascmd neomutt; then
           cat "$SHARED_DIR/config/neomutt/account-template" \
-            | email_account="$email_account" email_name="$email_name" envsubst \
+            | email_account="$email_account" email_address="$email_address" email_name="$email_name" envsubst \
             >> $XDG_CONFIG_HOME/neomutt/accounts
         fi
       done

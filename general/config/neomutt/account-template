@@ -1,8 +1,11 @@
-folder-hook ~/Mail/${email_account} " \
+named-mailboxes '${email_account} ╮' +${email_account}/Inbox
+folder-hook +${email_account} " \
   setenv my_account ${email_account}; \
-  set realname = '${email_name}'; \
-  set folder   = ~/Mail/${email_account}; \
-  set sendmail = 'msmtp -a ${email_account}'; \
-  mailboxes `find ~/Mail/${email_account} -type d -name cur | sed -e 's:/cur/*$::' -e 's/ /\\ /g' -e 's:${HOME}/Mail/${email_account}/:+:g' | tr '\n' ' '` \
+  set realname  = '${email_name}'; \
+  set from      = '${email_address}'; \
+  set sendmail  = 'msmtp -a ${email_account}'; \
+  set spoolfile = +${email_account}/Inbox; \
+  set postponed = +${email_account}/Drafts; \
+  set record    = +${email_account}/Sent \
 "
 

@@ -13,6 +13,7 @@ w3m     | To render HTML emails as plaintext
 Key   | Binding                            | Key   | Binding
 ---   | -------                            | ---   | -------
 ↑/↓   | Highlight next/previous in sidebar | →     | Open selected mailbox in sidebar
+↹     | Highlight next unread in sidebar   | ⇧+↹   | Highlight previous unread in sidebar
 ^d/^u | Scroll down/up half a page         | ^f/^b | Scroll down/up by a page
 j/k   | Select next/previous entry         | ⏎     | Select entry
 /     | Search                             | n/N   | Next/previous search result
@@ -22,4 +23,4 @@ P     | Save as draft in compose view      | R     | Reopen a draft in index vie
 d/u   | Delete/undelete email              | r/g   | Reply/reply all
 G     | Get mail                           | N     | Toggle message's "new" status in index view
 q     | Quit                               | ?     | Show help
-⎵     | Toggle thread collapse in index view
+⎵     | Toggle thread collapse             | s     | Move message
