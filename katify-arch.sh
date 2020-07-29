@@ -131,10 +131,11 @@ if $has_X; then
   $has_yay && arch_addpkg desktop_packages    ly                          on
   $has_yay && arch_addpkg desktop_packages    polybar                     on
   arch_addpkg desktop_packages                python-pywal                on
-  arch_addpkg desktop_packages                rxvt-unicode                on
+  arch_addpkg desktop_packages                rxvt-unicode                off
   arch_addpkg desktop_packages                scrot                       on
   arch_addpkg desktop_packages                sxhkd                       on
   arch_addpkg desktop_packages                xsecurelock                 on
+  arch_addpkg desktop_packages                xterm                       on
   arch_addpkg desktop_packages                zathura-pdf-mupdf           on
 
   groups+=('Shell Scripts' on)

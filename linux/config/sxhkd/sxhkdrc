@@ -3,13 +3,13 @@
 #
 
 super + Return
-  urxvtc
+  xterm
 
 {XF86Search,super + space}
   dmenu_run -i -f -fn "M+ 1p:pixelsize=18" -b -p Run:
 
 super + a
-  urxvtc -e music
+  xterm -e music
 
 super + e
   firefox
@@ -49,7 +49,7 @@ super + d
   if bspc node "$(cat /tmp/scratchpad_id)" --flag hidden; then \
     bspc node -f "$(cat /tmp/scratchpad_id)"; \
   else \
-    (urxvtc -name scratchpad -geometry 80x20+0+0 -e sh -c \
+    (xterm -name scratchpad -geometry 80x20+0+0 -e sh -c \
       "bspc query -N -n focused.floating > /tmp/scratchpad_id && $SHELL" &); \
   fi
 
