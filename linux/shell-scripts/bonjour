@@ -8,7 +8,7 @@
 is_installed() { command -v "$1" >/dev/null 2>&1; }
 
 # determines if a program is running
-is_running() { pgrep "$1" >/dev/null 2>&1; }
+is_running() { pgrep -f "$1" >/dev/null 2>&1; }
 
 # starts a backgrounded process if not already running
 start() { is_installed "$1" && ! is_running "$1" && "$@" & }
