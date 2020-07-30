@@ -73,7 +73,7 @@ arch_addpkg email_packages                isync             on
 arch_addpkg email_packages                msmtp             on
 arch_addpkg email_packages                neomutt           on
 $has_yay && arch_addpkg protonmail-bridge protonmail-bridge on
-$has_yay && arch_addpkg email_packages    urlview           on
+$has_yay && arch_addpkg email_packages    urlscan-git       on
 arch_addpkg email_packages                w3m               on
   
 groups+=(Programming on)

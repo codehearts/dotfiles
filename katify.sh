@@ -260,9 +260,6 @@ for choice in "${choices[@]}"; do
     tmux)
       setdown_link $SHARED_DIR/tmux.conf ~/.tmux.conf
       ;;
-    urlview)
-      setdown_link $SHARED_DIR/urlview ~/.urlview
-      ;;
     vim)
       mkdir -p ~/.vim/autoload/
       setdown_link $SHARED_DIR/vimrc ~/.vimrc
