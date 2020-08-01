@@ -111,7 +111,8 @@ $has_yay && arch_addpkg extra_packages              ketchup-git   on
 if $has_X; then
   groups+=(Fonts on)
   declare -a font_packages
-  $has_yay && arch_addpkg font_packages    ttf-mplus on
+  $has_yay && arch_addpkg font_packages    ttf-mplus                   on
+  arch_addpkg font_packages                ttf-nerd-fonts-symbols-mono on
 
   groups+=(Browsers on)
   declare -a browser_packages
