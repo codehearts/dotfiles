@@ -6,7 +6,7 @@ super + Return
   xterm
 
 {XF86Search,super + space}
-  sh -c '. $HOME/.cache/wal/colors.sh; dmenu_run -nb "$color0" -nf "$color15" -sb "$color1" -sf "$color15" -i -f -fn "M+ 1p:pixelsize=18" -p Run'
+  sh -c '. $HOME/.cache/wal/colors.sh; dmenu_run -nb "$color0" -nf "$color15" -sb "$color1" -sf "$color15" -i -f -fn "M+ 1p:pixelsize=21" -p Run'
 
 super + a
   xterm -e music

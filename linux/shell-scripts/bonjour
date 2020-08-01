@@ -48,13 +48,15 @@ if is_installed dunst; then
   is_running dunst && pkill dunst
 
   dunst \
-    -lb "${color0:=#f0f0f0}" \
-    -nb "$color0" \
-    -cb "$color0" \
-    -lf "${color8:=#000000}" \
-    -bf "$color8" \
-    -cf "$color8" \
-    -nf "$color8" \
+    -lb "$background" \
+    -nb "$background" \
+    -cb "$color3" \
+    -lf "$foreground" \
+    -nf "$foreground" \
+    -cf "$foreground" \
+    -lfr "$color3" \
+    -nfr "$color3" \
+    -cfr "$color3" \
     > /dev/null 2>&1 &
 fi
 
