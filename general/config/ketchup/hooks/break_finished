@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+notify-send -u low \
+  'Break Over' \
+  "Time to get back to it!"

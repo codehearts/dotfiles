@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+notify-send -u low \
+  'Pomodoro Finished' \
+  "Time for a break from <i>$1</i>"

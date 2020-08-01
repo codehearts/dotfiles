@@ -11,7 +11,7 @@ is_installed() { command -v "$1" >/dev/null 2>&1; }
 is_running() { pgrep -f "$1" >/dev/null 2>&1; }
 
 # starts a backgrounded process if not already running
-start() { is_installed "$1" && ! is_running "$1" && "$@" & }
+start() { is_installed "$1" && ! is_running "$1" && "$@" >/dev/null 2>&1 & }
 
 # starts a backgrounded process or sends USR1 if already running
 start_or_restart() {
@@ -41,6 +41,7 @@ start urxvtd --quiet --opendisplay --fork
 start protonmail-bridge --no-window --noninteractive
 # start gcalert TODO use gcalert again some day
 start dropbox
+start ketchup-server
 
 # run dunst using configured colors
 if is_installed dunst; then

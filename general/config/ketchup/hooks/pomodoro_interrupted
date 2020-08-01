@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+notify-send -u low \
+  'Pomodoro Interrupted' \
+  "No worries, get back to <i>$1</i> when you can!"

@@ -136,6 +136,7 @@ dotfiles_addconfig dotfile_choices dunst       on
 dotfiles_addconfig dotfile_choices gcalert     on
 dotfiles_addconfig dotfile_choices git         on
 dotfiles_addconfig dotfile_choices gtk         on
+dotfiles_addconfig dotfile_choices ketchup     on
 dotfiles_addconfig dotfile_choices ly          on
 dotfiles_addconfig dotfile_choices mbsync      on
 dotfiles_addconfig dotfile_choices mpd         on
@@ -149,7 +150,7 @@ dotfiles_addconfig dotfile_choices vim         on
 dotfiles_addconfig dotfile_choices X           on
 dotfiles_addconfig dotfile_choices zathura     on
 can_configure_email          && dotfile_choices+=('email accounts' off)
-setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring', off)
+setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring' off)
 
 declare -a choices=$(setdown_getopts 'Dotfiles to set up' dotfile_choices)
 for choice in "${choices[@]}"; do
@@ -180,8 +181,8 @@ for choice in "${choices[@]}"; do
       ;;
     git)
       setdown_link $SHARED_DIR/gitignore ~/.gitignore
-      git config --global core.precomposeunicode true
-      git config --global core.excludesfile ~/.gitignore
+      git config --global core.precomposeUnicode true
+      git config --global core.excludesFile ~/.gitignore
       git config --global core.editor vim
       git config --global interactive.singleKey true
       git config --global advice.statusHints false
@@ -198,6 +199,9 @@ for choice in "${choices[@]}"; do
     gtk)
       mkdir -p $XDG_CONFIG_HOME/gtk-3.0/
       setdown_link $LINUX_DIR/config/gtk-3.0/settings.ini $XDG_CONFIG_HOME/gtk-3.0/
+      ;;
+    ketchup)
+      setdown_link $LINUX_DIR/config/ketchup/ $XDG_CONFIG_HOME/ketchup/
       ;;
     ly)
       if setdown_hascmd systemctl; then

@@ -106,6 +106,7 @@ arch_addpkg extra_packages                          calc          on
 arch_addpkg extra_packages                          dictd         on
 $has_yay && arch_addpkg extra_packages              gcalcli       on
 $has_yay && $has_X && arch_addpkg extra_packages    gcalert       on
+$has_yay && arch_addpkg extra_packages              ketchup-git   on
 
 if $has_X; then
   groups+=(Fonts on)
