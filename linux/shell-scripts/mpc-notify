@@ -7,9 +7,10 @@
 # Depends:  curl, ffmpeg, mogrify (imagemagick), mpc, notify-send (libnotify)
 
 ALBUM_ART="$(mktemp).png"
-ALBUM_ART_WIDTH="100"
+ALBUM_ART_WIDTH="256"
 FMT_SUMMARY="[%title%]|[%file%]"
 FMT_BODY="[[%artist%\n]&%album%]|[%artist%]|[%album%]"
+W3MIMGDISPLAY="/usr/lib/w3m/w3mimgdisplay"
 
 # Runs the given format string through mpc -f for current song
 mpc_format() {
@@ -73,9 +74,15 @@ if [ $? -ne 0 ]; then
   [ $? -ne 0 ] && ALBUM_ART="audio-x-generic"
 fi
 
+if [ -f "$ALBUM_ART" ] && [ -f "$W3MIMGDISPLAY" ]; then
+  printf '0;1;30;30;%d;%d;;;;;%s\n4;\n3;' \
+    "${ALBUM_ART_WIDTH}" "${ALBUM_ART_WIDTH}" "${ALBUM_ART}" \
+    | "$W3MIMGDISPLAY"
+fi
+
 # Create notification
 notify-send \
   -u low \
   -t 2000 \
   -i "$ALBUM_ART" \
-  "<b>${summary:=silence}</b>" "$body"
+  "${summary:=silence}" "$body"
