@@ -146,6 +146,7 @@ dotfiles_addconfig dotfile_choices picom       on
 dotfiles_addconfig dotfile_choices screen      on
 dotfiles_addconfig dotfile_choices sxhkd       on
 dotfiles_addconfig dotfile_choices tmux        on
+dotfile_choices+=(tridactyl off)
 dotfiles_addconfig dotfile_choices vim         on
 dotfiles_addconfig dotfile_choices X           on
 dotfiles_addconfig dotfile_choices zathura     on
@@ -263,6 +264,12 @@ for choice in "${choices[@]}"; do
       ;;
     tmux)
       setdown_link $SHARED_DIR/tmux.conf ~/.tmux.conf
+      ;;
+    tridactyl)
+      mkdir -p $XDG_CONFIG_HOME/tridactyl/themes
+      setdown_link $LINUX_DIR/config/wal/templates/tridactyl-wal.css $XDG_CONFIG_HOME/wal/templates/tridactyl-wal.css
+      setdown_link $SHARED_DIR/config/tridactyl/tridactylrc $XDG_CONFIG_HOME/tridactyl/tridactylrc
+      setdown_link ~/.cache/wal/tridactyl-wal.css $XDG_CONFIG_HOME/tridactyl/themes/wal.css
       ;;
     vim)
       mkdir -p ~/.vim/autoload/
