@@ -6,9 +6,9 @@
 Applies colorschemes and starts any daemons that aren't already running. If any of the supported colorschemes or daemons aren't installed, they will be ignored.
 
 ### dessiner
-##### bonjour (custom script, optional) | dmenu | python (optional) | python-haishoku (optional) | wal
+##### bonjour (custom script, optional) | dmenu or rofi | python (optional) | python-haishoku (optional) | wal
 
-Sets the system theme from the colors in the given wallpaper in `$HOME/Pictures/wallpaper`, or uses dmenu to select a wallpaper. Colors will be determined using haishoku if available or using wal's default implemention if not. If my bonjour script is also installed then it will be run afterwards to restart any daemons that won't automatically detect the new colors.
+Sets the system theme from the colors in the given wallpaper in `$HOME/Pictures/wallpaper`, or uses dmenu/rofi to select a wallpaper. Colors will be determined using haishoku if available or using wal's default implemention if not. If my bonjour script is also installed then it will be run afterwards to restart any daemons that won't automatically detect the new colors.
 
 ### mail-notify
 ##### bash 4+ | grep | notify-send (libnotify)

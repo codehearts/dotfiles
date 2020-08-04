@@ -17,6 +17,9 @@ super + e
 super + v
   gvim
 
+super + {_,shift + }x
+  splatmoji {copy,type}
+
 super + z
   dessiner
 

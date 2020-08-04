@@ -2,7 +2,7 @@
 #
 # Sets the system theme based on a wallpaper
 # Author:  Catherine Hart (https://github.com/codehearts)
-# Depends: dmenu, pywal,
+# Depends: dmenu | rofi, pywal,
 #          python (optional), python-haishoku (optional),
 #          bonjour (custom script, optional)
 
@@ -15,9 +15,15 @@ python_has() { python -c "import $1" >/dev/null 2>&1; }
 # wallpaper location
 WALLPAPER_DIR=$HOME/Pictures/wallpaper
 
-# use dmenu for the selection if no args were passed
+if is_installed dmenu; then
+  DMENU=dmenu
+else
+  DMENU='rofi -dmenu -normal-window'
+fi
+
+# use dmenu/rofi for the selection if no args were passed
 if [ "$#" -eq 0 ]; then
-  selection="$(ls "$WALLPAPER_DIR" | dmenu -i -f -b -sb '#000' -p 'dessiner')"
+  selection="$(ls "$WALLPAPER_DIR" | $DMENU -i -f -b -sb '#000' -p 'dessiner')"
 else
   selection="$(find "$WALLPAPER_DIR" -name "*$1*" -printf '%f')"
 fi

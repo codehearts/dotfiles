@@ -22,7 +22,8 @@ Key     | Binding                     | Key | Binding
 ⌘+⏎     | xterm                       | ⌘+⎵ | rofi
 ⌘+e     | firefox                     | ⌘+v | gvim
 ⌘+d     | xterm scratchpad            | ⌘+a | my `music` script
-⌘+q     | my `bonjour` startup script | ⌘+z | my `dessiner` theming script
+⌘+q     | my `bonjour` startup script | ⌘+x | pick emoji to clipboard
+⌘+⇧+x   | pick emoji to type          | ⌘+z | my `dessiner` theme script
 ⌘+⌥+esc | quit bspwm
 
 ### Window Management

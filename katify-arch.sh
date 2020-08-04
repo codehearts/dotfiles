@@ -112,6 +112,7 @@ if $has_X; then
   groups+=(Fonts on)
   declare -a font_packages
   $has_yay && arch_addpkg font_packages    ttf-mplus                   on
+  arch_addpkg font_packages                noto-fonts-emoji            on
   arch_addpkg font_packages                ttf-nerd-fonts-symbols-mono on
 
   groups+=(Browsers on)
@@ -136,6 +137,7 @@ if $has_X; then
   arch_addpkg desktop_packages                rofi                        on
   arch_addpkg desktop_packages                rxvt-unicode                off
   arch_addpkg desktop_packages                scrot                       on
+  arch_addpkg desktop_packages                splatmoji                   on
   arch_addpkg desktop_packages                sxhkd                       on
   arch_addpkg desktop_packages                xsecurelock                 on
   arch_addpkg desktop_packages                xterm                       on

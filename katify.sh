@@ -146,6 +146,7 @@ dotfiles_addconfig dotfile_choices picom       on
 dotfiles_addconfig dotfile_choices polybar     on
 dotfiles_addconfig dotfile_choices rofi        on
 dotfiles_addconfig dotfile_choices screen      on
+dotfiles_addconfig dotfile_choices splatmoji   on
 dotfiles_addconfig dotfile_choices sxhkd       on
 dotfiles_addconfig dotfile_choices tmux        on
 dotfile_choices+=(tridactyl off)
@@ -263,6 +264,10 @@ for choice in "${choices[@]}"; do
       ;;
     screen)
       setdown_link $SHARED_DIR/screenrc ~/.screenrc
+      ;;
+    splatmoji)
+      mkdir -p $XDG_CONFIG_HOME/splatmoji/
+      setdown_link $LINUX_DIR/config/splatmoji/splatmoji.config $XDG_CONFIG_HOME/splatmoji/splatmoji.config
       ;;
     sxhkd)
       mkdir -p $XDG_CONFIG_HOME/sxhkd/
