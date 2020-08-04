@@ -143,6 +143,8 @@ dotfiles_addconfig dotfile_choices mpd         on
 dotfiles_addconfig dotfile_choices ncmpcpp     on
 dotfiles_addconfig dotfile_choices neomutt     on
 dotfiles_addconfig dotfile_choices picom       on
+dotfiles_addconfig dotfile_choices polybar     on
+dotfiles_addconfig dotfile_choices rofi        on
 dotfiles_addconfig dotfile_choices screen      on
 dotfiles_addconfig dotfile_choices sxhkd       on
 dotfiles_addconfig dotfile_choices tmux        on
@@ -254,6 +256,10 @@ for choice in "${choices[@]}"; do
     polybar)
       mkdir -p $XDG_CONFIG_HOME/polybar/
       setdown_link $LINUX_DIR/config/polybar/config $XDG_CONFIG_HOME/polybar/config
+      ;;
+    rofi)
+      mkdir -p $XDG_CONFIG_HOME/rofi/
+      setdown_link $LINUX_DIR/config/rofi/config $XDG_CONFIG_HOME/rofi/
       ;;
     screen)
       setdown_link $SHARED_DIR/screenrc ~/.screenrc

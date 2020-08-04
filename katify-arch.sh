@@ -125,14 +125,15 @@ if $has_X; then
   arch_addpkg desktop_packages                arc-gtk-theme               on
   arch_addpkg desktop_packages                arc-icon-theme              on
   arch_addpkg desktop_packages                bspwm                       on
-  arch_addpkg desktop_packages                picom                       on
-  arch_addpkg desktop_packages                dmenu                       on
+  arch_addpkg desktop_packages                dmenu                       off
   arch_addpkg desktop_packages                dunst                       on
   arch_addpkg desktop_packages                feh                         on
   arch_addpkg desktop_packages                lightdm-gtk-greeter         off
   $has_yay && arch_addpkg desktop_packages    ly                          on
+  arch_addpkg desktop_packages                picom                       on
   $has_yay && arch_addpkg desktop_packages    polybar                     on
   arch_addpkg desktop_packages                python-pywal                on
+  arch_addpkg desktop_packages                rofi                        on
   arch_addpkg desktop_packages                rxvt-unicode                off
   arch_addpkg desktop_packages                scrot                       on
   arch_addpkg desktop_packages                sxhkd                       on

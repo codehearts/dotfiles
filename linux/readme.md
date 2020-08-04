@@ -9,6 +9,7 @@ My tiling window manager of choice, configured by `$HOME/.config/bspwm/bspwmrc`.
 | Window | Rule | Description
 | ------ | ---- | -----------
 | XTerm:scratchpad | floating, sticky, and centered | Always-on-top scratchpad terminal
+| Rofi | floating, sticky, and centered | Command runner
 
 ## sxhkd
 
@@ -18,7 +19,7 @@ Hotkey manager configured via `$HOME/.config/sxhkd/sxhkdrc`.
 
 Key     | Binding                     | Key | Binding
 ---     | -------                     | --- | -------
-⌘+⏎     | xterm                       | ⌘+⎵ | dmenu_run
+⌘+⏎     | xterm                       | ⌘+⎵ | rofi
 ⌘+e     | firefox                     | ⌘+v | gvim
 ⌘+d     | xterm scratchpad            | ⌘+a | my `music` script
 ⌘+q     | my `bonjour` startup script | ⌘+z | my `dessiner` theming script
