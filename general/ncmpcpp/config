@@ -257,7 +257,7 @@ song_list_format = "{$3[%l]$9} {$5%a$9} {$6%t$9} %y %n {$5%b$9}"
 ##
 #
 #song_columns_list_format = "(7f)[green]{l} (25)[cyan]{a} (40)[]{t|f} (30)[red]{b}"
-song_columns_list_format = "(40)[cyan]{t|f} (7f)[green]{l} (30)[red]{b} (25)[]{a}"
+song_columns_list_format = "(28f)[cyan]{} (30)[cyan]{t|f} (6f)[green]{l} (15)[red]{b} (15)[]{a}"
 #
 ##### various settings #####
 #
@@ -301,7 +301,7 @@ autocenter_mode = "yes"
 ## be used to build 'empty' part of progressbar.
 ##
 #progressbar_look = "=>"
-progressbar_look = "───"
+progressbar_look = "━━━"
 #
 #default_place_to_search_in = "database" (database/playlist)
 #

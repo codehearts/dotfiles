@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CONFIG_DIR="$HOME/.config"
+export PATH="$PATH:$HOME/.local/bin"
 export GDK_DPI_SCALE=0.35
 export GDK_SCALE=2
 
-# Use the menu key as the compose key
+# use the menu key as the compose key
 setxkbmap -option compose:menu
 
-# Apply previous wal theme if installed
-if command -v wal >/dev/null 2>&1; then
-  wal -R
-fi
+# start my desktop if the script is available
+command -v bonjour >/dev/null 2>&1 && bonjour

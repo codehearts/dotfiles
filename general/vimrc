@@ -24,6 +24,7 @@ Plug 'nikolvs/vim-sunbather'
 Plug 'yuttie/inkstained-vim'
 Plug 'prognostic/plasticine'
 Plug 'yuttie/hydrangea-vim'
+Plug 'dylanaraps/wal.vim'
 Plug 'tjammer/blayu.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'bcicen/vim-vice'
@@ -76,9 +77,10 @@ if has('gui_running') " gui
   elseif has('win32') || has('win64') " windows
     set rop=type:directx,\gamma:1.5,contrast:0.5,geom:1,\renmode:5,taamode:1,level:0.5 " directx rendering
   else " linux
+    colorscheme wal
   endif
 else " term
-  colorscheme srcery
+  colorscheme wal
 endif
 
 "

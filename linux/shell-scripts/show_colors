@@ -1,29 +1,37 @@
-#!/usr/bin/env bash
-# Show off your ANSI color scheme.
-#
-# Modified: Kate Hart (https://github.com/codehearts)
-# Depends:
+#!/bin/sh
 
-f=3 b=4
-for j in f b; do
-  for i in {0..7}; do
-    printf -v $j$i %b "\e[${!j}${i}m"
-  done
+# String of colors 31 to 36, separated by newlines
+colors=''
+for i in $(seq 1 7); do
+  colors=$(printf '%s\n3%s' "$colors" "$i")
 done
-bld=$'\e[1m'
-rst=$'\e[0m'
-inv=$'\e[7m'
-cat << EOF
-$f1    ▄▄▄      $f2    ▄▄▄      $f3    ▄▄▄      $f4    ▄▄▄      $f5    ▄▄▄      $f6    ▄▄▄     
-$f1   ▀█▀██  ▄  $f2   ▀█▀██  ▄  $f3   ▀█▀██  ▄  $f4   ▀█▀██  ▄  $f5   ▀█▀██  ▄  $f6   ▀█▀██  ▄ 
-$f1 ▀▄██████▀   $f2 ▀▄██████▀   $f3 ▀▄██████▀   $f4 ▀▄██████▀   $f5 ▀▄██████▀   $f6 ▀▄██████▀  
-$f1    ▀█████   $f2    ▀█████   $f3    ▀█████   $f4    ▀█████   $f5    ▀█████   $f6    ▀█████  
-$f1       ▀▀▀▀▄ $f2       ▀▀▀▀▄ $f3       ▀▀▀▀▄ $f4       ▀▀▀▀▄ $f5       ▀▀▀▀▄ $f6       ▀▀▀▀▄
-$bld
-$f1    ▄▄▄      $f2    ▄▄▄      $f3    ▄▄▄      $f4    ▄▄▄      $f5    ▄▄▄      $f6    ▄▄▄     
-$f1   ▀█▀██  ▄  $f2   ▀█▀██  ▄  $f3   ▀█▀██  ▄  $f4   ▀█▀██  ▄  $f5   ▀█▀██  ▄  $f6   ▀█▀██  ▄ 
-$f1 ▀▄██████▀   $f2 ▀▄██████▀   $f3 ▀▄██████▀   $f4 ▀▄██████▀   $f5 ▀▄██████▀   $f6 ▀▄██████▀  
-$f1    ▀█████   $f2    ▀█████   $f3    ▀█████   $f4    ▀█████   $f5    ▀█████   $f6    ▀█████  
-$f1       ▀▀▀▀▄ $f2       ▀▀▀▀▄ $f3       ▀▀▀▀▄ $f4       ▀▀▀▀▄ $f5       ▀▀▀▀▄ $f6       ▀▀▀▀▄
-$rst
-EOF
+
+# Multiline string of the graphic to display
+graphic="
+    ▄████▄⠀
+   ███▀████
+▄▄████▄████
+  ▀████████
+    ███████"
+
+# Displays each line of $1 using the colors on each line of $2
+display_graphic() {
+  IFS=$(printf '\n\r')
+  for line in $1; do
+    for color in $2; do
+      printf ' \e[%sm%s ' "${color}" "${line}"
+    done
+
+    printf '\n'
+  done
+}
+
+# Display the normal colors
+display_graphic "$graphic" "$colors"
+
+# Display the bold colors
+printf '\e[1m\n'
+display_graphic "$graphic" "$colors"
+
+# Reset all colors
+printf '\e[0m\n'

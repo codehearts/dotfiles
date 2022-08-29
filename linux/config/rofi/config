@@ -1,0 +1,4 @@
+rofi.theme: ~/.cache/wal/colors-rofi-dark.rasi
+rofi.hide-scrollbar: true
+rofi.font: "M+ 1p" 18
+rofi.location: 0

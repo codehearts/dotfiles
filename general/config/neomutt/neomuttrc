@@ -1,0 +1,69 @@
+# Email Settings -------------------
+source ~/.config/neomutt/accounts
+mailboxes `find ~/Mail -type d -name cur | sed -e "s:$HOME/Mail/\(.*\)/cur/*$:+'\1':" | tr '\n' ' '`
+set my_initial_account = `ls ~/Mail | head -n1` # First maildir alphabetically
+set spoolfile = +$my_initial_account/Inbox
+set postponed = +$my_initial_account/Drafts
+set record    = +$my_initial_account/Sent
+set mbox_type = Maildir
+
+# Basic Options --------------------
+set help            = no  # Don't show help bar
+set wait_key        = no  # Don't require a keypress after external commands
+set delete          = yes # Don't ask about deleting
+set resolve         = no  # Don't move the cursor when deleting messages
+set mark_old        = no  # I only want read/new statuses
+set text_flowed     = yes # Prevent automatic linebreaking when composing
+set sidebar_visible = yes
+set status_format   = "%f %?R? %R read?%?n? %n unread?%> %?p? %p drafted?"
+auto_view text/html       # view html automatically
+source ~/.config/neomutt/colors
+
+# Sort by Threads ------------------
+set sort     = reverse-threads    # Sort individual message threads
+set sort_aux = last-date-received # Sort threads by last message
+
+# Aliases --------------------------
+set alias_file    = "~/.config/neomutt/aliases"
+set reverse_alias = yes # Display alias name instead of email address
+source $alias_file
+
+# Key Bindings ---------------------
+bind generic N search-opposite
+bind index,pager \CD       half-down
+bind index,pager \CU       half-up
+bind index,pager \CF       next-page
+bind index,pager \CB       previous-page
+bind index,pager <tab>     sidebar-next-new
+bind index,pager <backtab> sidebar-prev-new
+bind index,pager <down>    sidebar-next
+bind index,pager <up>      sidebar-prev
+bind index,pager <right>   sidebar-open
+bind index,pager g         group-chat-reply
+bind index <space> collapse-thread
+macro index G "<sync-mailbox><shell-escape>mbsync $my_account<enter>" "sync account with IMAP"
+bind pager k previous-line
+bind pager j next-line
+macro pager \Cl "<pipe-entry>urlscan --dedupe --nohelp<enter>" "open links in message"
+
+# Sidebar --------------------------
+set sidebar_sort_method   = name # Sort folders alphabetically
+set sidebar_short_path    = yes  # Show basename of folder names
+set sidebar_folder_indent = yes
+set sidebar_width         = 20
+
+# Index View Options ---------------
+set index_format = "%S %D %-16.16F %s"
+set date_format  = "%b %d"
+
+# Pager View Options ---------------
+set pager_index_lines = 10  # Open the pager 10 lines under the index view
+set pager_stop        = yes # Don't scroll to the next message automatically
+set menu_scroll       = yes # Scroll line by line rather than by pages
+set markers           = no  # Remove the plus signs from wrapped lines
+
+# Compose Options ------------------
+set forward_format = "Fwd: %s"
+set fast_reply     = yes                 # Automatically set headers for replies
+set include        = yes                 # Include message in replies
+set editor         = "vim +/^$ -c start" # Start in insert mode

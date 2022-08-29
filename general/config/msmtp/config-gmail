@@ -1,0 +1,6 @@
+account ${email_account}
+host    smtp.gmail.com
+port    587
+from    ${email_address}
+user    ${email_address}
+

@@ -1,7 +1,0 @@
-[Timer]
-OnActiveSec=0s
-OnUnitInactiveSec=300s
-Unit=offlineimap.service
-
-[Install]
-WantedBy=timers.target

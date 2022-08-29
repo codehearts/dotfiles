@@ -1,0 +1,78 @@
+[bar/default]
+background = ${colors.background}
+foreground = ${colors.foreground}
+font-0 = "M+ 1p-14;3"
+font-1 = "Symbols Nerd Font:pixelsize=16;3"
+separator = "  "
+padding-right = 1
+modules-left = bspwm
+modules-center = ketchup
+modules-right = alsa network battery date
+line-size = 3
+height = 32
+width = 100%
+
+[colors]
+background = ${xrdb:color0:#222}
+foreground = ${xrdb:color7:#222}
+foreground-alt = ${xrdb:color7:#222}
+primary = ${xrdb:color1:#222}
+secondary = ${xrdb:color2:#222}
+alert = ${xrdb:color3:#222}
+
+[module/bspwm]
+type = internal/bspwm
+enable-click = false
+enable-scroll = false
+label-empty = " %name% "
+label-focused = " %name% "
+label-occupied = " %name% "
+label-focused-foreground = ${colors.background}
+label-focused-background = ${colors.foreground}
+label-occupied-overline = ${colors.foreground}
+
+[module/ketchup]
+type = custom/script
+exec = ketchup | sed -e 's/\[p.*\]/祥/' -e 's/\[b.*\]//' -e 's/\(.\) .*\(..:..\)$/\1 \2/'
+exec-if = pgrep -x ketchup-server && [ "$(ketchup)" != '[idle]' ]
+interval = 1
+
+[module/alsa]
+type = internal/alsa
+format-volume = <ramp-volume>
+format-muted = <label-muted>
+label-muted = ﱝ
+ramp-volume-0 = 奄
+ramp-volume-1 = 奔
+ramp-volume-2 = 墳
+ramp-headphones-0 = 奄
+ramp-headphones-1 = 奔
+ramp-headphones-2 = 墳
+
+[module/network]
+type = internal/network
+interface = wlp2s0
+label-connected = 
+label-disconnected =
+
+[module/battery]
+type = internal/battery
+format-discharging = <ramp-capacity>
+label-charging = 
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-5 = 
+ramp-capacity-6 = 
+ramp-capacity-7 = 
+ramp-capacity-8 = 
+ramp-capacity-9 = 
+ramp-capacity-10 = 
+
+[module/date]
+type = internal/date
+label = •  %date%  •  %time%
+date = %m月%d日
+time = %H:%M

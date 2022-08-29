@@ -77,8 +77,7 @@ pip_getpkgs() {
 
 if setdown_hascmd pip; then
   declare -a pip_package_choices
-  pip_addpkg pip_package_choices colorz on
-  pip_addpkg pip_package_choices zenbu on
+  pip_addpkg pip_package_choices haishoku on
 
   pip_getpkgs 'Pypi packages to install' pip_package_choices
 
@@ -128,58 +127,66 @@ fi
 # dotfiles_addconfig my_choices bash on
 dotfiles_addconfig() { local -n dots=$1; setdown_hascmd "$2" && dots+=($2 $3); }
 
+can_configure_email() { setdown_hascmd msmtp || setdown_hascmd neomutt || setdown_hascmd mbsync; }
+
 declare -a dotfile_choices=('shell scripts' on)
 dotfiles_addconfig dotfile_choices bash        on
-dotfiles_addconfig dotfile_choices compton     on
+dotfiles_addconfig dotfile_choices bspwm       on
+dotfiles_addconfig dotfile_choices dunst       on
 dotfiles_addconfig dotfile_choices gcalert     on
 dotfiles_addconfig dotfile_choices git         on
+dotfiles_addconfig dotfile_choices gtk         on
+dotfiles_addconfig dotfile_choices ketchup     on
 dotfiles_addconfig dotfile_choices ly          on
+dotfiles_addconfig dotfile_choices mbsync      on
 dotfiles_addconfig dotfile_choices mpd         on
 dotfiles_addconfig dotfile_choices ncmpcpp     on
-dotfiles_addconfig dotfile_choices offlineimap on
+dotfiles_addconfig dotfile_choices neomutt     on
+dotfiles_addconfig dotfile_choices picom       on
+dotfiles_addconfig dotfile_choices polybar     on
+dotfiles_addconfig dotfile_choices rofi        on
 dotfiles_addconfig dotfile_choices screen      on
+dotfiles_addconfig dotfile_choices splatmoji   on
+dotfiles_addconfig dotfile_choices sxhkd       on
 dotfiles_addconfig dotfile_choices tmux        on
+dotfile_choices+=(tridactyl off)
 dotfiles_addconfig dotfile_choices vim         on
 dotfiles_addconfig dotfile_choices X           on
-dotfiles_addconfig dotfile_choices zenbu       on
-setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring',        on)
-setdown_hascmd msmtp         && dotfile_choices+=('msmtp templates'       off)
-setdown_hascmd mutt          && dotfile_choices+=('mutt templates'        off)
-setdown_hascmd offlineimap   && dotfile_choices+=('offlineimap templates' off)
+dotfiles_addconfig dotfile_choices zathura     on
+can_configure_email          && dotfile_choices+=('email accounts' off)
+setdown_hascmd gnome-keyring && dotfile_choices+=('gnome keyring' off)
 
 declare -a choices=$(setdown_getopts 'Dotfiles to set up' dotfile_choices)
 for choice in "${choices[@]}"; do
   case "$choice" in
     'shell scripts')
-        for script in $LINUX_DIR/shell-scripts/*; do
-          name="$(basename "$script")"
+        mkdir -p "$HOME/.local/bin"
 
-          # Don't ask for sudo and copy if the files are the same
-          if [ "$(cat /usr/local/sbin/"$name")" != "$(cat "$script")" ]; then
-            if setdown_sudo 'Enter password to copy shell scripts'; then
-              setdown_sudo_copy "$script" /usr/local/sbin/
-            else
-              setdown_putstr_ok 'Skipping shell script copy'
-              break
-            fi
-          fi
+        for script in $LINUX_DIR/shell-scripts/*; do
+          name="$(basename "$1")"
+          setdown_link "$script" "$HOME/.local/bin/$name"
         done
       ;;
     bash)
       setdown_link $SHARED_DIR/bashrc ~/.bashrc
       setdown_link $SHARED_DIR/bash_profile ~/.bash_profile
       ;;
-    compton)
-      setdown_link $LINUX_DIR/compton.conf ~/.compton.conf
+    bspwm)
+      mkdir -p $XDG_CONFIG_HOME/bspwm/
+      setdown_link $LINUX_DIR/config/bspwm/bspwmrc $XDG_CONFIG_HOME/bspwm/
+      ;;
+    dunst)
+      mkdir -p $XDG_CONFIG_HOME/dunst/
+      setdown_link $LINUX_DIR/config/dunst/dunstrc $XDG_CONFIG_HOME/dunst/
       ;;
     gcalert)
-      mkdir -p ~/.config/gcalertrc/
-      setdown_link $LINUX_DIR/config/gcalert/gcalertrc ~/.config/gcalertrc/
+      mkdir -p $XDG_CONFIG_HOME/gcalertrc/
+      setdown_link $LINUX_DIR/config/gcalert/gcalertrc $XDG_CONFIG_HOME/gcalertrc/
       ;;
     git)
       setdown_link $SHARED_DIR/gitignore ~/.gitignore
-      git config --global core.precomposeunicode true
-      git config --global core.excludesfile ~/.gitignore
+      git config --global core.precomposeUnicode true
+      git config --global core.excludesFile ~/.gitignore
       git config --global core.editor vim
       git config --global interactive.singleKey true
       git config --global advice.statusHints false
@@ -193,6 +200,13 @@ for choice in "${choices[@]}"; do
           "$(setdown_getstr 'Git email:' 'codehearts@users.noreply.github.com')"
       fi
       ;;
+    gtk)
+      mkdir -p $XDG_CONFIG_HOME/gtk-3.0/
+      setdown_link $LINUX_DIR/config/gtk-3.0/settings.ini $XDG_CONFIG_HOME/gtk-3.0/
+      ;;
+    ketchup)
+      setdown_link $LINUX_DIR/config/ketchup/ $XDG_CONFIG_HOME/ketchup/
+      ;;
     ly)
       if setdown_hascmd systemctl; then
         if [ "$(systemctl is-enabled ly)" != "enabled" ]; then
@@ -203,6 +217,19 @@ for choice in "${choices[@]}"; do
             setdown_putstr_ok 'Skipping ly service enable'
           fi
         fi
+      fi
+      ;;
+    mbsync)
+      if setdown_hascmd systemctl; then
+        mkdir -p $XDG_CONFIG_HOME/systemd/user/
+        setdown_link $LINUX_DIR/config/systemd/user/isync.service \
+          $XDG_CONFIG_HOME/systemd/user/
+        setdown_link $LINUX_DIR/config/systemd/user/isync.timer \
+          $XDG_CONFIG_HOME/systemd/user/
+
+        systemctl --user daemon-reload
+        systemctl --user start isync.timer isync.service
+        systemctl --user enable isync.timer isync.service
       fi
       ;;
     mpd)
@@ -216,26 +243,44 @@ for choice in "${choices[@]}"; do
       setdown_link $SHARED_DIR/ncmpcpp/config ~/.ncmpcpp/
       setdown_link $SHARED_DIR/ncmpcpp/keys ~/.ncmpcpp/
       ;;
-    offlineimap)
-      if setdown_hascmd systemctl; then
-        mkdir -p ~/.config/systemd/user/
-        setdown_copy $LINUX_DIR/config/systemd/user/offlineimap.service \
-          ~/.config/systemd/user/
-        setdown_copy $LINUX_DIR/config/systemd/user/offlineimap.timer \
-          ~/.config/systemd/user/
-
-        systemctl --user daemon-reload
-        systemctl --user start offlineimap.timer
-        systemctl --user start offlineimap.service
-        systemctl --user enable offlineimap.timer
-        systemctl --user enable offlineimap.service
-      fi
+    neomutt)
+      mkdir -p $XDG_CONFIG_HOME/neomutt
+      touch $XDG_CONFIG_HOME/neomutt/{accounts,aliases}
+      setdown_link $SHARED_DIR/config/neomutt/neomuttrc $XDG_CONFIG_HOME/neomutt/neomuttrc
+      setdown_link $SHARED_DIR/config/neomutt/colors $XDG_CONFIG_HOME/neomutt/colors
+      setdown_link $SHARED_DIR/config/neomutt/mailcap ~/.mailcap
+      ;;
+    picom)
+      mkdir -p $XDG_CONFIG_HOME/picom/
+      setdown_link $LINUX_DIR/config/picom/picom.conf $XDG_CONFIG_HOME/picom/
+      ;;
+    polybar)
+      mkdir -p $XDG_CONFIG_HOME/polybar/
+      setdown_link $LINUX_DIR/config/polybar/config $XDG_CONFIG_HOME/polybar/config
+      ;;
+    rofi)
+      mkdir -p $XDG_CONFIG_HOME/rofi/
+      setdown_link $LINUX_DIR/config/rofi/config $XDG_CONFIG_HOME/rofi/
       ;;
     screen)
       setdown_link $SHARED_DIR/screenrc ~/.screenrc
       ;;
+    splatmoji)
+      mkdir -p $XDG_CONFIG_HOME/splatmoji/
+      setdown_link $LINUX_DIR/config/splatmoji/splatmoji.config $XDG_CONFIG_HOME/splatmoji/splatmoji.config
+      ;;
+    sxhkd)
+      mkdir -p $XDG_CONFIG_HOME/sxhkd/
+      setdown_link $LINUX_DIR/config/sxhkd/sxhkdrc $XDG_CONFIG_HOME/sxhkd/
+      ;;
     tmux)
       setdown_link $SHARED_DIR/tmux.conf ~/.tmux.conf
+      ;;
+    tridactyl)
+      mkdir -p $XDG_CONFIG_HOME/tridactyl/themes
+      setdown_link $LINUX_DIR/config/wal/templates/tridactyl-wal.css $XDG_CONFIG_HOME/wal/templates/tridactyl-wal.css
+      setdown_link $SHARED_DIR/config/tridactyl/tridactylrc $XDG_CONFIG_HOME/tridactyl/tridactylrc
+      setdown_link ~/.cache/wal/tridactyl-wal.css $XDG_CONFIG_HOME/tridactyl/themes/wal.css
       ;;
     vim)
       mkdir -p ~/.vim/autoload/
@@ -245,14 +290,73 @@ for choice in "${choices[@]}"; do
     X)
       setdown_link $LINUX_DIR/xinitrc ~/.xinitrc
       setdown_link $LINUX_DIR/xinitrc ~/.xsession
+      setdown_link $LINUX_DIR/Xresources ~/.Xresources
       chmod +x ~/.xsession
       ;;
-    zenbu)
-      setdown_link $LINUX_DIR/config/zenbu/ ~/.config/
-      if setdown_hasstr pip_packages zenbu; then
-        zenbu soft-pink
-        setdown_hascmd reload-desktop && reload-desktop
-      fi
+    zathura)
+      mkdir -p $XDG_CONFIG_HOME/wal/templates/
+      xdg-mime default org.pwmt.zathura.desktop application/pdf
+      setdown_link $LINUX_DIR/config/wal/templates/zathurarc $XDG_CONFIG_HOME/wal/templates/zathurarc
+      setdown_link ~/.cache/wal/zathurarc $XDG_CONFIG_HOME/zathura/zathurarc
+      ;;
+    'email accounts')
+      local email_service email_address email_account email_name email_host
+
+      while email_service="$(setdown_getchoice 'Configure email for service?' no protonmail gmail)"; do
+        case "$email_service" in
+          protonmail )
+            email_address="$(setdown_getstr 'Email address:')"
+            email_account="$(setdown_getstr 'Email account:')"
+            email_name="$(setdown_getstr 'Email sender name:')"
+            email_host=127.0.0.1
+            ;;
+          gmail )
+            email_address="$(setdown_getstr 'Email address:')"
+            email_account="$(setdown_getstr 'Email account:')"
+            email_name="$(setdown_getstr 'Email sender name:')"
+            email_host=smtp.gmail.com
+            ;;
+          * )
+            break
+        esac
+
+        mkdir -p "$HOME/Mail/${email_account}"
+
+        if setdown_hascmd mbsync; then
+          cat "$SHARED_DIR/mbsyncrc-${email_service}" \
+            | email_address="$email_address" email_account="$email_account" envsubst \
+            >> $HOME/.mbsyncrc
+
+          if setdown_hascmd secret-tool; then
+            setdown_getpw "Enter IMAP password for $email_address" \
+              | secret-tool store --label=imap host "$email_service" service imap user "$email_address"
+          fi
+        fi
+
+        if setdown_hascmd msmtp; then
+          mkdir -p $XDG_CONFIG_HOME/msmtp
+
+          # Create the config with defaults if it doesn't already exist
+          if [ ! -f $XDG_CONFIG_HOME/msmtp/config ]; then
+            setdown_copy $SHARED_DIR/config/msmtp/config $XDG_CONFIG_HOME/msmtp/config
+          fi
+
+          if setdown_hascmd secret-tool; then
+            setdown_getpw "Enter SMTP password for $email_address" \
+              | secret-tool store --label=smtp host "$email_host" service smtp user "$email_address"
+          fi
+
+          cat "$SHARED_DIR/config/msmtp/config-${email_service}" \
+            | email_address="$email_address" email_account="$email_account" envsubst \
+            >> $XDG_CONFIG_HOME/msmtp/config
+        fi
+
+        if setdown_hascmd neomutt; then
+          cat "$SHARED_DIR/config/neomutt/account-template" \
+            | email_account="$email_account" email_address="$email_address" email_name="$email_name" envsubst \
+            >> $XDG_CONFIG_HOME/neomutt/accounts
+        fi
+      done
       ;;
     'gnome keyring')
       if setdown_sudo 'Enter password to configure gnome keyring via PAM'; then
@@ -264,25 +368,6 @@ for choice in "${choices[@]}"; do
       else
         setdown_putstr_ok 'Skipping gnome keyring PAM configuration'
       fi
-      ;;
-    'msmtp templates')
-      mkdir -p ~/.msmtp
-      setdown_copy $REPO_DIR/msmtprc-sample ~/.msmtprc-sample
-      setdown_link $SHARED_DIR/msmtp/msmtp-gnome-tool.py ~/.msmtp/
-      ;;
-    'mutt templates')
-      mkdir -p ~/.mutt
-      setdown_copy $SHARED_DIR/muttrc-sample ~/.muttrc-sample
-      setdown_copy $SHARED_DIR/mutt/custom_config ~/.mutt/
-      setdown_copy $SHARED_DIR/mutt/school_config ~/.mutt/
-      setdown_copy $SHARED_DIR/mutt/gmail_config ~/.mutt/
-      setdown_copy $SHARED_DIR/mutt/mailcap-sample ~/.mutt/
-      setdown_link $SHARED_DIR/mutt/add_sender_to_aliases.sh ~/.mutt/
-      setdown_link $SHARED_DIR/mutt/loveless-theme ~/.mutt/
-      ;;
-    'offlineimap templates')
-      setdown_copy $SHARED_DIR/offlineimaprc-sample ~/.offlineimaprc-sample
-      setdown_link $SHARED_DIR/offlineimap.py ~/.offlineimap.py
       ;;
   esac
 done

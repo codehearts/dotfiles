@@ -1,0 +1,15 @@
+" Hide the browser chrome
+guiset_quiet gui none
+guiset_quiet tabstoolbar show
+guiset_quiet tabs autohide
+guiset_quiet navbar autohide
+guiset_quiet hoverlink left
+guiset_quiet statuspanel left
+
+" Scrolling
+bind j scrollline 3
+bind k scrollline -3
+set smoothscroll true
+
+" Theme
+colorscheme wal

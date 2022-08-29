@@ -32,7 +32,7 @@ alias grep="grep --color=auto"
 alias ls="ls --color=auto"
 alias sizeof="du -Lhs"
 
-# Add local bin to PATH, used by pip --user
+# Add local bin to PATH, used by pip --user and me
 export PATH="$PATH:$HOME/.local/bin"
 
 # Use python3 for virtualenvwrapper

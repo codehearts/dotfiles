@@ -1,0 +1,11 @@
+[Unit]
+Description=isync Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=mbsync -Va
+ExecStop=%h/bin/mail-notify -a300 -m3 -t2000
+
+[Install]
+WantedBy=multi-user.target

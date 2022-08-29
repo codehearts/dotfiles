@@ -1,0 +1,7 @@
+[Timer]
+OnActiveSec=0s
+OnUnitInactiveSec=300s
+Unit=isync.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,50 @@
+!! General
+
+#define MOD mod4
+
+Xft.dpi:       144
+Xft.autohint:  0
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintfull
+Xft.hinting:   1
+Xft.antialias: 1
+Xft.rgba:      rgb
+
+!! XTerm
+
+XTerm*faceName: xft:Dank Mono:pixelsize=18:antialias=true:hinting=true
+XTerm*faceNameDoublesize: xft:M+ 1p:pixelsize=18:antialias=true:hinting=true
+XTerm*termName: xterm-256color
+XTerm*utf8: true
+
+XTerm*vt100.internalBorder:    30
+XTerm*vt100.bellIsUrgent:      true
+XTerm*vt100.metaSendsEscape:   true
+XTerm*vt100.saveLines:         12000
+XTerm*vt100.cursorBlink:       true
+XTerm*vt100.selectToClipboard: true
+XTerm*vt100.translations: #override \n\
+  Ctrl Shift <Key>C: copy-selection(CLIPBOARD) \n\
+  Ctrl Shift <Key>V: insert-selection(CLIPBOARD)
+
+!! URxvt
+
+! Fonts
+URxvt.font: xft:Dank Mono:pixelsize=18:antialias=true:hinting=true
+URxvt.boldFont: xft:Dank Mono:pixelsize=18:antialias=true:hinting=true
+URxvt.skipBuiltinGlyphs: true
+URxvt.letterSpace: 0
+
+! Appearance
+URxvt.saveLines:        12000
+URxvt.internalBorder:   30
+URxvt.urgentOnBell:     true
+URxvt.scrollBar:        false
+URxvt.cursorBlink:      true
+URxvt.depth:            32
+
+! Ctrl + Arrow Keys
+URxvt.keysym.Control-Up:    \033[1;5A
+URxvt.keysym.Control-Down:  \033[1;5B
+URxvt.keysym.Control-Left:  \033[1;5D
+URxvt.keysym.Control-Right: \033[1;5C

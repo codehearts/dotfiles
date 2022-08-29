@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+#
+# Sets the system theme based on a wallpaper
+# Author:  Catherine Hart (https://github.com/codehearts)
+# Depends: dmenu | rofi, pywal,
+#          python (optional), python-haishoku (optional),
+#          bonjour (custom script, optional)
+
+# determines if a program is installed
+is_installed() { command -v "$1" >/dev/null 2>&1; }
+
+# determines if python has a package installed
+python_has() { python -c "import $1" >/dev/null 2>&1; }
+
+# wallpaper location
+WALLPAPER_DIR=$HOME/Pictures/wallpaper
+
+if is_installed dmenu; then
+  DMENU=dmenu
+else
+  DMENU='rofi -dmenu -normal-window'
+fi
+
+# use dmenu/rofi for the selection if no args were passed
+if [ "$#" -eq 0 ]; then
+  selection="$(ls "$WALLPAPER_DIR" | $DMENU -i -f -b -sb '#000' -p 'dessiner')"
+else
+  selection="$(find "$WALLPAPER_DIR" -name "*$1*" -printf '%f')"
+fi
+
+# do nothing if there's no theme selection
+[ -z "$selection" ] && exit 0
+
+# use haishoku as the backend if installed, otherwise use wal
+is_installed python && python_has haishoku && backend=haishoku || backend=wal
+
+# run `bonjour` after wal if installed, otherwise run `true`
+is_installed bonjour && post_script=bonjour || post_script=true
+
+wal --backend "$backend" -i "$WALLPAPER_DIR/$selection" -o "$post_script"
