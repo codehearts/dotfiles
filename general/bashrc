@@ -22,6 +22,7 @@ export HISTCONTROL=ignoreboth:erasedups
 shopt -s histappend cmdhist
 
 export EDITOR=vim
+export GPG_TTY=$(tty)
 
 # Returns true if the given command is available
 hascmd() { command -v $1 >/dev/null 2>&1; }
