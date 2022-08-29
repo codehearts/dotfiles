@@ -9,34 +9,25 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 
 " colors
+Plug 'embark-theme/vim', { 'as': 'embark', 'branch': 'main' }
 Plug 'sansbrina/vim-garbage-oracle', { 'branch': 'release' }
 Plug 'lu-ren/SerialExperimentsLain'
 Plug 'rhysd/vim-color-spring-night'
-Plug 'soft-aesthetic/soft-era-vim'
-Plug 'vectorstorm/vim-chlordane'
 Plug 'reedes/vim-colors-pencil'
 Plug 'cseelus/vim-colors-lucid'
 Plug 'srcery-colors/srcery-vim'
-Plug 'sainnhe/gruvbox-material'
+Plug 'iandwelker/rose-pine-vim'
 Plug 'dennougorilla/azuki.vim'
 Plug 'cseelus/vim-colors-tone'
-Plug 'srijs/vim-colors-rusty'
-Plug 'wadackel/vim-dogrun'
-Plug 'tjammer/blayu.vim'
-Plug 'abnt713/vim-hashpunk'
+Plug 'arzg/vim-colors-xcode'
+Plug 'nikolvs/vim-sunbather'
+Plug 'yuttie/inkstained-vim'
+Plug 'prognostic/plasticine'
 Plug 'yuttie/hydrangea-vim'
-Plug 'beikome/cosme.vim'
-Plug 'smallwat3r/vim-mono-sw'
-Plug 'sonjapeterson/1989.vim'
-Plug 'kocakosm/hilal'
-Plug 'kristiandupont/shades-of-teal'
-Plug 'carlson-erik/wolfpack'
-Plug 'jcherven/jummidark.vim'
-Plug 'franbach/miramare'
-Plug 'sjl/badwolf'
+Plug 'tjammer/blayu.vim'
+Plug 'ayu-theme/ayu-vim'
 Plug 'bcicen/vim-vice'
-Plug 'mbbill/vim-seattle'
-Plug 'AlessandroYorba/Sierra'
+Plug 'kocakosm/hilal'
 
 " editor
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -44,6 +35,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
+Plug 'dhruvasagar/vim-table-mode'
 Plug 'dense-analysis/ale'
 Plug 'janko-m/vim-test'
 Plug 'tmsvg/pear-tree'
@@ -122,7 +114,7 @@ let airline#extensions#ale#close_lnum_symbol = ''
 " don't log ale linter output
 let g:ale_history_log_output = 0
 " specify lsp and linters
-let g:ale_linters = { 'rust': ['analyzer'] }
+let g:ale_linters = { 'rust': ['analyzer'], 'java': [ 'checkstyle', 'javalsp', 'pmg' ] }
 " specify fixers for ale
 let g:ale_fixers = { 'rust': [ 'rustfmt' ], 'javascript': [ 'prettier' ], 'typescript': [ 'eslint' ] }
 " fix syntax when saving buffers
@@ -184,7 +176,7 @@ map <leader>ag :ALEGoToDefinition -split<cr>
 xmap ga <plug>(EasyAlign)
 nmap ga <plug>(EasyAlign)
 " fzf
-map <leader>f :call fzf#run(fzf#vim#with_preview({'source': 'fd . --type f', 'sink': 'e'}))<cr>
+map <leader>f :Files<cr>
 
 "
 " file types
