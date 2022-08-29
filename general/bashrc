@@ -7,7 +7,15 @@ magenta='\e[0;35m'; light_magenta='\e[0;95m';  cyan='\e[0;36m';  light_cyan='\e[
  normal='\e[0;39m';
 
 # Green moon with red cwd, yellow star if last command returned non-zero
-export PS1="\[\$((( \$? )) && echo '$yellow'✦ || echo '$green'☾)\] \[$red\]\W\[$normal\] "
+set_ps1() {
+    [ $? -eq 0 ] && PS1="\[$green\]☾" || PS1="\[$yellow\]✦"
+    export PS1="$PS1 \[$red\]\W\[$normal\] "
+}
+if [ -n "$PROMPT_COMMAND" ]; then
+    export PROMPT_COMMAND="$PROMPT_COMMAND; set_ps1"
+else
+    export PROMPT_COMMAND="set_ps1"
+fi
 
 # Keep repeated commands in history once
 export HISTCONTROL=ignoreboth:erasedups
