@@ -46,7 +46,9 @@ hascmd thefuck && eval "$(thefuck --alias fuck)"
 
 # macOS
 if [[ "$OSTYPE" == darwin* ]]; then
-  export PATH="/usr/local/bin:$PATH"
+  # Configure homebrew if installed
+  [ -f /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+  [ -f /usr/local/bin/brew ] && eval "$(/usr/local/bin/brew shellenv)"
 
   alias ls="ls -G"
 fi
