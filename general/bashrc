@@ -5,14 +5,16 @@
  yellow='\e[0;33m';  light_yellow='\e[0;93m';  blue='\e[0;34m';  light_blue='\e[0;94m'
 magenta='\e[0;35m'; light_magenta='\e[0;95m';  cyan='\e[0;36m';  light_cyan='\e[0;96m'
  normal='\e[0;39m';
+left_divider="$(echo -e '\UE0B2')"
+right_divider="$(echo -e '\UE0B0')"
 
 # Green moon with red cwd, yellow star if last command returned non-zero
 set_ps1() {
-    [ $? -eq 0 ] && PS1="\[$green\]☾" || PS1="\[$yellow\]✦"
-    export PS1="$PS1 \[$red\]\W\[$normal\] "
+    [ $? -eq 0 ] && PS1="\[\e[30;42m\] ♥︎ \[$green\]" || PS1="\[\e[30;41m\] ✖︎ \[$red\]"
+    export PS1="$PS1 \W ›\[$normal\] "
 }
 if [ -n "$PROMPT_COMMAND" ]; then
-    export PROMPT_COMMAND="$PROMPT_COMMAND; set_ps1"
+    export PROMPT_COMMAND="RC=\$?; $PROMPT_COMMAND; [ \$RC == 0 ]; set_ps1"
 else
     export PROMPT_COMMAND="set_ps1"
 fi
