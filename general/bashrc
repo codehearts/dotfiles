@@ -1,23 +1,27 @@
 [[ $- != *i* ]] && return # Do nothing if not running interactively
 
-  black='\e[0;30m';         white='\e[0;97m';  grey='\e[0;37m';   dark_grey='\e[0;90m'
-    red='\e[0;31m';     light_red='\e[0;91m'; green='\e[0;32m'; light_green='\e[0;92m'
- yellow='\e[0;33m';  light_yellow='\e[0;93m';  blue='\e[0;34m';  light_blue='\e[0;94m'
-magenta='\e[0;35m'; light_magenta='\e[0;95m';  cyan='\e[0;36m';  light_cyan='\e[0;96m'
- normal='\e[0;39m';
-left_divider="$(echo -e '\UE0B2')"
-right_divider="$(echo -e '\UE0B0')"
+  black='\[\e[40;30m\]';         white='\[\e[40;97m\]';  grey='\[\e[40;37m\]';   dark_grey='\[\e[40;90m\]'
+    red='\[\e[40;31m\]';     light_red='\[\e[40;91m\]'; green='\[\e[40;32m\]'; light_green='\[\e[40;92m\]'
+ yellow='\[\e[40;33m\]';  light_yellow='\[\e[40;93m\]';  blue='\[\e[40;34m\]';  light_blue='\[\e[40;94m\]'
+magenta='\[\e[40;35m\]'; light_magenta='\[\e[40;95m\]';  cyan='\[\e[40;36m\]';  light_cyan='\[\e[40;96m\]'
+ normal='\[\e[0;39m\]';         invert='\[\e[1;7m\]'
 
-# Green moon with red cwd, yellow star if last command returned non-zero
-set_ps1() {
-    [ $? -eq 0 ] && PS1="\[\e[30;42m\] ♥︎ \[$green\]" || PS1="\[\e[30;41m\] ✖︎ \[$red\]"
-    export PS1="$PS1 \W ›\[$normal\] "
+ps1_unicode() {
+    printf '\[%s\] \[%s%s\]' "$(tput sc)" "$(tput rc)" "$1"
 }
-if [ -n "$PROMPT_COMMAND" ]; then
-    export PROMPT_COMMAND="RC=\$?; $PROMPT_COMMAND; [ \$RC == 0 ]; set_ps1"
-else
-    export PROMPT_COMMAND="set_ps1"
-fi
+
+right_divider="$(ps1_unicode ◗)"
+set_ps1() {
+    if [ $? -eq 0 ]; then
+        PROMPT="$green$(ps1_unicode )$invert$(ps1_unicode 良)$(ps1_unicode い)$normal$green$(ps1_unicode )"
+    else
+        PROMPT="$red$(ps1_unicode )$invert$(ps1_unicode 誤)$(ps1_unicode り)$normal$red$(ps1_unicode )"
+    fi
+
+    PS1="$PROMPT \W $(ps1_unicode ›)$normal "
+}
+
+PROMPT_COMMAND=set_ps1
 
 # Keep repeated commands in history once
 export HISTCONTROL=ignoreboth:erasedups
