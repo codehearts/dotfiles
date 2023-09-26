@@ -59,3 +59,17 @@ fi
 [ -f ~/.cache/wal/sequences ] && (cat ~/.cache/wal/sequences &)
 [ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 [ -f ~/.private-bashrc ] && source ~/.private-bashrc
+[ -f ~/.cargo/env ] && source ~/.cargo/env
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+if hascmd brew; then
+    BREW_PATH="$(brew --prefix)"
+
+    # Bash completions
+    [ -f "$BREW_PATH/etc/bash_completion" ] && \. "$BREW_PATH/etc/bash_completion"
+
+    # NVM setup
+    hascmd nvm && export NVM_DIR="$HOME/.nvm"
+    [ -s "$BREW_PATH/opt/nvm/nvm.sh" ] && \. "$BREW_PATH/opt/nvm/nvm.sh"
+    [ -s "$BREW_PATH/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$BREW_PATH/opt/nvm/etc/bash_completion.d/nvm"
+fi
